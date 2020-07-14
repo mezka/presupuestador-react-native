@@ -10,7 +10,6 @@ export const getClients = () => {
     try {
       let clients = await ky.get('http://192.168.0.14:3000/clients').json();
 
-      console.log('MyCLients');
       console.log(clients);
 
       dispatch(fetchClientsSuccess(clients));

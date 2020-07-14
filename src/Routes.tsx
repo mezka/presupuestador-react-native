@@ -2,8 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './components/HomeScreen';
-import NewEstimateScreen from './components/NewEstimateScreen';
+import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
 import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
+import NewEstimateScreen from './components/NewEstimateScreen';
 
 const Stack = createStackNavigator();
 
@@ -20,12 +21,16 @@ export default function Routes() {
           component={HomeScreen}
         />
         <Stack.Screen
-          name="NewEstimate"
-          component={NewEstimateScreen}
+          name="NewEstimateSetup"
+          component={NewEstimateSetupScreen}
         />
         <Stack.Screen
           name="ViewEditEstimate"
           component={ViewEditEstimateScreen}
+        />
+        <Stack.Screen
+          name="NewEstimate"
+          component={NewEstimateScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

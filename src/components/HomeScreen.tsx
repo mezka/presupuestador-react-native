@@ -4,7 +4,7 @@ import { View, Button, StyleSheet } from 'react-native';
 const HomeScreen = props => {
   return  <View style={ styles.parentView }>
               <View style={styles.buttonView}>
-                <Button style={ styles.buttonStyle } onPress={() => props.navigation.navigate('NewEstimate')} title='Nuevo' />
+                <Button style={ styles.buttonStyle } onPress={() => props.navigation.navigate('NewEstimateSetup')} title='Nuevo' />
                 <Button style={ styles.buttonStyle } onPress={() => props.navigation.navigate('ViewEditEstimate')} title='Ver / Editar' />
               </View>
           </View>

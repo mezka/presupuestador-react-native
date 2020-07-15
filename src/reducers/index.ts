@@ -5,5 +5,5 @@ import addClientReducer from './addClientReducer';
 
 
 export default combineReducers({
-    clientData: reduceReducers({ clients: [] }, fetchClientsReducer, addClientReducer)
+    clientData: reduceReducers({ clients: [], pending: [], error: null }, fetchClientsReducer, addClientReducer)
 });

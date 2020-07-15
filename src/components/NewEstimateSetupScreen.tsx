@@ -36,7 +36,7 @@ const NewEstimateSetupScreen = (props) => {
   }
 
   const handleChoicePress = () => {
-    props.navigation.navigate('NewEstimate');
+    props.navigation.navigate('NewEstimate', { clientId: selectedClient.id });
   }
 
   const clientItems = clients.map((client:any) => <Picker.Item key={ client.id } label={ client.name } value={ client.id }/>);

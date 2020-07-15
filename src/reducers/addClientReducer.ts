@@ -5,19 +5,19 @@ const addClientReducer = (state, action) => {
     case ADD_CLIENT_PENDING:
       return {
         ...state,
-        pending: true
+        pending: [...state.pending, action.type]
       };
     case ADD_CLIENT_SUCCESS:
       return {
         ...state,
         clients: [...state.clients, action.client],
-        pending: false
+        pending: state.pending.filter((type: string) => type !==  ADD_CLIENT_PENDING)
       };
     case ADD_CLIENT_ERROR:
       return {
         ...state,
-        pending: false,
-        error: action.error
+        pending: state.pending.filter((type: string) => type !==  ADD_CLIENT_PENDING),
+        error: [...state.error, action.error]
       };
     default:
       return state;

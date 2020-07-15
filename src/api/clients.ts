@@ -6,21 +6,7 @@ import { addClientPending, addClientSuccess, addClientError} from '../actions/ad
 const api_url = Constants.manifest.extra.api_url;
 
 export const getClients = () => {
-  return async (dispatch) => {
-    
-    dispatch(fetchClientsPending());
-    
-    try {
-      let clients = await ky.get(`${ api_url }/clients`).json();
-
-      console.log(clients);
-
-      dispatch(fetchClientsSuccess(clients));
-    } catch (error) {
-
-      return dispatch(fetchClientsError(error));
-    }
-  }
+  return ky.get(`${ api_url }/clients`).json();
 }
 
 export const addClient = ({name, address, phonenumber}) => {

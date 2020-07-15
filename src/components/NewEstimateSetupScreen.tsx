@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useQuery } from 'react-query';
 import { getClients } from '../api/clients';
 import { View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { Surface, Text, TextInput, Headline, Button, Divider } from 'react-native-paper';
 
 const NewEstimateSetupScreen = (props) => {
-
-  const clients = useSelector(state => state.clientData.clients);
+  const {data: clientData} = useQuery('clients', getClients);
+  const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState({id: '', name: '', address: '', phonenumber: ''});
   const [textInputDisabled, setTextInputDisabled] = useState(true);
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getClients());
-  }, []);
-
-  useEffect(() => {
-    if(clients.length){
-      setSelectedClient(clients[0]);
+    if(clientData){
+      setClients(clientData);
+      setSelectedClient(clientData[0]);
     }
-  }, [clients])
+  }, [clientData]);
 
   const handlePickerChange = (selectedValue) => {
     setSelectedClient(clients.find(client => client.id === selectedValue));

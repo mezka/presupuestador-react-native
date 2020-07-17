@@ -1,7 +1,6 @@
 import ky from 'ky';
 import Constants from 'expo-constants';
-import { fetchClientsPending, fetchClientsSuccess, fetchClientsError } from '../actions/fetchClientsActions';
-import { addClientPending, addClientSuccess, addClientError} from '../actions/addClientActions';
+import { Client } from '../types.ts';
 
 const api_url = Constants.manifest.extra.api_url;
 
@@ -9,18 +8,7 @@ export const getClients = () => {
   return ky.get(`${ api_url }/clients`).json();
 }
 
-export const addClient = ({name, address, phonenumber}) => {
-  return async (dispatch) => {
-    
-    dispatch(addClientPending());
-    
-    try {
-      let client = await ky.post(`${ api_url }/clients`, {name, address, phonenumber}).json();
+export const addClient = (client: Client) => {
 
-      dispatch(addClientSuccess(client));
-    } catch (error) {
-
-      return dispatch(addClientError(error));
-    }
-  }
+  return ky.post(`${ api_url }/clients`, { json: client }).json();
 }

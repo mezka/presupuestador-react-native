@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { getProducts } from '../api/products';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 
 const NewEstimateScreen = (props) => {
+  const [products, setProducts] = useState([]);
+  const {data: productData} = useQuery('products', getProducts);
+  const client = props.route.params.client
 
-  const clientId = props.route.params.clientId
+  useEffect(() => {
+    if(productData){
+      setProducts(productData);
+    }
+  }, [productData]);
 
-  return <View><Text>NewEstimateScreen, clientId: {clientId}</Text></View>
+  const productItems = products.map((product) => <Text key={product.id}>{product.name}</Text>);
+
+  return (
+    <View>
+      <Text>NewEstimateScreen, clientId: {client.id}</Text>
+      { productItems }
+    </View>);
 }
 
 export default NewEstimateScreen;

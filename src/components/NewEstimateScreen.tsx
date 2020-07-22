@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getProducts } from '../api/products';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { Picker } from '@react-native-community/picker';
+import log from 'loglevel';
 
 const NewEstimateScreen = (props) => {
   const [products, setProducts] = useState([]);
+  const [items, setItems] = useState({0:{id: 0}, 1: {id:1}});
   const {data: productData} = useQuery('products', getProducts);
-  const client = props.route.params.client
+  const client = props.route.params.client;
 
   useEffect(() => {
     if(productData){
@@ -15,13 +18,38 @@ const NewEstimateScreen = (props) => {
     }
   }, [productData]);
 
-  const productItems = products.map((product) => <Text key={product.id}>{product.name}</Text>);
+1
+  const handleProductChange = (selectedValue) =>{
+    log.info('handleProductChange:');
+    log.info(selectedValue);
+  }
+
+  const productPickers = Object.keys(items).map((itemKey) => {
+
+    log.info(products[0]);
+    log.info(items[0]);
+
+    return (
+    <Picker key={itemKey} selectedValue={items[itemKey].id} onValueChange={handleProductChange}>
+      {products.map((product) => <Picker.Item key={product.id} label={product.model}/>)}
+    </Picker>
+    );
+  });
+
 
   return (
     <View>
+      <View>
+        {productPickers}
+      </View>
       <Text>NewEstimateScreen, clientId: {client.id}</Text>
-      { productItems }
     </View>);
 }
+
+const styles = StyleSheet.create({
+  chipView: {
+    flexDirection: "row",
+  },
+});
 
 export default NewEstimateScreen;

@@ -1,55 +1,93 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { getProducts } from '../api/products';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import { Picker } from '@react-native-community/picker';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProducts } from '../actions/products';
+import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem } from '../actions/estimateItems';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { Text, Button, Dialog, Portal } from 'react-native-paper';
+import EstimateItemPicker from './EstimateItemPicker';
 import log from 'loglevel';
 
 const NewEstimateScreen = (props) => {
-  const [products, setProducts] = useState([]);
-  const [items, setItems] = useState({0:{id: 0}, 1: {id:1}});
-  const {data: productData} = useQuery('products', getProducts);
-  const client = props.route.params.client;
+  const estimateItems = useSelector(state => state.estimate);
+  const productData = useSelector(state => state.products);
+  const dispatch = useDispatch();
+  const [visible, setVisible] = React.useState(false);
 
-  useEffect(() => {
-    if(productData){
-      setProducts(productData);
-    }
-  }, [productData]);
-
-1
-  const handleProductChange = (selectedValue) =>{
-    log.info('handleProductChange:');
-    log.info(selectedValue);
+  const toggleDialog = () => {
+    setVisible(!visible);
   }
 
-  const productPickers = Object.keys(items).map((itemKey) => {
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [])
 
-    log.info(products[0]);
-    log.info(items[0]);
+  useEffect(() => {
+    log.info('productDataChange');
+    log.info(productData);
+  }, [productData])
 
+  useEffect(() => {
+    log.info('estimateItemChange');
+    log.info(estimateItems);
+  }, [estimateItems]);
+
+  const createProductChangeHandler = (estimateItemId) => {
+    return (optionValue) => {
+      dispatch(changeEstimateItemProduct(estimateItemId, Number(optionValue)));
+    };
+  };
+
+  const createQtyChangeHandler = (estimateItemId) => {
+    return (optionValue) => {
+      dispatch(changeEstimateItemQty(estimateItemId, Number(optionValue)))
+    }
+  };
+
+  const handleAddEstimateItem = () => {
+    dispatch(addEstimateItem(1, 1));
+    log.info(productData);
+    log.info(estimateItems);
+  };
+
+  const productPickers = Object.keys(estimateItems).map((estimateItemId) => {
     return (
-    <Picker key={itemKey} selectedValue={items[itemKey].id} onValueChange={handleProductChange}>
-      {products.map((product) => <Picker.Item key={product.id} label={product.model}/>)}
-    </Picker>
+      <View key={estimateItemId} style={styles.itemView}>
+        <EstimateItemPicker
+          estimateItem={estimateItems[estimateItemId]}
+          qtyChangeHandler={createQtyChangeHandler(estimateItemId)}
+          productChangeHandler={createProductChangeHandler(estimateItemId)}
+          products={productData.products}/>
+      </View>
     );
   });
 
 
   return (
-    <View>
+    <ScrollView>
+      <Portal>
+        <Dialog visible={visible} onDismiss={toggleDialog}>
+          <Dialog.ScrollArea>
+            <ScrollView contentContainerStyle={{paddingHorizontal: 24}}>
+              <Text>This is a scrollable area</Text>
+              <Button mode="contained" onPress={handleAddEstimateItem}>Agregar</Button>
+            </ScrollView>
+          </Dialog.ScrollArea>
+        </Dialog>
+      </Portal>
+      <View>
+        <Button mode="contained" onPress={toggleDialog}>Nuevo</Button>
+      </View>
       <View>
         {productPickers}
       </View>
-      <Text>NewEstimateScreen, clientId: {client.id}</Text>
-    </View>);
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-  chipView: {
-    flexDirection: "row",
-  },
+  itemView: {
+    marginHorizontal: 0
+  }
 });
 
 export default NewEstimateScreen;

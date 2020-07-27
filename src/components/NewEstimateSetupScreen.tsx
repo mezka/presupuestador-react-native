@@ -65,13 +65,13 @@ const NewEstimateSetupScreen = (props) => {
             </View>
 
             <View style={styles.buttonView}>
-              <Button mode="contained" onPress={handleEditPress}>Editar</Button>
-              <Button mode="contained" onPress={handleSavePress}>Guardar</Button>
+              <Button style={styles.button} mode="contained" onPress={handleEditPress}>Editar</Button>
+              <Button style={styles.button} mode="contained" onPress={handleSavePress}>Guardar</Button>
             </View>
 
             <View style={styles.buttonView}>
-              <Button mode="contained" onPress={handleNewPress}>Nuevo Cliente</Button>
-              <Button mode="contained" onPress={handleChoicePress}>Elegir</Button>
+              <Button style={styles.button} mode="contained" onPress={handleNewPress}>Nuevo Cliente</Button>
+              <Button style={styles.button} mode="contained" onPress={handleChoicePress}>Elegir</Button>
             </View>
           </View>;
 };
@@ -91,7 +91,11 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    marginVertical: 5
+  },
+  button: {
+    width: 155,
   }
 });
 

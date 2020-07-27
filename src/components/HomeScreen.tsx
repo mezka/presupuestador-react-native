@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
 
 const HomeScreen = props => {
   return  <View style={ styles.parentView }>
             <View style={styles.buttonView}>
-              <Button style={ styles.buttonStyle } onPress={() => props.navigation.navigate('NewEstimateSetup')} title='Nuevo' />
-              <Button style={ styles.buttonStyle } onPress={() => props.navigation.navigate('ViewEditEstimate')} title='Ver / Editar' />
+              <Button mode="contained" onPress={() => props.navigation.navigate('NewEstimateSetup')}>Nuevo</Button>
+              <Button mode="contained" onPress={() => props.navigation.navigate('ViewEditEstimate')}>Ver/Editar</Button>
             </View>
           </View>
 };
@@ -13,14 +14,12 @@ const HomeScreen = props => {
 const styles = StyleSheet.create({
   parentView: {
     alignItems: 'center',
-    backgroundColor: 'red',
-    marginTop: 120,
-    height: 200
+    justifyContent: 'center',
+    flex: 1
   },
   buttonView: {
     justifyContent: 'space-around',
-    width: 200,
-    flex: 1
+    height: 200
   }
 })
 

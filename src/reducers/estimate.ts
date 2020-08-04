@@ -16,10 +16,8 @@ const estimate = (state = [], action) => {
         [itemId++]: { productId: action.productId, quantity: action.quantity}
       };
     case REMOVE_ESTIMATE_ITEM:
-      return {
-        ...state,
-        [action.itemId]: undefined
-      };
+      const {[action.itemId]: value, ...stateWithoutId} = state;
+      return stateWithoutId;
     case CHANGE_ESTIMATE_ITEM_PRODUCT:
       return {
         ...state,

@@ -20,7 +20,7 @@ const EstimateItemPicker = ({ estimateItem, qtyChangeHandler, productChangeHandl
       <View style={styles.testView}>
         <IconButton style={styles.deleteIcon} onPress={removeEstimateItem} icon="trash-can"/>
         <Text style={styles.priceText}>
-          ${estimateItem.quantity * products.find(product => product.id == estimateItem.productId).price}
+          ${estimateItem.quantity * estimateItem.price}
         </Text>
       </View>
     </View>

@@ -1,5 +1,5 @@
 import { ADD_ESTIMATE_ITEM, addEstimateItemWithPrice } from '../actions/estimateItems';
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
 
 function* resolveProductPriceAndAddEstimateItem(action) {
 

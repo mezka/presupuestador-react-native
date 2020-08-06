@@ -1,5 +1,5 @@
 import {
-  ADD_ESTIMATE_ITEM,
+  ADD_ESTIMATE_ITEM_WITH_PRICE,
   REMOVE_ESTIMATE_ITEM,
   CHANGE_ESTIMATE_ITEM_PRODUCT,
   GET_ESTIMATE_ITEMS,
@@ -10,7 +10,7 @@ let itemId = 0;
 
 const estimate = (state = [], action) => {
   switch (action.type) {
-    case ADD_ESTIMATE_ITEM:
+    case ADD_ESTIMATE_ITEM_WITH_PRICE:
       return {
         ...state,
         [itemId++]: { productId: action.productId, quantity: action.quantity, price: action.price}

@@ -23,7 +23,7 @@ const ProductAddView = ({products, addEstimateItemHandler}) => {
   const handleAddEstimateItem = () => {
     for(const id in checkboxes){
       if(checkboxes[id]){
-        addEstimateItemHandler(id);
+        addEstimateItemHandler(Number(id));
       }
     }
   };

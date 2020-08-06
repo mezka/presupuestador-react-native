@@ -13,7 +13,7 @@ const estimate = (state = [], action) => {
     case ADD_ESTIMATE_ITEM:
       return {
         ...state,
-        [itemId++]: { productId: action.productId, quantity: action.quantity}
+        [itemId++]: { productId: action.productId, quantity: action.quantity, price: action.price}
       };
     case REMOVE_ESTIMATE_ITEM:
       const {[action.itemId]: value, ...stateWithoutId} = state;
@@ -21,7 +21,7 @@ const estimate = (state = [], action) => {
     case CHANGE_ESTIMATE_ITEM_PRODUCT:
       return {
         ...state,
-        [action.itemId]: { ...state[action.itemId], productId: action.productId}
+        [action.itemId]: { ...state[action.itemId], productId: action.productId, price: action.price}
       };
     case CHANGE_ESTIMATE_ITEM_QTY:
       return {

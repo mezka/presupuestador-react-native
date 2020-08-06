@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setProductsSearch, setProductsFilter } from '../actions/products';
 import { View, StyleSheet } from 'react-native';
 import { Searchbar, Text, Checkbox, Button } from 'react-native-paper';
-import log from 'loglevel';
 
 const ProductAddView = ({products, addEstimateItemHandler}) => {
-
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxes, setCheckboxes] = useState({});
-  const onChangeSearch = query => setSearchQuery(query);
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    
     const checkboxStateSetToFalse = products.reduce((obj, product) => {
       obj[product.id] = false;
       return obj;
-    }, {})
+    }, {});
+    
     setCheckboxes(checkboxStateSetToFalse);
+
   }, []);
 
   const handleAddEstimateItem = () => {
@@ -32,7 +35,6 @@ const ProductAddView = ({products, addEstimateItemHandler}) => {
   };
 
   const productList = products.map(product => {
-
     return(
       <View key={product.id} style={styles.productCheckbox}>
         <Checkbox status={checkboxes[product.id]? 'checked' : 'unchecked'} onPress={createCheckboxHandler(product)}/>
@@ -40,6 +42,16 @@ const ProductAddView = ({products, addEstimateItemHandler}) => {
       </View>
     );
   });
+
+  const onChangeSearch = (queryString) => {
+    if(queryString.length < searchQuery.length){
+      setSearchQuery(queryString);
+      dispatch(setProductsFilter(()=>true));
+      return;
+    }
+    setSearchQuery(queryString);
+    dispatch(setProductsSearch(queryString));
+  };
 
   return (
     <View>

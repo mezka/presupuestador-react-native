@@ -1,19 +1,28 @@
 import {
-  ADD_ESTIMATE_ITEM,
-  REMOVE_ESTIMATE_ITEM,
-  CHANGE_ESTIMATE_ITEM_PRODUCT,
-  GET_ESTIMATE_ITEMS,
-  CHANGE_ESTIMATE_ITEM_QTY
-} from '../actions/estimateItems';
-import { GET_PRODUCTS_SUCCEDED, GET_PRODUCTS_FAILED, GET_PRODUCTS_PENDING } from '../actions/products';
+  GET_PRODUCTS_SUCCEDED,
+  GET_PRODUCTS_FAILED,
+  GET_PRODUCTS_PENDING,
+  SET_PRODUCTS_FILTER,
+  SET_PRODUCTS_SEARCH
+} from '../actions/products';
+import FlexSearch from 'flexsearch/dist/module/flexsearch';
 
-const products = (state = { pending: false, products: []}, action) => {
+const productIndex = new FlexSearch({
+  doc: {
+    id: "id",
+    field: ["model", "modelstub", "category", "price"]
+  },
+  tokenize: 'forward'
+});
+
+const products = (state = { pending: false, products: productIndex.where(() => true) }, action) => {
   switch (action.type) {
     case GET_PRODUCTS_SUCCEDED:
+      productIndex.add(action.products);
       return {
         ...state,
         pending: false,
-        products: action.products
+        products: productIndex.where(() => true)
       };
     case GET_PRODUCTS_FAILED:
       return {
@@ -26,6 +35,16 @@ const products = (state = { pending: false, products: []}, action) => {
         ...state,
         pending: true,
         error: undefined
+      };
+    case SET_PRODUCTS_FILTER:
+      return {
+        ...state,
+        products: productIndex.where(action.filter)
+      };
+    case SET_PRODUCTS_SEARCH:
+      return {
+        ...state,
+        products: productIndex.search(action.query)
       };
     default:
       return state;

@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProducts } from '../actions/products';
 import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem, removeEstimateItem } from '../actions/estimateItems';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { Text, Dialog, Portal, FAB } from 'react-native-paper';
+import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
 import ProductAddView from './ProductAddView';
 import log from 'loglevel';
 
 const NewEstimateScreen = (props) => {
   const estimateItems = useSelector(state => state.estimate);
-  const productData = useSelector(state => state.products);
-  const dispatch = useDispatch();
+  const products = useSelector(state => state.products.products);
   const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
 
   const toggleDialog = () => {
     setVisible(!visible);
@@ -23,8 +23,8 @@ const NewEstimateScreen = (props) => {
   }, [])
 
   useEffect(() => {
-    log.info(productData);
-  }, [productData])
+    log.info(products);
+  }, [products])
 
   useEffect(() => {
     log.info(estimateItems);
@@ -60,7 +60,7 @@ const NewEstimateScreen = (props) => {
           qtyChangeHandler={createQtyChangeHandler(estimateItemId)}
           productChangeHandler={createProductChangeHandler(estimateItemId)}
           removeEstimateItem={createRemoveEstimateItem(estimateItemId)}
-          products={productData.products} />
+          products={products} />
       </View>
     );
   });
@@ -72,12 +72,18 @@ const NewEstimateScreen = (props) => {
         <Dialog visible={visible} onDismiss={toggleDialog}>
           <Dialog.ScrollArea>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-              <ProductAddView products={productData.products} addEstimateItemHandler={handleAddEstimateItem} />
+              <ProductAddView products={products} addEstimateItemHandler={handleAddEstimateItem} />
             </ScrollView>
           </Dialog.ScrollArea>
         </Dialog>
         <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       </Portal>
+      <Appbar style={styles.appbar}>
+        <Appbar.Action icon="content-save-outline" onPress={() => console.log('Pressed save')}/>
+        <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
+        <Appbar.Content style={{flexDirection: 'column-reverse', flex: 3}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
+        <Appbar.Content style={{flexDirection: 'column-reverse'}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title="$596" subtitle="$12"/>
+      </Appbar>
     </ScrollView>
   );
 };
@@ -93,10 +99,19 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    margin: 16,
+    margin: 15,
+    right: 0,
+    bottom: 55,
+  },
+  appbar: {
+    position: 'absolute',
+    left: 0,
     right: 0,
     bottom: 0,
   },
+  priceText: {
+    color: 'white'
+  }
 });
 
 export default NewEstimateScreen;

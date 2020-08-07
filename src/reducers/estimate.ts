@@ -8,7 +8,7 @@ import {
 
 let itemId = 0;
 
-const estimate = (state = [], action) => {
+const estimate = (state = {}, action) => {
   switch (action.type) {
     case ADD_ESTIMATE_ITEM_WITH_PRICE:
       return {

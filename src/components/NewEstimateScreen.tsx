@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProducts } from '../actions/products';
-import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem, removeEstimateItem } from '../actions/estimateItems';
+import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
+import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem } from '../actions/estimateItems';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
@@ -11,6 +11,7 @@ import log from 'loglevel';
 const NewEstimateScreen = (props) => {
   const estimateItems = useSelector(state => state.estimate);
   const products = useSelector(state => state.products.products);
+  const filteredProducts = useSelector(state => state.products.filteredProducts);
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
@@ -22,6 +23,7 @@ const NewEstimateScreen = (props) => {
 
   useEffect(() => {
     dispatch(getProducts());
+
   }, [])
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const NewEstimateScreen = (props) => {
   }, [estimateItems]);
 
   const createProductChangeHandler = (estimateItemId) => {
+
     return (optionValue) => {
       dispatch(changeEstimateItemProduct(estimateItemId, Number(optionValue)));
     };
@@ -44,8 +47,22 @@ const NewEstimateScreen = (props) => {
     }
   };
 
-  const handleAddEstimateItem = (productId: number) => {
-    dispatch(addEstimateItem(productId, 1));
+  const addEstimateItem = (productId: number) => {
+    dispatch(createAddEstimateItemAction(productId, 1));
+  };
+
+  const resetProductsFilter = () => {
+    dispatch(setProductsFilter((product)=> true));
+  };
+
+  const setCategoryAndQuery = (category: string, query: string) => {
+
+    let filterFn = (product) => true;
+
+    if(category !== 'ALL')
+      filterFn = (product) => product.category === category;
+    
+    dispatch(setProductsSearchAndFilter(query, filterFn));
   };
 
   const createRemoveEstimateItem = (estimateItemId: number) => {
@@ -74,7 +91,7 @@ const NewEstimateScreen = (props) => {
         <Dialog visible={visible} onDismiss={toggleDialog}>
           <Dialog.ScrollArea>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-              <ProductAddView products={products} addEstimateItemHandler={handleAddEstimateItem} />
+              <ProductAddView products={products} filteredProducts={filteredProducts} addEstimateItem={addEstimateItem} resetProductsFilter={resetProductsFilter} setCategoryAndQuery={setCategoryAndQuery} />
             </ScrollView>
           </Dialog.ScrollArea>
         </Dialog>
@@ -84,7 +101,7 @@ const NewEstimateScreen = (props) => {
         <Appbar.Action icon="content-save-outline" onPress={() => console.log('Pressed save')}/>
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
         <Appbar.Content style={{flexDirection: 'column-reverse', flex: 3}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
-        <Appbar.Content style={{flexDirection: 'column-reverse'}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`${totalWithTaxes}`} subtitle={`${totalWithoutTaxes}`}/>
+        <Appbar.Content style={{flexDirection: 'column-reverse'}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>
       </Appbar>
     </ScrollView>
   );

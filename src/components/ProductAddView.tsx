@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setProductsSearch, setProductsFilter } from '../actions/products';
 import { View, StyleSheet } from 'react-native';
 import { Searchbar, Text, Checkbox, Button } from 'react-native-paper';
 
-const ProductAddView = ({products, addEstimateItemHandler}) => {
+const ProductAddView = ({products, filteredProducts, addEstimateItem, resetProductsFilter, setCategoryAndQuery}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxes, setCheckboxes] = useState({});
-  const dispatch = useDispatch();
 
   useEffect(() => {
     
@@ -20,10 +17,10 @@ const ProductAddView = ({products, addEstimateItemHandler}) => {
 
   }, []);
 
-  const handleAddEstimateItem = () => {
+  const addEstimateItems = () => {
     for(const id in checkboxes){
       if(checkboxes[id]){
-        addEstimateItemHandler(Number(id));
+        addEstimateItem(Number(id));
       }
     }
   };
@@ -34,7 +31,7 @@ const ProductAddView = ({products, addEstimateItemHandler}) => {
     }
   };
 
-  const productList = products.map(product => {
+  const productList = filteredProducts.map(product => {
     return(
       <View key={product.id} style={styles.productCheckbox}>
         <Checkbox status={checkboxes[product.id]? 'checked' : 'unchecked'} onPress={createCheckboxHandler(product)}/>
@@ -46,18 +43,18 @@ const ProductAddView = ({products, addEstimateItemHandler}) => {
   const onChangeSearch = (queryString) => {
     if(queryString.length < searchQuery.length){
       setSearchQuery(queryString);
-      dispatch(setProductsFilter(()=>true));
+      resetProductsFilter();
       return;
     }
     setSearchQuery(queryString);
-    dispatch(setProductsSearch(queryString));
+    setCategoryAndQuery('ALL', queryString);
   };
 
   return (
     <View>
       <Searchbar placeholder="Buscar" onChangeText={onChangeSearch} value={searchQuery}/>
       {productList}
-      <Button mode="contained" onPress={handleAddEstimateItem}>Agregar</Button>
+      <Button mode="contained" onPress={addEstimateItems}>Agregar</Button>
     </View>
   );
 };

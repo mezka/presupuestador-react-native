@@ -4,6 +4,7 @@ export const GET_PRODUCTS_REQUESTED = 'GET_PRODUCTS_REQUESTED';
 export const GET_PRODUCTS_PENDING = 'GET_PRODUCTS_PENDING';
 export const SET_PRODUCTS_FILTER = 'SET_PRODUCTS_FILTER';
 export const SET_PRODUCTS_SEARCH = 'SET_PRODUCTS_SEARCH';
+export const SET_PRODUCTS_SEARCH_AND_FILTER = 'SET_PRODUCTS_SEARCH_AND_FILTER';
 
 export const getProductsSucceded = (products) => ({
   type: GET_PRODUCTS_SUCCEDED,
@@ -33,4 +34,9 @@ export const setProductsFilter = (filter) => ({
 export const setProductsSearch = (query) => ({
   type: SET_PRODUCTS_SEARCH,
   query
+});
+export const setProductsSearchAndFilter = (query, filter) => ({
+  type: SET_PRODUCTS_SEARCH,
+  query,
+  filter
 });

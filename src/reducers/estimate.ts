@@ -1,7 +1,7 @@
 import {
   ADD_ESTIMATE_ITEM_WITH_PRICE,
   REMOVE_ESTIMATE_ITEM,
-  CHANGE_ESTIMATE_ITEM_PRODUCT,
+  CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE,
   GET_ESTIMATE_ITEMS,
   CHANGE_ESTIMATE_ITEM_QTY
 } from '../actions/estimateItems';
@@ -18,7 +18,7 @@ const estimate = (state = {}, action) => {
     case REMOVE_ESTIMATE_ITEM:
       const {[action.itemId]: value, ...stateWithoutId} = state;
       return stateWithoutId;
-    case CHANGE_ESTIMATE_ITEM_PRODUCT:
+    case CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE:
       return {
         ...state,
         [action.itemId]: { ...state[action.itemId], productId: action.productId, price: action.price}

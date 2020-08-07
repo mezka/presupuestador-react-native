@@ -11,6 +11,8 @@ import log from 'loglevel';
 const NewEstimateScreen = (props) => {
   const estimateItems = useSelector(state => state.estimate);
   const products = useSelector(state => state.products.products);
+  const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
+  const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
 
@@ -82,7 +84,7 @@ const NewEstimateScreen = (props) => {
         <Appbar.Action icon="content-save-outline" onPress={() => console.log('Pressed save')}/>
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
         <Appbar.Content style={{flexDirection: 'column-reverse', flex: 3}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
-        <Appbar.Content style={{flexDirection: 'column-reverse'}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title="$596" subtitle="$12"/>
+        <Appbar.Content style={{flexDirection: 'column-reverse'}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`${totalWithTaxes}`} subtitle={`${totalWithoutTaxes}`}/>
       </Appbar>
     </ScrollView>
   );

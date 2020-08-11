@@ -3,10 +3,19 @@ import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
 const HomeScreen = props => {
+
+  const navigateToNewEstimateSetup = () => {
+    props.navigation.navigate('NewEstimateSetup');
+  };
+
+  const navigateToViewEditEstimate = () => {
+    props.navigation.navigate('ViewEditEstimate');
+  };
+
   return  <View style={ styles.parentView }>
             <View style={styles.buttonView}>
-              <Button mode="contained" onPress={() => props.navigation.navigate('NewEstimateSetup')}>Nuevo</Button>
-              <Button mode="contained" onPress={() => props.navigation.navigate('ViewEditEstimate')}>Ver/Editar</Button>
+              <Button mode="contained" onPress={navigateToNewEstimateSetup}>Nuevo</Button>
+              <Button mode="contained" onPress={navigateToViewEditEstimate}>Ver/Editar</Button>
             </View>
           </View>
 };

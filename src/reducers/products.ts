@@ -3,7 +3,8 @@ import {
   GET_PRODUCTS_FAILED,
   GET_PRODUCTS_PENDING,
   SET_PRODUCTS_FILTER,
-  SET_PRODUCTS_SEARCH
+  SET_PRODUCTS_SEARCH,
+  SET_PRODUCTS_SEARCH_AND_FILTER
 } from '../actions/products';
 import FlexSearch from 'flexsearch/dist/module/flexsearch';
 
@@ -22,7 +23,9 @@ const products = (state = { pending: false, products: productIndex.where(() => t
       return {
         ...state,
         pending: false,
-        products: productIndex.where(() => true)
+        products: productIndex.where(() => true),
+        filteredProducts: productIndex.where(() => true),
+        queriedProducts: productIndex.where(() => true)
       };
     case GET_PRODUCTS_FAILED:
       return {
@@ -39,12 +42,19 @@ const products = (state = { pending: false, products: productIndex.where(() => t
     case SET_PRODUCTS_FILTER:
       return {
         ...state,
-        products: productIndex.where(action.filter)
+        filteredProducts: productIndex.where(action.filter),
       };
     case SET_PRODUCTS_SEARCH:
       return {
         ...state,
-        products: productIndex.search(action.query)
+        filteredProducts: productIndex.search(action.query)
+      };
+    case SET_PRODUCTS_SEARCH_AND_FILTER:
+      return {
+        ...state,
+        filteredProducts: productIndex.search(action.query, {
+          where: action.filter
+        })
       };
     default:
       return state;

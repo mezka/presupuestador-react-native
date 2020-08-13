@@ -1,43 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { getClients } from '../api/clients';
+import { useSelector, useDispatch } from 'react-redux';
+import { getClients } from '../actions/clients';
 import { View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { Surface, TextInput, Headline, Button, Divider } from 'react-native-paper';
 
 const NewEstimateSetupScreen = (props) => {
-  const {data: clientData} = useQuery('clients', getClients);
-  const [clients, setClients] = useState([]);
+  const dispatch = useDispatch();
+  const clients = useSelector(state => state.clients.clients);
   const [selectedClient, setSelectedClient] = useState({id: '', name: '', address: '', email: '', phonenumber: ''});
   const [textInputDisabled, setTextInputDisabled] = useState(true);
 
-
   useEffect(() => {
-    if(clientData){
-      setClients(clientData);
-      setSelectedClient(clientData[0]);
-    }
-  }, [clientData]);
+    dispatch(getClients());
+  }, [])
 
   const handlePickerChange = (selectedValue) => {
     setSelectedClient(clients.find(client => client.id === selectedValue));
-  }
+  };
 
   const handleEditPress = () => {
     setTextInputDisabled(false);
-  }
+  };
 
   const handleSavePress = () => {
     setTextInputDisabled(true);
-  }
+  };
 
   const handleNewPress = () => {
     props.navigation.navigate('NewClient');
-  }
+  };
 
   const handleChoicePress = () => {
     props.navigation.navigate('NewEstimate', { client: selectedClient });
-  }
+  };
+
+  const handleImportPress = () => {
+    props.navigation.navigate('ContactImporter');
+  };
 
   const clientItems = clients.map((client:any) => <Picker.Item key={ client.id } label={ client.name } value={ client.id }/>);
 
@@ -71,6 +71,7 @@ const NewEstimateSetupScreen = (props) => {
 
             <View style={styles.buttonView}>
               <Button style={styles.button} mode="contained" onPress={handleNewPress}>Nuevo Cliente</Button>
+              <Button style={styles.button} mode="contained" onPress={handleImportPress}>Importar</Button>
               <Button style={styles.button} mode="contained" onPress={handleChoicePress}>Elegir</Button>
             </View>
           </View>;

@@ -13,7 +13,7 @@ export const getProductsSucceded = (products) => ({
 });
 
 export const  getProductsFailed = (error) => ({
-  type: GET_PRODUCTS_SUCCEDED,
+  type: GET_PRODUCTS_FAILED,
   pending: false,
   error
 });

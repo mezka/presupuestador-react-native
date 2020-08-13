@@ -6,6 +6,7 @@ import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
 import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
 import NewEstimateScreen from './components/NewEstimateScreen';
 import NewClientScreen from './components/NewClientScreen';
+import ContactImporter from './components/ContactImporter';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,10 @@ export default function Routes() {
         <Stack.Screen
           name="NewClient"
           component={NewClientScreen}
+        />
+        <Stack.Screen
+          name="ContactImporter"
+          component={ContactImporter}
         />
       </Stack.Navigator>
     </NavigationContainer>

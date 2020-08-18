@@ -1,33 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { Text, Card, Paragraph, Title, Button } from 'react-native-paper';
-import * as Contacts from 'expo-contacts';
+import { Card, Paragraph, Title, Button } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from '../actions/contacts';
 
 const ContactImporter = () => {
 
-  const [contacts, setContacts] = useState([]);
-
-  const getContacts = async () => {
-    const { status } = await Contacts.requestPermissionsAsync();
-
-    if(status === 'granted') {
-      var { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.Fields.Emails, Contacts.Fields.PhoneNumbers, Contacts.Fields.Addresses],
-      });
-    }
-
-    console.log(data);
-
-    if(data.length){
-      setContacts(data);
-    }
-  };
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.contacts);
 
   useEffect(() => {
-    getContacts();
+    dispatch(getContacts());
   }, []);
 
-
+  
 const contactList = contacts.filter((contact) => contact.emails && contact.phoneNumbers && contact.addresses).map(contact => (
   <Card style={styles.contactCard} key={contact.id}>
     <Card.Title title={contact.name}/>

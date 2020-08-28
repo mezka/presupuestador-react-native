@@ -23,7 +23,6 @@ const NewEstimateScreen = (props) => {
 
   useEffect(() => {
     dispatch(getProducts());
-
   }, [])
 
   useEffect(() => {

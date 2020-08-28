@@ -9,6 +9,8 @@ import addEstimateItemSaga from './sagas/addEstimateItemSaga';
 import changeEstimateItemSaga from './sagas/changeEstimateItemSaga';
 import getClientsSaga from './sagas/getClientsSaga';
 import getContactsSaga from './sagas/getContactsSaga';
+import addClientSaga from './sagas/addClientSaga';
+import addClientAndNavigateToPresupuestadorSaga from './sagas/addClientAndNavigateToPresupuestadorSaga';
 import rootReducer from './reducers';
 import Routes from './Routes';
 
@@ -22,6 +24,8 @@ sagaMiddleware.run(addEstimateItemSaga);
 sagaMiddleware.run(changeEstimateItemSaga);
 sagaMiddleware.run(getClientsSaga);
 sagaMiddleware.run(getContactsSaga);
+sagaMiddleware.run(addClientSaga);
+sagaMiddleware.run(addClientAndNavigateToPresupuestadorSaga);
 
 export default function App() {
   return (

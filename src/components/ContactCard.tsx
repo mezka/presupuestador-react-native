@@ -17,9 +17,9 @@ const ContactCard = ({contact}) => {
   const [checkboxes, setCheckboxes] = useState(cloneObjectWithEveryPropertySetTo(contact, false));
   const [toggleAllCheckbox, setToggleAllCheckbox] = useState(false);
 
-  useEffect(() => {
-    console.log(contact)
-  }, [contact]);
+  // useEffect(() => {
+  //   console.log(contact)
+  // }, [contact]);
 
   const createCheckboxHandler = (key) => {
     return () => {

@@ -8,12 +8,16 @@ import { Surface, TextInput, Headline, Button, Divider } from 'react-native-pape
 const NewEstimateSetupScreen = (props) => {
   const dispatch = useDispatch();
   const clients = useSelector(state => state.clients.clients);
-  const [selectedClient, setSelectedClient] = useState({id: '', name: '', address: '', email: '', phonenumber: ''});
+  const [selectedClient, setSelectedClient] = useState({id: '', name: '', address0: '', email0: '', phonenumber0: ''});
   const [textInputDisabled, setTextInputDisabled] = useState(true);
 
   useEffect(() => {
     dispatch(getClients());
   }, [])
+
+  useEffect(() => {
+    console.log(clients);
+  }, [clients])
 
   const handlePickerChange = (selectedValue) => {
     setSelectedClient(clients.find(client => client.id === selectedValue));
@@ -59,9 +63,9 @@ const NewEstimateSetupScreen = (props) => {
             </Surface>
             <View>
               <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Nombre" value={selectedClient.name}/>
-              <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Dirección" value={selectedClient.address}/>
-              <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Telefono" value={selectedClient.phonenumber}/>
-              <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Email" value={selectedClient.email}/>
+              <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Dirección" value={selectedClient.address0}/>
+              <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Telefono" value={selectedClient.phonenumber0}/>
+              <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Email" value={selectedClient.email0}/>
             </View>
 
             <View style={styles.buttonView}>

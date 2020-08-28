@@ -24,8 +24,7 @@ const products = (state = { pending: false, products: productIndex.where(() => t
         ...state,
         pending: false,
         products: productIndex.where(() => true),
-        filteredProducts: productIndex.where(() => true),
-        queriedProducts: productIndex.where(() => true)
+        filteredProducts: productIndex.where(() => true)
       };
     case GET_PRODUCTS_FAILED:
       return {

@@ -1,7 +1,7 @@
 import { ADD_CLIENT_AND_NAVIGATE_TO_PRESUPUESTADOR_REQUESTED, getClientsFailed, addClientPending, addClientSucceded } from '../actions/clients';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { addClient as postClient} from '../api/clients';
-import { navigate } from '../helpers/navigate';
+import * as RootNavigation from '../components/RootNavigation';
 
 function* addClientAndNavigateToPresupuestador(action){
 
@@ -9,7 +9,7 @@ function* addClientAndNavigateToPresupuestador(action){
   try {
     var client = yield call(postClient, action.client);
     yield put(addClientSucceded(client));
-    yield call(navigate, 'NewEstimate', { client: action.client });
+    yield call(RootNavigation.navigate, 'NewEstimate', { client: action.client });
   } catch (error){
     console.log('error');
     console.log(error);

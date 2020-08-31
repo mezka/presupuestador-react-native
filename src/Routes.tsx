@@ -7,13 +7,14 @@ import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
 import NewEstimateScreen from './components/NewEstimateScreen';
 import NewClientScreen from './components/NewClientScreen';
 import ContactImporter from './components/ContactImporter';
+import { navigationRef } from './components/RootNavigation';
 
 const Stack = createStackNavigator();
 
 export default function Routes() {
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{ title: "Mesquita Hnos - Presupuestador", gestureEnabled: false }}

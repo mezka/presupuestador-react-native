@@ -46,7 +46,6 @@ const NewEstimateSetupScreen = (props) => {
   const clientItems = clients.map((client:any) => <Picker.Item key={ client.id } label={ client.name } value={ client.id }/>);
 
   return  <View style={ styles.parentView }>
-
             <Surface style={ styles.surface }>
 
               <Headline>Seleccione el cliente</Headline>
@@ -83,16 +82,16 @@ const NewEstimateSetupScreen = (props) => {
 
 const styles = StyleSheet.create({
   parentView: {
-    marginTop: 100,
     marginHorizontal: 30,
+    marginTop: 20
   },
   surface: {
     padding: 10,
     elevation: 4,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   textInputView: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   buttonView: {
     flexDirection: "row",

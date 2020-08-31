@@ -99,8 +99,8 @@ const NewEstimateScreen = (props) => {
       <Appbar style={styles.appbar}>
         <Appbar.Action icon="content-save-outline" onPress={() => console.log('Pressed save')}/>
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
-        <Appbar.Content style={{flexDirection: 'column-reverse', flex: 3}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
-        <Appbar.Content style={{flexDirection: 'column-reverse'}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>
+        <Appbar.Content style={{flexDirection: 'column-reverse', flex: 4}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
+        <Appbar.Content style={{flexDirection: 'column-reverse', paddingHorizontal: 0, flex: 3, marginLeft: 0, marginRight: 5}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>
       </Appbar>
     </ScrollView>
   );
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 0
   },
   priceText: {
     color: 'white'

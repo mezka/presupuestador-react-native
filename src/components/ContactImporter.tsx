@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import ContactCard from './ContactCard';
 import { getContacts } from '../actions/contacts';
+import { addClient } from '../actions/clients';
 
 const ContactImporter = () => {
 
@@ -13,7 +14,11 @@ const ContactImporter = () => {
     dispatch(getContacts());
   }, []);
 
-  const contactList = contacts.filter((contact) => contact.email0 && contact.phoneNumber0 && contact.address0).map(contact => (<ContactCard key={contact.id} contact={contact}/>));
+  const importContact = (contact) => {
+    dispatch(addClient(contact));
+  }
+
+  const contactList = contacts.filter((contact) => contact.email0 && contact.phonenumber0 && contact.address0).map(contact => (<ContactCard key={contact.id} importContact={importContact} contact={contact}/>));
 
   return(
     <ScrollView>

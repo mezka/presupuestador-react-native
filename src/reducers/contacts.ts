@@ -11,7 +11,7 @@ import FlexSearch from 'flexsearch/dist/module/flexsearch';
 const contactsIndex = new FlexSearch({
   doc: {
     id: "id",
-    field: ["adddress0", "address1", "address2", "email0", "email1", "email2", "name", "phoneNumber0", "phoneNumber1", "phoneNumber2"]
+    field: ["adddress0", "address1", "address2", "email0", "email1", "email2", "name", "phonenumber0", "phonenumber1", "phonenumber2"]
   },
   tokenize: 'forward'
 });

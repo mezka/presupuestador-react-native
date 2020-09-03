@@ -26,7 +26,7 @@ const contactFormatter = (contactArray) => {
 
     const phoneNumbers = contact.phoneNumbers.reduce((obj, currentPhoneNumberObj, index) => {
       
-      obj[`phoneNumber${index}`] = currentPhoneNumberObj.number;
+      obj[`phonenumber${index}`] = currentPhoneNumberObj.number;
       
       return obj;
     }, {});  

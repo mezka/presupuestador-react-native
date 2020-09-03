@@ -15,10 +15,6 @@ const NewEstimateSetupScreen = (props) => {
     dispatch(getClients());
   }, [])
 
-  useEffect(() => {
-    console.log(clients);
-  }, [clients])
-
   const handlePickerChange = (selectedValue) => {
     setSelectedClient(clients.find(client => client.id === selectedValue));
   };

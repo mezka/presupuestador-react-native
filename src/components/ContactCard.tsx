@@ -15,6 +15,11 @@ const cloneObjectWithEveryPropertySetTo = (src, value) => {
 const createFilteredObjUsingSrcAndMapper = (srcObj, mapperObj) => {
 
   const reducer = (obj, currentTuple) => {
+
+    if(currentTuple[0] === 'name'){
+      obj[currentTuple[0]] = srcObj[currentTuple[0]];
+    }
+
     if(currentTuple[1]){
       obj[currentTuple[0]] = srcObj[currentTuple[0]];
     }
@@ -48,13 +53,9 @@ const ContactCard = ({contact, importContact}) => {
 
   const createPressHandler = (contact) => {
     return () => {
-
-      console.log('importContact');
-      console.log(importContact);
-
       importContact(createFilteredObjUsingSrcAndMapper(contact, checkboxes));
     }
-  }
+  };
 
   return (
     <Card style={styles.contactCard}>

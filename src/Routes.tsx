@@ -1,6 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AuthenticationScreen from './components/AuthenticationScreen';
+import LoginScreen from './components/LoginScreen';
+import SignupScreen from './components/SignupScreen';
 import HomeScreen from './components/HomeScreen';
 import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
 import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
@@ -16,9 +19,21 @@ export default function Routes() {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Authentication"
         screenOptions={{ title: "Mesquita Hnos - Presupuestador", gestureEnabled: false }}
       >
+        <Stack.Screen
+          name="Authentication"
+          component={AuthenticationScreen}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          name="Signup"
+          component={SignupScreen}
+        />
         <Stack.Screen
           name="Home"
           component={HomeScreen}

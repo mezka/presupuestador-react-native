@@ -11,6 +11,7 @@ import getClientsSaga from './sagas/getClientsSaga';
 import getContactsSaga from './sagas/getContactsSaga';
 import addClientSaga from './sagas/addClientSaga';
 import addClientAndNavigateToPresupuestadorSaga from './sagas/addClientAndNavigateToPresupuestadorSaga';
+import signupUserSaga from './sagas/signupUserSaga';
 import rootReducer from './reducers';
 import Routes from './Routes';
 
@@ -26,6 +27,7 @@ sagaMiddleware.run(getClientsSaga);
 sagaMiddleware.run(getContactsSaga);
 sagaMiddleware.run(addClientSaga);
 sagaMiddleware.run(addClientAndNavigateToPresupuestadorSaga);
+sagaMiddleware.run(signupUserSaga);
 
 export default function App() {
   return (

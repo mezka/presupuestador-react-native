@@ -7,7 +7,7 @@ import {
     LOGIN_USER_SUCCEDED
   } from '../actions/auth';
   
-  const users = (state = {pending: false, user: {}}, action) => {
+  const auth = (state = {pending: false, user: {}}, action) => {
     switch (action.type) {
       case ADD_USER_SUCCEDED:
         return {
@@ -50,4 +50,4 @@ import {
     }
   }
   
-  export default users;
+  export default auth;

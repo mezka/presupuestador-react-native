@@ -44,17 +44,6 @@ const AuthenticationScreen = props => {
   );
 };
 
-/*const styles = StyleSheet.create({
-  parentView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
-  },
-  buttonView: {
-    justifyContent: 'space-around',
-    height: 200
-  }
-});*/
 const styles = StyleSheet.create({
   parentView: {
     alignItems: 'center',

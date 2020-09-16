@@ -6,9 +6,6 @@ import { Button, TextInput } from 'react-native-paper';
 
 const SignupScreen = props => {
 
-  //const [emailText, setEmailText] = useState("");
-  //const [passwordText, setPasswordText] = useState("");
-
   const [user, setUser] = useState({email: '', password: ''});
   const dispatch = useDispatch();
 
@@ -20,11 +17,8 @@ const SignupScreen = props => {
   };
 
   const handleSignupPress = () => {
-    console.log("probando");
     dispatch(addUser(user));
   };
-
-  //const clients = useSelector(state => state.clients.clients);
 
   return (
     <View style={styles.parentView}>

@@ -2,6 +2,11 @@ export const ADD_USER_REQUESTED = 'ADD_USER_REQUESTED';
 export const ADD_USER_PENDING = 'ADD_USER_PENDING';
 export const ADD_USER_SUCCEDED = 'ADD_USER_SUCCEDED';
 export const ADD_USER_FAILED = 'ADD_USER_FAILED';
+
+export const LOGIN_USER_REQUESTED = 'LOGIN_USER_REQUESTED';
+export const LOGIN_USER_PENDING = 'LOGIN_USER_REQUESTED';
+export const LOGIN_USER_SUCCEDED = 'LOGIN_USER_REQUESTED';
+export const LOGIN_USER_FAILED = 'LOGIN_USER_REQUESTED';
   
 export const addUser = (user) => {
     return {
@@ -23,5 +28,28 @@ export const addUserSucceded = (user) => ({
   
 export const addUserFailed = (error) => ({
     type: ADD_USER_FAILED,
+    error
+});
+
+export const loginUser = (user) => {
+    return {
+        type: LOGIN_USER_REQUESTED,
+        user: user
+    };
+}
+  
+export const loginUserPending = () => ({
+    type: LOGIN_USER_PENDING,
+    pending: true
+});
+  
+export const loginUserSucceded = (user) => ({
+    type: LOGIN_USER_SUCCEDED,
+    pending: false,
+    user
+});
+  
+export const loginUserFailed = (error) => ({
+    type: LOGIN_USER_FAILED,
     error
 });

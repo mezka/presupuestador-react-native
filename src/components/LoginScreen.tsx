@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../actions/users';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 const LoginScreen = props => {
 
-  const [emailText, setEmailText] = useState("");
-  const [passwordText, setPasswordText] = useState("");
+  const [user, setUser] = useState({email: '', password: ''});
+  const dispatch = useDispatch();
 
   const emailTextChange = (emailText) => {
-    setEmailText(emailText);
+    setUser({...user, email: emailText});
   };
   const passwordTextChange = (passwordText) => {
-    setPasswordText(passwordText);
+    setUser({...user, password: passwordText});
+  };
+
+  const handleLoginPress = () => {
+    dispatch(loginUser(user));
   };
 
   return (
     <View style={styles.parentView}>
       <View style={styles.inputView}>
-        <TextInput label="e-mail" placeholder="email@example.com" value={emailText} onChange={emailTextChange} />
-        <TextInput label="password" value={passwordText} onChange={passwordTextChange} />
+        <TextInput label="E-mail" placeholder="email@example.com" value={user.email} onChangeText={emailTextChange} />
+        <TextInput label="Contraseña" value={user.password} onChangeText={passwordTextChange} />
       </View>
       <View style={styles.buttonView}>
-        <Button mode="contained">Ingresar</Button>
+        <Button mode="contained" onPress={handleLoginPress}>Ingresar</Button>
       </View>
     </View>
   );

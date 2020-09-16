@@ -1,27 +1,51 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../actions/users';
+import { View, StyleSheet, Text } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+import { black } from 'react-native-paper/lib/typescript/src/styles/colors';
 
 const AuthenticationScreen = props => {
 
-  const navigateToLogin = () => {
-    props.navigation.navigate('Login');
+  const [user, setUser] = useState({email: '', password: ''});
+  const dispatch = useDispatch();
+
+  const emailTextChange = (emailText) => {
+    setUser({...user, email: emailText});
+  };
+  const passwordTextChange = (passwordText) => {
+    setUser({...user, password: passwordText});
   };
 
+  const handleLoginPress = () => {
+    dispatch(loginUser(user));
+  };
+  
   const navigateToSignup = () => {
     props.navigation.navigate('Signup');
   };
 
-  //may show login/signup frame inside a Modal component instead of a new screen
-  return <View style={styles.parentView}>
-    <View style={styles.buttonView}>
-      <Button mode="contained" onPress={navigateToLogin}>Ingreso</Button>
-      <Button mode="contained" onPress={navigateToSignup}>Registro</Button>
+  return (
+    <View style={styles.parentView}>
+      <View style={styles.loginView}>
+        <View style={styles.inputView}>
+          <TextInput label="E-mail" placeholder="email@example.com" value={user.email} onChangeText={emailTextChange} />
+          <TextInput label="Contraseña" value={user.password} onChangeText={passwordTextChange} />
+        </View>
+        <View style={styles.buttonView}>
+          <Button mode="contained" onPress={handleLoginPress}>Ingresá</Button>
+        </View>
+      </View>
+      
+      <View style={styles.signupView}>
+        <Text style={styles.text}>...o si no tenés cuenta</Text>
+        <Button mode="contained" onPress={navigateToSignup}>Registrate</Button>
+      </View>
     </View>
-  </View>
+  );
 };
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
   parentView: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -30,6 +54,38 @@ const styles = StyleSheet.create({
   buttonView: {
     justifyContent: 'space-around',
     height: 200
+  }
+});*/
+const styles = StyleSheet.create({
+  parentView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
+  buttonView: {
+    justifyContent: 'space-around',
+    height: 120
+  },
+  inputView: {
+    justifyContent: 'center',
+    marginTop: 50,
+    width: 200,
+    height: 100
+  },
+  loginView: {
+    justifyContent: 'center',
+    marginTop: 50,
+    width: 200,
+    height: 100
+  },
+  signupView: {
+    justifyContent: 'center',
+    marginTop: 50,
+    width: 200,
+    height: 100
+  },
+  text: {
+    fontSize: 17
   }
 });
 

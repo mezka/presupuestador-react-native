@@ -2,7 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthenticationScreen from './components/AuthenticationScreen';
-import LoginScreen from './components/LoginScreen';
 import SignupScreen from './components/SignupScreen';
 import HomeScreen from './components/HomeScreen';
 import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
@@ -25,10 +24,6 @@ export default function Routes() {
         <Stack.Screen
           name="Authentication"
           component={AuthenticationScreen}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
         />
         <Stack.Screen
           name="Signup"

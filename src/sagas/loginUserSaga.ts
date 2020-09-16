@@ -1,6 +1,6 @@
-import { LOGIN_USER_REQUESTED, loginUserPending, loginUserFailed } from '../actions/users';
+import { LOGIN_USER_REQUESTED, loginUserPending, loginUserFailed } from '../actions/auth';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { signupUser as getUser} from '../api/users';
+import { signupUser as getUser} from '../api/auth';
 
 function* loginUser(action){
 

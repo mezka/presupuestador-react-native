@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../actions/users';
+import { addUser } from '../actions/auth';
 import { View, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 

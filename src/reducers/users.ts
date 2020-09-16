@@ -5,7 +5,7 @@ import {
     LOGIN_USER_PENDING,
     LOGIN_USER_FAILED,
     LOGIN_USER_SUCCEDED
-  } from '../actions/users';
+  } from '../actions/auth';
   
   const users = (state = {pending: false, user: {}}, action) => {
     switch (action.type) {

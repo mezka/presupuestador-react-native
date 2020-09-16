@@ -1,6 +1,6 @@
-import { ADD_USER_REQUESTED, addUserPending, addUserFailed } from '../actions/users';
+import { ADD_USER_REQUESTED, addUserPending, addUserFailed } from '../actions/auth';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { signupUser as postUser} from '../api/users';
+import { signupUser as postUser} from '../api/auth';
 
 function* addUser(action){
 

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../actions/users';
+import { loginUser } from '../actions/auth';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { black } from 'react-native-paper/lib/typescript/src/styles/colors';
 
 const AuthenticationScreen = props => {
 

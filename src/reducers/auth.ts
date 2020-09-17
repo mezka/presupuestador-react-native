@@ -32,6 +32,7 @@ import {
           ...state,
           pending: false,
           user: action.user,
+          token: action.token
         };
       case LOGIN_USER_FAILED:
         return {

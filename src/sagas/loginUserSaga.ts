@@ -1,15 +1,15 @@
 import { LOGIN_USER_REQUESTED, loginUserPending, loginUserFailed } from '../actions/auth';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { signupUser as getUser} from '../api/auth';
+import { loginUser as getUser} from '../api/auth';
 
-function* loginUser(action){
+function* authenticateUser(action){
 
   console.log('loginUser action');
   console.log(action);
 
   yield put(loginUserPending());
   try {
-    var user = yield call(getUser, action.user);
+    var user = yield call(getUser, {email: action.user.email, password: action.user.password});
     console.log('loginUser response');
     console.log(user);
   } catch (error){
@@ -18,7 +18,7 @@ function* loginUser(action){
 }
 
 function* loginUserSaga(){
-  yield takeLatest(LOGIN_USER_REQUESTED, loginUser);
+  yield takeLatest(LOGIN_USER_REQUESTED, authenticateUser);
 }
 
 export default loginUserSaga;

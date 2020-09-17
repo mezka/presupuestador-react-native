@@ -6,7 +6,7 @@ import { Button, TextInput } from 'react-native-paper';
 
 const AuthenticationScreen = props => {
 
-  const [user, setUser] = useState({email: '', password: ''});
+  const [user, setUser] = useState({name: '', email: '', password: ''});
   const dispatch = useDispatch();
 
   const emailTextChange = (emailText) => {

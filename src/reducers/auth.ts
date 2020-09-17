@@ -35,10 +35,18 @@ import {
           token: action.token
         };
       case LOGIN_USER_FAILED:
+        let error_msg = String(action.error);
+        switch(error_msg){
+          case 'HTTPError: Unauthorized':
+            console.log('Datos de autenticación incorrectos');
+            break;
+          default:
+            console.log('Error de autenticación indefinido');
+        }
         return {
           ...state,
           pending: false,
-          error: action.error
+          error: error_msg
         };
       case LOGIN_USER_PENDING:
         return {

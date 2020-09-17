@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../actions/auth';
 import { View, StyleSheet, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import * as RootNavigation from './RootNavigation';
 
 const AuthenticationScreen = props => {
 
@@ -21,7 +22,7 @@ const AuthenticationScreen = props => {
   };
   
   const navigateToSignup = () => {
-    props.navigation.navigate('Signup');
+    RootNavigation.navigate('Signup', {});
   };
 
   return (

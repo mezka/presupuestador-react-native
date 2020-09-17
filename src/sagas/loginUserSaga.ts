@@ -8,18 +8,6 @@ function* authenticateUser(action){
     var response = yield call(getUser, {email: action.user.email, password: action.user.password});
     yield put(loginUserSucceded(response.user, response.accessToken));
   } catch (error){
-      /*
-      switch(error){
-        case 400:
-          console.log('Bad request');
-          break;
-        case 401:
-          console.log('Unauthorized');
-          break;
-        default:
-          console.log('Undefined error');
-      }
-      */
     yield put (loginUserFailed(error));
   }
 }

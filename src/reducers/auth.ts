@@ -7,7 +7,7 @@ import {
     LOGIN_USER_SUCCEDED
   } from '../actions/auth';
   
-  const auth = (state = {pending: false, user: {}}, action) => {
+  const auth = (state = {pending: false, user: {}, token: ''}, action) => {
     switch (action.type) {
       case ADD_USER_SUCCEDED:
         return {
@@ -35,18 +35,10 @@ import {
           token: action.token
         };
       case LOGIN_USER_FAILED:
-        let error_msg = String(action.error);
-        switch(error_msg){
-          case 'HTTPError: Unauthorized':
-            console.log('Datos de autenticación incorrectos');
-            break;
-          default:
-            console.log('Error de autenticación indefinido');
-        }
         return {
           ...state,
           pending: false,
-          error: error_msg
+          error: action.error
         };
       case LOGIN_USER_PENDING:
         return {

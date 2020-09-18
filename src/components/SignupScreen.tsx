@@ -6,9 +6,12 @@ import { Button, TextInput } from 'react-native-paper';
 
 const SignupScreen = props => {
 
-  const [user, setUser] = useState({email: '', password: ''});
+  const [user, setUser] = useState({name: '', email: '', password: ''});
   const dispatch = useDispatch();
 
+  const nameTextChange = (nameText) => {
+    setUser({...user, name: nameText});
+  };
   const emailTextChange = (emailText) => {
     setUser({...user, email: emailText});
   };
@@ -24,6 +27,7 @@ const SignupScreen = props => {
     <View style={styles.parentView}>
 
       <View style={styles.inputView}>
+      <TextInput onChangeText={nameTextChange} label="Nombre" mode="flat" placeholder="Nombre y Apellido" value={user.name} />
         <TextInput onChangeText={emailTextChange} label="E-mail" mode="flat" placeholder="email@example.com" value={user.email} />
         <TextInput label="Repetir E-mail" placeholder="email@example.com" />
         <TextInput onChangeText={passwordTextChange} label="Contraseña" value={user.password} />

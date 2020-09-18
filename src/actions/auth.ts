@@ -20,10 +20,9 @@ export const addUserPending = () => ({
     pending: true
 });
   
-export const addUserSucceded = (user) => ({
+export const addUserSucceded = () => ({
     type: ADD_USER_SUCCEDED,
-    pending: false,
-    user
+    pending: false
 });
   
 export const addUserFailed = (error) => ({
@@ -42,7 +41,7 @@ export const loginUserPending = () => ({
     type: LOGIN_USER_PENDING,
     pending: true
 });
-  
+
 export const loginUserSucceded = (user, accessToken) => ({
     type: LOGIN_USER_SUCCEDED,
     pending: false,

@@ -1,14 +1,13 @@
 import ky from 'ky';
-import Constants from 'expo-constants';
 import { Client } from '../types.ts';
 
-const api_url = Constants.manifest.extra.api_url;
+const dev_api_url = 'http://localhost:3030';
 
-export const getClients = () => {
-  return ky.get(`${ api_url }/clients`).json();
+export const getClients = (token) => {
+  return ky.get(`${ dev_api_url }/clients`, { json: {accessToken: token} }).json();
 }
 
-export const addClient = (client: Client) => {
+export const addClient = (client: Client, token) => {
 
-  return ky.post(`${ api_url }/clients`, { json: client }).json();
+  return ky.post(`${ dev_api_url }/clients`, { json: {...client, accessToken: token} }).json();
 }

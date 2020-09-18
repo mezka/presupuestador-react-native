@@ -1,18 +1,15 @@
-import { ADD_USER_REQUESTED, addUserPending, addUserFailed } from '../actions/auth';
+import { ADD_USER_REQUESTED, addUserPending, addUserFailed, addUserSucceded } from '../actions/auth';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { signupUser as postUser} from '../api/auth';
+import * as RootNavigation from '../components/RootNavigation';
 
 function* addUser(action){
-
-  console.log('addUser action');
-  console.log(action);
-
   yield put(addUserPending());
   try {
-    var user = yield call(postUser, action.user);
-    console.log('addUser response');
-    console.log(user);
-  } catch (error){
+    yield call(postUser, action.user);
+    yield put(addUserSucceded());
+    RootNavigation.navigate('Authentication', {});
+  } catch (error) {
     yield put (addUserFailed(error));
   }
 }

@@ -12,7 +12,7 @@ import getContactsSaga from './sagas/getContactsSaga';
 import addClientSaga from './sagas/addClientSaga';
 import addClientAndNavigateToPresupuestadorSaga from './sagas/addClientAndNavigateToPresupuestadorSaga';
 import loginUserSaga from './sagas/loginUserSaga';
-import signupUserSaga from './sagas/signupUserSaga';
+import addUserSaga from './sagas/addUserSaga';
 import rootReducer from './reducers';
 import Routes from './Routes';
 
@@ -29,7 +29,7 @@ sagaMiddleware.run(getContactsSaga);
 sagaMiddleware.run(addClientSaga);
 sagaMiddleware.run(addClientAndNavigateToPresupuestadorSaga);
 sagaMiddleware.run(loginUserSaga);
-sagaMiddleware.run(signupUserSaga);
+sagaMiddleware.run(addUserSaga);
 
 export default function App() {
   return (

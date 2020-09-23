@@ -10,6 +10,11 @@ const NewEstimateSetupScreen = (props) => {
   const clients = useSelector(state => state.clients.clients);
   const [selectedClient, setSelectedClient] = useState({id: '', name: '', address0: '', email0: '', phonenumber0: '', cuil: ''});
   const [textInputDisabled, setTextInputDisabled] = useState(true);
+  const [cuilInputDisabled, setCuilInputDisabled] = useState(true);
+  const [radioButtonDisabled, setRadioButtonDisabled] = useState(true);
+  const [checkboxDisabled, setCheckboxDisabled] = useState(true);
+  const [category, setCategory] = useState('consumidor-final');
+  const [cuilCheckbox, setCuilCheckbox] = useState(false);
 
   useEffect(() => {
     dispatch(getClients());
@@ -21,11 +26,28 @@ const NewEstimateSetupScreen = (props) => {
 
   const handleEditPress = () => {
     setTextInputDisabled(false);
+    setRadioButtonDisabled(false);
+    setCheckboxDisabled(false);
+    setCuilInputDisabled(cuilCheckbox);
   };
 
   const handleSavePress = () => {
     setTextInputDisabled(true);
+    setRadioButtonDisabled(true);
+    setCheckboxDisabled(true);
+    setCuilInputDisabled(true);
   };
+
+  const handleCategorySelect = (value) => {
+    setCategory(value);
+  };
+
+  const handleCuilCheckboxPress = () => {
+    if (!checkboxDisabled) {
+      setCuilCheckbox(!cuilCheckbox);
+      setCuilInputDisabled(!cuilCheckbox);
+    }
+  }
 
   const handleNewPress = () => {
     props.navigation.navigate('NewClient');
@@ -64,19 +86,19 @@ const NewEstimateSetupScreen = (props) => {
                 <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Email" value={selectedClient.email0}/>
                 <Title>Datos Fiscales</Title>
                 <View style={styles.cuilView}>
-                  <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={textInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil}/>
-                  <Checkbox.Item style={ styles.cuilCheckboxColumn } label="N/A"/>
+                  <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={cuilInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil}/>
+                  <Checkbox.Item style={ styles.cuilCheckboxColumn } disabled={checkboxDisabled} label="N/A" status={cuilCheckbox ? 'checked' : 'unchecked'} onPress={handleCuilCheckboxPress}/>
                 </View>
                 <Subheading>Categoría</Subheading>
                 <View style={styles.categoriesView}>
-                  <RadioButton.Group>
+                  <RadioButton.Group onValueChange={handleCategorySelect} value={category}>
                     <View style={styles.categoriesColumn}>
-                      <RadioButton.Item label="Responsable Inscripto"/>
-                      <RadioButton.Item label="Consumidor Final"/>
+                      <RadioButton.Item disabled={radioButtonDisabled} label="Responsable Inscripto" value="responsable-inscripto"/>
+                      <RadioButton.Item disabled={radioButtonDisabled} label="Consumidor Final" value="consumidor-final"/>
                     </View>
                     <View style={styles.categoriesColumn}>
-                      <RadioButton.Item label="Responsable Monotributo"/>
-                      <RadioButton.Item label="Sujeto Excento"/>
+                      <RadioButton.Item disabled={radioButtonDisabled} label="Responsable Monotributo" value="responsable-monotributo"/>
+                      <RadioButton.Item disabled={radioButtonDisabled} label="Sujeto Excento" value="sujeto-excento"/>
                     </View>
                   </RadioButton.Group>
                 </View>

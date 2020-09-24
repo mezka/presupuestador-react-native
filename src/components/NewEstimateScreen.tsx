@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
 import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem } from '../actions/estimateItems';
+import { addEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
@@ -15,6 +16,9 @@ const NewEstimateScreen = (props) => {
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
+  const userId = useSelector(state => state.auth.user.id);
+  const clientId = props.route.params.client.id || 1; // passing 1 as clientId since info isn't showed in browser yet
+  const accessToken = useSelector(state => state.auth.token);
   const dispatch = useDispatch();
 
   const toggleDialog = () => {
@@ -68,7 +72,15 @@ const NewEstimateScreen = (props) => {
     return () => {
       dispatch(removeEstimateItem(estimateItemId));
     }
-  }
+  };
+
+  const saveEstimate = () => {
+    console.log("Pressed save");
+    const estimateItemsList = Object.keys(estimateItems).map((item) => {
+      return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
+    });
+    dispatch(addEstimate({clientid: clientId, userid: userId, estimateitems: estimateItemsList}));
+  };
 
   const productPickers = Object.keys(estimateItems).map((estimateItemId) => {
     return (
@@ -85,7 +97,7 @@ const NewEstimateScreen = (props) => {
 
   return (
     <ScrollView contentContainerStyle={styles.mainView}>
-      {productPickers.length? productPickers : <View style={styles.textCenter}><Text>NO HAY ITEMS</Text></View>}
+      {productPickers.length? <ScrollView>{productPickers}</ScrollView> : <View style={styles.textCenter}><Text>NO HAY ITEMS</Text></View>}
       <Portal>
         <Dialog visible={visible} onDismiss={toggleDialog}>
           <Dialog.ScrollArea>
@@ -97,7 +109,7 @@ const NewEstimateScreen = (props) => {
         <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       </Portal>
       <Appbar style={styles.appbar}>
-        <Appbar.Action icon="content-save-outline" onPress={() => console.log('Pressed save')}/>
+        <Appbar.Action icon="content-save-outline" onPress={saveEstimate}/>
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
         <Appbar.Content style={{flexDirection: 'column-reverse', flex: 4}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
         <Appbar.Content style={{flexDirection: 'column-reverse', paddingHorizontal: 0, flex: 3, marginLeft: 0, marginRight: 5}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>

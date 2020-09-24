@@ -17,3 +17,9 @@ export interface User {
   email: string,
   password: string
 }
+
+export interface Estimate {
+  clientid: number,
+  userid: number,
+  estimateitems: []
+}

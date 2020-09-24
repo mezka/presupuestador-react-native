@@ -14,7 +14,7 @@ const EstimateItemPicker = ({ estimateItem, qtyChangeHandler, productChangeHandl
           {qtyArray.map((quantity) => <Picker.Item value={String(quantity)} key={quantity} label={String(quantity)}/>)}
         </Picker>
         <Picker style={styles.productPicker} selectedValue={String(estimateItem.productId)} onValueChange={productChangeHandler}>
-          {products.map((product) => <Picker.Item value={String(product.id)} key={product.id} label={product.modelstub}/>)}
+          {products[0].data.map((product) => <Picker.Item value={String(product.id)} key={product.id} label={product.modelname}/>)}
         </Picker>
       </View>
       <View style={styles.testView}>

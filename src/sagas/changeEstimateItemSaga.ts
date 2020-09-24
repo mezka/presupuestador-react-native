@@ -3,7 +3,7 @@ import { put, select, takeEvery } from 'redux-saga/effects';
 
 function* resolveProductPriceAndChangeEstimateItem(action) {
 
-  const price = yield select(state => state.products.products.find(product => product.id === action.productId).price);
+  const price = yield select(state => state.products.products[0].data.find(product => product.id === action.productId).price);
 
   yield put(changeEstimateItemProductWithPrice(action.itemId, action.productId, price));
 }

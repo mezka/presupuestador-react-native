@@ -20,6 +20,6 @@ export interface User {
 
 export interface Estimate {
   clientid: number,
-  userid: number,
+  validFor: number,
   estimateitems: []
 }

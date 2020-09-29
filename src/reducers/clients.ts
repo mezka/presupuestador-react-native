@@ -7,7 +7,7 @@ import {
   ADD_CLIENT_SUCCEDED
 } from '../actions/clients';
 
-const clients = (state = {pending: false, clients: []}, action) => {
+const clients = (state = {pending: false, clients: {}}, action) => {
   switch (action.type) {
     case GET_CLIENTS_SUCCEDED:
       return {

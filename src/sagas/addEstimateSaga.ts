@@ -1,15 +1,19 @@
 import { ADD_ESTIMATE_REQUESTED, addEstimatePending, addEstimateFailed, addEstimateSucceded } from '../actions/estimates';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { addEstimate as newEstimate } from '../api/estimates';
 import * as RootNavigation from '../components/RootNavigation';
+
+const getToken = (state) => state.auth.token;
 
 function* addEstimate(action){
   yield put(addEstimatePending());
   try {
-    yield call(newEstimate, action.estimate);
+    const token = yield select(getToken);
+    yield call(newEstimate, action.estimate, token);
     yield put(addEstimateSucceded());
     RootNavigation.navigate('NewEstimateSetup', {});
   } catch (error) {
+    console.log(error);
     yield put (addEstimateFailed(error));
   }
 }

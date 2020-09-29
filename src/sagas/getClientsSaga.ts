@@ -1,12 +1,15 @@
 import { GET_CLIENTS_REQUESTED, getClientsPending, getClientsSucceded, getClientsFailed } from '../actions/clients';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { getClients as fetchClients } from '../api/clients';
+
+const getToken = (state) => state.auth.token;
 
 function* attemptGetClients() {
   yield put(getClientsPending());
   try {
-    const clients = yield call(fetchClients);
-    yield put(getClientsSucceded(clients));
+    const token = yield select(getToken);
+    const clients = yield call(fetchClients, token);
+    yield put(getClientsSucceded(clients.data));
   } catch (error) {
     yield put(getClientsFailed(error));
   }

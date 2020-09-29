@@ -14,6 +14,7 @@ import addClientAndNavigateToPresupuestadorSaga from './sagas/addClientAndNaviga
 import loginUserSaga from './sagas/loginUserSaga';
 import addUserSaga from './sagas/addUserSaga';
 import addEstimateSaga from './sagas/addEstimateSaga';
+import getEstimatesSaga from './sagas/getEstimatesSaga';
 import rootReducer from './reducers';
 import Routes from './Routes';
 
@@ -32,6 +33,7 @@ sagaMiddleware.run(addClientAndNavigateToPresupuestadorSaga);
 sagaMiddleware.run(loginUserSaga);
 sagaMiddleware.run(addUserSaga);
 sagaMiddleware.run(addEstimateSaga);
+sagaMiddleware.run(getEstimatesSaga);
 
 export default function App() {
   return (

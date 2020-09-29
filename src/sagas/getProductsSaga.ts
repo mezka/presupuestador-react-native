@@ -1,12 +1,15 @@
 import { GET_PRODUCTS_REQUESTED, getProductsPending, getProductsSucceded, getProductsFailed } from '../actions/products';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { getProducts as fetchProducts } from '../api/products';
+
+const getToken = (state) => state.auth.token;
 
 function* attemptGetProducts() {
   yield put(getProductsPending());
   try {
-    const products = yield call(fetchProducts);
-    yield put(getProductsSucceded(products));
+    const token = yield select(getToken);
+    const products = yield call(fetchProducts, token);
+    yield put(getProductsSucceded(products.data));
   } catch (error) {
     yield put(getProductsFailed(error));
   }

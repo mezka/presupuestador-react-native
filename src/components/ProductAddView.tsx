@@ -8,7 +8,7 @@ const ProductAddView = ({products, filteredProducts, addEstimateItem, resetProdu
 
   useEffect(() => {
     
-    const checkboxStateSetToFalse = products[0].data.reduce((obj, product) => {
+    const checkboxStateSetToFalse = products.reduce((obj, product) => {
       obj[product.id] = false;
       return obj;
     }, {});
@@ -31,7 +31,7 @@ const ProductAddView = ({products, filteredProducts, addEstimateItem, resetProdu
     }
   };
 
-  const productList = filteredProducts[0].data.map(product => {
+  const productList = filteredProducts.map(product => {
     return(
       <View key={product.id} style={styles.productCheckbox}>
         <Checkbox status={checkboxes[product.id]? 'checked' : 'unchecked'} onPress={createCheckboxHandler(product)}/>

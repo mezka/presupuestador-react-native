@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getClients } from '../actions/clients';
-import { View, StyleSheet, ScrollView, PickerIOSItem } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { Surface, TextInput, Headline, Button, Divider, Title, Subheading, RadioButton, Checkbox } from 'react-native-paper';
 import { State } from 'react-native-gesture-handler';
 
 const NewEstimateSetupScreen = (props) => {
   const dispatch = useDispatch();
-  const clients = useSelector(state => state.clients.clients.data);
+  const clients = useSelector(state => state.clients.clients);
   const [selectedClient, setSelectedClient] = useState({id: '', name: '', address0: '', email0: '', phonenumber0: '', cuil: ''});
   const [textInputDisabled, setTextInputDisabled] = useState(true);
   const [cuilInputDisabled, setCuilInputDisabled] = useState(true);
@@ -22,7 +22,7 @@ const NewEstimateSetupScreen = (props) => {
   }, [])
 
   const handlePickerChange = (selectedValue) => {
-    setSelectedClient(clients.find(client => client.id === selectedValue));
+    setSelectedClient(clients.find(client => client.id === Number(selectedValue)));
   };
 
   const handleEditPress = () => {
@@ -73,7 +73,7 @@ return  <ScrollView>
           selectedClient &&
           (<View style={ styles.pickerView}>
             <Picker disabled={!clients} selectedValue={ selectedClient.id } onValueChange={ handlePickerChange }>
-              {clients ? 
+              {clients.length ? 
                 clients.map((client:any) => <Picker.Item key={ client.id } label={ client.name } value={ client.id }/>)
                 : <Picker.Item label="-"/>
               }

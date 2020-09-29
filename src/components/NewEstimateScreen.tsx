@@ -16,9 +16,7 @@ const NewEstimateScreen = (props) => {
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
-  const userId = useSelector(state => state.auth.user.id);
-  const clientId = props.route.params.client.id || 1; // passing 1 as clientId since info isn't showed in browser yet
-  const accessToken = useSelector(state => state.auth.token);
+  const clientId = props.route.params.client.id;
   const dispatch = useDispatch();
 
   const toggleDialog = () => {
@@ -79,7 +77,7 @@ const NewEstimateScreen = (props) => {
     const estimateItemsList = Object.keys(estimateItems).map((item) => {
       return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
     });
-    dispatch(addEstimate({clientid: clientId, userid: userId, estimateitems: estimateItemsList}));
+    dispatch(addEstimate({clientid: clientId, validFor: 10, estimateitems: estimateItemsList}));
   };
 
   const productPickers = Object.keys(estimateItems).map((estimateItemId) => {

@@ -1,13 +1,23 @@
 import ky from 'ky';
 import { Client } from '../types.ts';
 
-const dev_api_url = 'http://localhost:3030';
+const api_url = 'http://localhost:3030';
 
 export const getClients = (token) => {
-  return ky.get(`${ dev_api_url }/clients`, { json: {accessToken: token} }).json();
+  const request = ky.extend({
+    hooks: {
+      beforeRequest: [
+        request => {
+          request.headers.set('Authorization', token);
+        }
+      ]
+    }
+  });
+  return (async () => {
+    return await request.get(`${ api_url }/clients`).json();
+  })();
 }
 
 export const addClient = (client: Client, token) => {
-
-  return ky.post(`${ dev_api_url }/clients`, { json: {...client, accessToken: token} }).json();
+  return ky.post(`${ api_url }/clients`, { json: {...client}, headers: {Authorization: token} }).json();
 }

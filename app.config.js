@@ -22,7 +22,7 @@ export default {
     supportsTablet: true
   },
   extra: {
-    api_url: env_vars.API_URL || `http://${ip.address()}:3000` //used to set up client api urls
+    api_url: env_vars.API_URL || `http://${ip.address()}:3030` //used to set up client api urls
   }
 };
 

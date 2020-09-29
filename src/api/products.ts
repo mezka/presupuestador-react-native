@@ -1,7 +1,18 @@
 import ky from 'ky';
 
-const dev_api_url = 'http://localhost:3030';
+const api_url = 'http://localhost:3030';
 
 export const getProducts = (token) => {
-  return ky.get(`${ dev_api_url }/products`, { json: {accessToken: token} }).json();
+  const request = ky.extend({
+    hooks: {
+      beforeRequest: [
+        request => {
+          request.headers.set('Authorization', token);
+        }
+      ]
+    }
+  });
+  return (async () => {
+    return await request.get(`${ api_url }/products`).json();
+  })();
 }

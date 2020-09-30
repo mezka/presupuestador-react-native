@@ -4,7 +4,10 @@ import {
     ADD_ESTIMATE_SUCCEDED,
     GET_ESTIMATES_PENDING,
     GET_ESTIMATES_FAILED,
-    GET_ESTIMATES_SUCCEDED
+    GET_ESTIMATES_SUCCEDED,
+    EXPORT_ESTIMATE_PENDING,
+    EXPORT_ESTIMATE_FAILED,
+    EXPORT_ESTIMATE_SUCCEDED
   } from '../actions/estimates';
   
   const estimates = (state = {pending: false, estimates: {}, estimate: {}}, action) => {
@@ -13,7 +16,7 @@ import {
         return {
           ...state,
           pending: false,
-          estimate: action.estimate
+          estimate: {}
         };
       case ADD_ESTIMATE_FAILED:
         return {
@@ -27,6 +30,7 @@ import {
           pending: true,
           error: undefined
         };
+
       case GET_ESTIMATES_SUCCEDED:
         return {
           ...state,
@@ -40,6 +44,24 @@ import {
           error: action.error
         };
       case GET_ESTIMATES_PENDING:
+        return {
+          ...state,
+          pending: true,
+          error: undefined
+        };
+
+      case EXPORT_ESTIMATE_SUCCEDED:
+        return {
+          ...state,
+          pending: false,
+        };
+      case EXPORT_ESTIMATE_FAILED:
+        return {
+          ...state,
+          pending: false,
+          error: action.error
+        };
+      case EXPORT_ESTIMATE_PENDING:
         return {
           ...state,
           pending: true,

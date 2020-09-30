@@ -22,3 +22,18 @@ export const getEstimates = (token) => {
     return await request.get(`${ api_url }/estimates`).json();
   })();
 }
+
+export const exportEstimateAsFile = (estimateId, mode, token) => {
+  const request = ky.extend({
+    hooks: {
+      beforeRequest: [
+        request => {
+          request.headers.set('Authorization', token);
+        }
+      ]
+    }
+  });
+  return (async () => {
+    return await request.get(`${ api_url }/estimates/${estimateId}?export=${mode}`).json();
+  })();
+}

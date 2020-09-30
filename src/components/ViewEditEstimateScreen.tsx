@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getEstimates } from '../actions/estimates';
+import { getEstimates, exportEstimate } from '../actions/estimates';
 import { View, StyleSheet } from 'react-native';
 import { DataTable, Button } from 'react-native-paper';
 
@@ -14,6 +14,10 @@ const ViewEditEstimateScreen = (props) => {
     dispatch(getEstimates());
   }, []);
   
+  const handleDownloadAsPDFPress = (estimateId) => {
+    dispatch(exportEstimate(estimateId, 'pdf'));
+  };
+
   return  <View style={ styles.parentView }>
             <DataTable>
               <DataTable.Header>
@@ -38,7 +42,7 @@ const ViewEditEstimateScreen = (props) => {
                           <DataTable.Cell>{total_label}</DataTable.Cell>
                           <DataTable.Cell>{estimate.validFor + ' meses'}</DataTable.Cell>
                           <DataTable.Cell><Button mode="contained">Editar</Button></DataTable.Cell>
-                          <DataTable.Cell><Button mode="contained">PDF</Button></DataTable.Cell>
+                          <DataTable.Cell><Button mode="contained" onPress={() => handleDownloadAsPDFPress(estimate.id)}>PDF</Button></DataTable.Cell>
                         </DataTable.Row>
                       )
                     }

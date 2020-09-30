@@ -73,7 +73,6 @@ const NewEstimateScreen = (props) => {
   };
 
   const saveEstimate = () => {
-    console.log("Pressed save");
     const estimateItemsList = Object.keys(estimateItems).map((item) => {
       return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
     });

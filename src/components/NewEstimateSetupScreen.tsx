@@ -47,6 +47,9 @@ const NewEstimateSetupScreen = (props) => {
     if (!checkboxDisabled) {
       setCuilCheckbox(!cuilCheckbox);
       setCuilInputDisabled(!cuilCheckbox);
+      if (!cuilCheckbox) {
+        selectedClient.cuil = '';
+      }
     }
   }
 

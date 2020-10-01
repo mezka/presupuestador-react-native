@@ -1,7 +1,8 @@
 import ky from 'ky';
 import { Client } from '../types.ts';
+import Constants from 'expo-constants';
 
-const api_url = 'http://localhost:3030';
+const api_url = Constants.manifest.extra.api_url;
 
 export const getClients = (token) => {
   const request = ky.extend({

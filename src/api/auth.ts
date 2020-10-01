@@ -1,9 +1,8 @@
 import ky from 'ky';
-//import Constants from 'expo-constants';
 import User from '../types.ts';
+import Constants from 'expo-constants';
 
-//const api_url = Constants.manifest.extra.api_url;
-const api_url = 'http://localhost:3030';
+const api_url = Constants.manifest.extra.api_url;
 
 export const signupUser = (user: User) => {
     return ky.post(`${api_url}/users`, { json: user }).json();

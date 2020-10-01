@@ -1,7 +1,8 @@
 import ky from 'ky';
 import { Estimate } from '../types.ts';
+import Constants from 'expo-constants';
 
-const api_url = 'http://localhost:3030';
+const api_url = Constants.manifest.extra.api_url;
 
 export const addEstimate = (estimate: Estimate, token) => {
   console.log(token);
@@ -18,6 +19,7 @@ export const getEstimates = (token) => {
       ]
     }
   });
+  
   return (async () => {
     return await request.get(`${ api_url }/estimates`).json();
   })();

@@ -5,6 +5,7 @@ export const CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE = 'CHANGE_ESTIMATE_ITEM_PRO
 export const GET_ESTIMATE_ITEMS = 'GET_ESTIMATE_ITEMS';
 export const CHANGE_ESTIMATE_ITEM_QTY = 'CHANGE_ESTIMATE';
 export const ADD_ESTIMATE_ITEM = 'ADD_ESTIMATE_ITEM';
+export const CLEAR_ESTIMATE_ITEMS = 'CLEAR_ESTIMATE_ITEMS';
 
 export const addEstimateItemWithPrice = (productId: number, quantity: number, price: number) => ({
   type: ADD_ESTIMATE_ITEM_WITH_PRICE,
@@ -42,3 +43,7 @@ export const changeEstimateItemProduct = (itemId: number, productId: number) => 
   itemId,
   productId
 });
+
+export const clearEstimateItems = () => ({
+  type: CLEAR_ESTIMATE_ITEMS
+})

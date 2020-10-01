@@ -3,7 +3,8 @@ import {
   REMOVE_ESTIMATE_ITEM,
   CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE,
   GET_ESTIMATE_ITEMS,
-  CHANGE_ESTIMATE_ITEM_QTY
+  CHANGE_ESTIMATE_ITEM_QTY,
+  CLEAR_ESTIMATE_ITEMS
 } from '../actions/estimateItems';
 
 let itemId = 0;
@@ -32,6 +33,8 @@ const estimate = (state = {}, action) => {
       return {
         ...state
       };
+    case CLEAR_ESTIMATE_ITEMS:
+      return {};
     default:
       return state;
   }

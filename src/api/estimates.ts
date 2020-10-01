@@ -27,13 +27,27 @@ export const exportEstimateAsFile = (estimateId, mode, token) => {
   const request = ky.extend({
     hooks: {
       beforeRequest: [
-        request => {
+        (request, options) => {
           request.headers.set('Authorization', token);
+        }
+      ],
+      afterResponse: [
+        (request, options, response) => {
+            switch(mode){
+              case 'pdf':
+                response.blob().then(blob => {
+                  const url = URL.createObjectURL(blob);
+                  window.open(url);
+                });
+                break;
+              default:
+                console.log(response.body);
+            }
         }
       ]
     }
   });
   return (async () => {
-    return await request.get(`${ api_url }/estimates/${estimateId}?export=${mode}`).json();
+    return await request.get(`${ api_url }/estimates/${estimateId}?export=${mode}`);
   })();
 }

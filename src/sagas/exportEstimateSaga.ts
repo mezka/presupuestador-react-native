@@ -9,7 +9,6 @@ function* attemptExportEstimate(action) {
   try {
     const token = yield select(getToken);
     const pdf = yield call(downloadEstimateFile, action.estimateId, action.mode, token);
-    console.log(pdf);
     yield put(exportEstimateSucceded());
   } catch (error) {
     yield put(exportEstimateFailed(error));

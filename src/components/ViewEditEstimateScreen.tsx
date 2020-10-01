@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getEstimates, exportEstimate } from '../actions/estimates';
 import { View, StyleSheet } from 'react-native';
 import { DataTable, Button } from 'react-native-paper';
+import * as RootNavigation from './RootNavigation';
 
 const ViewEditEstimateScreen = (props) => {
 
@@ -14,6 +15,9 @@ const ViewEditEstimateScreen = (props) => {
     dispatch(getEstimates());
   }, []);
   
+  const handleEditEstimatePress = (estimate) => {
+    RootNavigation.navigate('NewEstimate', {estimate: estimate});
+  };
   const handleDownloadAsPDFPress = (estimateId) => {
     dispatch(exportEstimate(estimateId, 'pdf'));
   };
@@ -41,7 +45,7 @@ const ViewEditEstimateScreen = (props) => {
                           <DataTable.Cell>{estimate.client.name}</DataTable.Cell>
                           <DataTable.Cell>{total_label}</DataTable.Cell>
                           <DataTable.Cell>{estimate.validFor + ' meses'}</DataTable.Cell>
-                          <DataTable.Cell><Button mode="contained">Editar</Button></DataTable.Cell>
+                          <DataTable.Cell><Button mode="contained" onPress={() => handleEditEstimatePress(estimate)}>Editar</Button></DataTable.Cell>
                           <DataTable.Cell><Button mode="contained" onPress={() => handleDownloadAsPDFPress(estimate.id)}>PDF</Button></DataTable.Cell>
                         </DataTable.Row>
                       )

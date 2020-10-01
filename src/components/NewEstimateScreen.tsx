@@ -10,13 +10,13 @@ import ProductAddView from './ProductAddView';
 import log from 'loglevel';
 
 const NewEstimateScreen = (props) => {
-  const estimateItems = useSelector(state => state.estimate);
+  const estimateItems = props.route.params.estimate || useSelector(state => state.estimate);
   const products = useSelector(state => state.products.products);
   const filteredProducts = useSelector(state => state.products.filteredProducts);
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
-  const clientId = props.route.params.client.id;
+  const clientId = props.route.params.estimate.client.id;
   const dispatch = useDispatch();
 
   const toggleDialog = () => {

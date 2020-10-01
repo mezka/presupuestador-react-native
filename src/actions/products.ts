@@ -18,9 +18,8 @@ export const  getProductsFailed = (error) => ({
   error
 });
 
-export const getProducts = (accessToken) => ({
+export const getProducts = () => ({
   type: GET_PRODUCTS_REQUESTED,
-  token: accessToken
 });
 
 export const getProductsPending = () => ({

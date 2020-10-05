@@ -19,7 +19,13 @@ const NewEstimateSetupScreen = (props) => {
 
   useEffect(() => {
     dispatch(getClients());
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (clients.length){
+      setSelectedClient(clients[0]);
+    }
+  }, []);
 
   const handlePickerChange = (selectedValue) => {
     setSelectedClient(clients.find(client => client.id === Number(selectedValue)));
@@ -75,7 +81,7 @@ return  <ScrollView>
           {
           selectedClient &&
           (<View style={ styles.pickerView}>
-            <Picker disabled={!clients} selectedValue={ selectedClient.id } onValueChange={ handlePickerChange }>
+            <Picker selectedValue={ selectedClient.id } onValueChange={ handlePickerChange }>
               {clients.length ? 
                 clients.map((client:any) => <Picker.Item key={ client.id } label={ client.name } value={ client.id }/>)
                 : <Picker.Item label="-"/>

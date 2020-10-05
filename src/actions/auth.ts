@@ -8,12 +8,10 @@ export const LOGIN_USER_PENDING = 'LOGIN_USER_PENDING';
 export const LOGIN_USER_SUCCEDED = 'LOGIN_USER_SUCCEDED';
 export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
   
-export const addUser = (user) => {
-    return {
-        type: ADD_USER_REQUESTED,
-        user: user
-    };
-}
+export const addUser = (user) => ({
+    type: ADD_USER_REQUESTED,
+    user: user
+});
   
 export const addUserPending = () => ({
     type: ADD_USER_PENDING,
@@ -30,12 +28,10 @@ export const addUserFailed = (error) => ({
     error
 });
 
-export const loginUser = (user) => {
-    return {
-        type: LOGIN_USER_REQUESTED,
-        user: user
-    };
-}
+export const loginUser = (user) => ({
+    type: LOGIN_USER_REQUESTED,
+    user: user
+});
   
 export const loginUserPending = () => ({
     type: LOGIN_USER_PENDING,

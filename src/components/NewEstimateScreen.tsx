@@ -7,16 +7,14 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
 import ProductAddView from './ProductAddView';
-import log from 'loglevel';
 
 const NewEstimateScreen = (props) => {
-  const estimateItems = props.route.params.estimate || useSelector(state => state.estimate);
+  const estimateItems = useSelector(state => state.estimate);
   const products = useSelector(state => state.products.products);
   const filteredProducts = useSelector(state => state.products.filteredProducts);
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
-  const clientId = props.route.params.estimate.client.id;
   const dispatch = useDispatch();
 
   const toggleDialog = () => {
@@ -25,18 +23,9 @@ const NewEstimateScreen = (props) => {
 
   useEffect(() => {
     dispatch(getProducts());
-  }, [])
-
-  useEffect(() => {
-    log.info(products);
-  }, [products])
-
-  useEffect(() => {
-    log.info(estimateItems);
-  }, [estimateItems]);
+  }, []);
 
   const createProductChangeHandler = (estimateItemId) => {
-
     return (optionValue) => {
       dispatch(changeEstimateItemProduct(estimateItemId, Number(optionValue)));
     };
@@ -76,7 +65,7 @@ const NewEstimateScreen = (props) => {
     const estimateItemsList = Object.keys(estimateItems).map((item) => {
       return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
     });
-    dispatch(addEstimate({clientid: clientId, validFor: 10, estimateitems: estimateItemsList}));
+    dispatch(addEstimate({clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateItemsList}));
   };
 
   const productPickers = Object.keys(estimateItems).map((estimateItemId) => {
@@ -108,8 +97,8 @@ const NewEstimateScreen = (props) => {
       <Appbar style={styles.appbar}>
         <Appbar.Action icon="content-save-outline" onPress={saveEstimate}/>
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
-        <Appbar.Content style={{flexDirection: 'column-reverse', flex: 4}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
-        <Appbar.Content style={{flexDirection: 'column-reverse', paddingHorizontal: 0, flex: 3, marginLeft: 0, marginRight: 5}} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>
+        <Appbar.Content style={styles.appbarHeadingBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
+        <Appbar.Content style={styles.appbarTotalsBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>
       </Appbar>
     </ScrollView>
   );
@@ -135,6 +124,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0
+  },
+  appbarHeadingBox: {
+    flexDirection: 'column-reverse',
+    flex: 4,
+  },
+  appbarTotalsBox: {
+    flexDirection: 'column-reverse',
+    paddingHorizontal: 0,
+    flex: 3,
+    marginLeft: 0,
+    marginRight: 5
   },
   priceText: {
     color: 'white'

@@ -10,13 +10,13 @@ import {
     EXPORT_ESTIMATE_SUCCEDED
   } from '../actions/estimates';
   
-  const estimates = (state = {pending: false, estimates: {}, estimate: {}}, action) => {
+  const estimates = (state = {pending: false, estimates: []}, action) => {
     switch (action.type) {
       case ADD_ESTIMATE_SUCCEDED:
         return {
           ...state,
           pending: false,
-          estimate: {}
+          error: undefined
         };
       case ADD_ESTIMATE_FAILED:
         return {

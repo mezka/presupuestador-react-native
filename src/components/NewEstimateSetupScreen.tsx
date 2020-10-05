@@ -58,7 +58,7 @@ const NewEstimateSetupScreen = (props) => {
   };
 
   const handleChoicePress = () => {
-    props.navigation.navigate('NewEstimate', { client: selectedClient });
+    props.navigation.navigate('NewEstimate', { clientid: selectedClient.id });
   };
 
   const handleImportPress = () => {

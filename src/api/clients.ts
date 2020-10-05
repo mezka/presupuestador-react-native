@@ -19,6 +19,6 @@ export const getClients = (token) => {
   })();
 }
 
-export const addClient = (client: Client, token) => {
+export const addClient = (client: Client, token: any) => {
   return ky.post(`${ api_url }/clients`, { json: {...client}, headers: {Authorization: token} }).json();
 }

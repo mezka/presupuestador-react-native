@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getEstimates, exportEstimate } from '../actions/estimates';
 import { View, StyleSheet } from 'react-native';
 import { DataTable, Text, Button } from 'react-native-paper';
+import { loadEstimateItem } from '../actions/estimateItems';
 import * as RootNavigation from './RootNavigation';
+import FlexSearch from 'flexsearch';
 
 const ViewEditEstimateScreen = (props) => {
 
@@ -14,8 +16,11 @@ const ViewEditEstimateScreen = (props) => {
     dispatch(getEstimates());
   }, []);
   
-  const handleEditEstimatePress = (estimate) => {
-    RootNavigation.navigate('NewEstimate', {estimate: estimate});
+  const handleEditEstimatePress = (selectedEstimateId, estimateItems, clientid) => {
+    estimateItems.forEach((item, index, array) => {
+      dispatch(loadEstimateItem(item.id, item.quantity, item.unitprice));
+    });
+    RootNavigation.navigate('NewEstimate', {selectedEstimateId: selectedEstimateId, clientid: clientid});
   };
   const handleDownloadAsPDFPress = (estimateId) => {
     dispatch(exportEstimate(estimateId, 'pdf'));
@@ -25,26 +30,26 @@ const ViewEditEstimateScreen = (props) => {
       let estimateitems_total = estimate.estimateitems.reduce((acc, curr) => {return acc+(curr.unitprice*curr.quantity)}, 0);
       let total_label = `$${estimateitems_total}`;
       return (
-        <DataTable.Row style={{paddingLeft: 0, paddingRight: 0}} key={estimate.id}>
-          <DataTable.Cell style={{backgroundColor: 'red'}} >{estimate.id}</DataTable.Cell>
-          <DataTable.Cell>{estimate.createdAt.substring(0, 10)}</DataTable.Cell>
-          <DataTable.Cell>{estimate.client.name}</DataTable.Cell>
-          <DataTable.Cell>{total_label}</DataTable.Cell>
-          <DataTable.Cell onPress={() => handleEditEstimatePress(estimate)}>X</DataTable.Cell>
-          <DataTable.Cell style={{backgroundColor: 'red'}} onPress={() => handleDownloadAsPDFPress(estimate.id)}>X</DataTable.Cell>
+        <DataTable.Row style={{paddingHorizontal: 0}} key={estimate.id}>
+          <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} >{estimate.id}</DataTable.Cell>
+          <DataTable.Cell style={styles.cellLarge}>{estimate.createdAt.substring(0, 10)}</DataTable.Cell>
+          <DataTable.Cell style={styles.cellLarge}>{estimate.client.name}</DataTable.Cell>
+          <DataTable.Cell style={styles.cellLarge}>{total_label}</DataTable.Cell>
+          <DataTable.Cell style={styles.cellSmall} onPress={() => handleEditEstimatePress(estimate.id, estimate.estimateitems, estimate.client.id)}>X</DataTable.Cell>
+          <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} onPress={() => handleDownloadAsPDFPress(estimate.id)}>X</DataTable.Cell>
         </DataTable.Row>
       );
   });
 
   return  <View style={ styles.parentView }>
             <DataTable style= {styles.dataTable}>
-              <DataTable.Header style={{backgroundColor: 'blue', paddingLeft: 0, paddingRight: 0}}>
-                <DataTable.Title style={{backgroundColor: 'red'}}>N°</DataTable.Title>
-                <DataTable.Title>Fecha</DataTable.Title>
-                <DataTable.Title>Cliente</DataTable.Title>
-                <DataTable.Title>Total</DataTable.Title>
-                <DataTable.Title>Editar</DataTable.Title>
-                <DataTable.Title style={{backgroundColor: 'red'}}>PDF</DataTable.Title>
+              <DataTable.Header style={{...styles.tableCell, backgroundColor: 'blue', paddingHorizontal: 0}}>
+                <DataTable.Title style={{flexBasis: 35, backgroundColor: 'red'}}>N°</DataTable.Title>
+                <DataTable.Title style={styles.cellLarge}>Fecha</DataTable.Title>
+                <DataTable.Title style={styles.cellLarge}>Cliente</DataTable.Title>
+                <DataTable.Title style={styles.cellLarge}>Total</DataTable.Title>
+                <DataTable.Title style={styles.cellSmall}>Editar</DataTable.Title>
+                <DataTable.Title style={{...styles.cellSmall, backgroundColor: 'red'}}>PDF</DataTable.Title>
               </DataTable.Header>
               { 
                 estimateDataTableCells
@@ -60,7 +65,15 @@ const styles = StyleSheet.create({
     height: 200
   },
   dataTable: {
+    display: 'flex',
     backgroundColor: 'green',
+  },
+  cellLarge: {
+    flexGrow: 1,
+    flexBasis: 50,
+  },
+  cellSmall: {
+    flexBasis: 35,
   }
 })
 

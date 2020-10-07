@@ -18,7 +18,6 @@ export const addEstimate = (estimate) => ({
     estimate: estimate
 });
 
-
 export const addEstimatePending = () => ({
     type: ADD_ESTIMATE_PENDING,
     pending: true
@@ -33,7 +32,6 @@ export const addEstimateFailed = (error) => ({
     type: ADD_ESTIMATE_FAILED,
     error
 });
-
 
 export const getEstimates = () => ({
     type: GET_ESTIMATES_REQUESTED,
@@ -55,11 +53,10 @@ export const getEstimatesFailed = (error) => ({
     error
 });
 
-
 export const exportEstimate = (estimateId, mode) => ({
     type: EXPORT_ESTIMATE_REQUESTED,
-    estimateId: estimateId,
-    mode: mode
+    estimateId,
+    mode
 });
 
 export const exportEstimatePending = () => ({

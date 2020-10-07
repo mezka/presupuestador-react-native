@@ -7,10 +7,6 @@ import { addClient } from '../actions/clients';
 
 function formatContact(contact){
 
-  console.log('originalContact');
-  console.log(contact);
-
-
   const phonenumbers = [contact.phonenumber0, contact.phonenumber1, contact.phonenumber2].filter((phonenumber) => phonenumber);
   const emails = [contact.email0, contact.email1, contact.email2].filter((email) => email);
   const addresses = [contact.address0, contact.address1, contact.address2].filter((address) => address);
@@ -30,21 +26,6 @@ function formatContact(contact){
     obj[`address${index}`] = currentAddress;
     return obj;
   }, {});
-
-
-  console.log('phonenumberObj');
-  console.log(phonenumberObj);
-
-
-  console.log('formatContact');
-
-  console.log({
-      name: contact.name,
-      ...phonenumberObj,
-      ...emailObj,
-      ...addressObj
-  });
-
 
   return {
     name: contact.name,

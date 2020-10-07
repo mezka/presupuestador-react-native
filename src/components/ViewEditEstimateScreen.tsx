@@ -5,7 +5,6 @@ import { View, StyleSheet } from 'react-native';
 import { DataTable, Text, Button } from 'react-native-paper';
 import { loadEstimateItem } from '../actions/estimateItems';
 import * as RootNavigation from './RootNavigation';
-import FlexSearch from 'flexsearch';
 
 const ViewEditEstimateScreen = (props) => {
 

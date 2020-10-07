@@ -7,9 +7,7 @@ function* attemptGetClients() {
   try {
     const token = yield select((state) => state.auth.token);
     const clients = yield call(fetchClients, token);
-
-    console.log(clients);
-    yield put(getClientsSucceded(clients.data));
+    yield put(getClientsSucceded(clients));
   } catch (error) {
     yield put(getClientsFailed(error));
   }

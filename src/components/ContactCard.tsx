@@ -47,10 +47,6 @@ const ContactCard = ({contact, importContact}) => {
     setToggleAllCheckbox(!toggleAllCheckbox);
   };
 
-  useEffect(() => {
-    console.log(contact)
-  }, [])
-
   const createPressHandler = (contact) => {
     return () => {
       importContact(createFilteredObjUsingSrcAndMapper(contact, checkboxes));

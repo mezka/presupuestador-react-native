@@ -5,19 +5,11 @@ import { addClient as requestAddClient} from '../api/clients';
 function* addClient(action){
 
   const token = yield select((state) => state.auth.token);
-
-  console.log('addClient action');
-  console.log(action);
-
   yield put(addClientPending());
   try {
     var client = yield call(requestAddClient, action.client, token);
-
-    console.log(client);
-
     yield put(getClients());
   } catch (error){
-    console.log(error);
     yield put (getClientsFailed(error));
   }
 }

@@ -9,7 +9,7 @@ function* attemptGetProducts() {
   try {
     const token = yield select(getToken);
     const products = yield call(fetchProducts, token);
-    yield put(getProductsSucceded(products.data));
+    yield put(getProductsSucceded(products));
   } catch (error) {
     yield put(getProductsFailed(error));
   }

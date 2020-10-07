@@ -9,7 +9,7 @@ function* attemptGetEstimates() {
   try {
     const token = yield select(getToken);
     const estimates = yield call(fetchEstimates, token);
-    yield put(getEstimatesSucceded(estimates.data));
+    yield put(getEstimatesSucceded(estimates));
   } catch (error) {
     yield put(getEstimatesFailed(error));
   }

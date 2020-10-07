@@ -16,7 +16,6 @@ function* addEstimate(action){
     yield put(clearEstimateItems());
     RootNavigation.goBack();
   } catch (error) {
-    console.log(error);
     yield put (addEstimateFailed(error));
   }
 }

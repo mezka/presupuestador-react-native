@@ -11,8 +11,6 @@ function* addClientAndNavigateToPresupuestador(action){
     yield put(addClientSucceded(client));
     yield call(RootNavigation.navigate, 'NewEstimate', { client: action.client });
   } catch (error){
-    console.log('error');
-    console.log(error);
     yield put (getClientsFailed(error));
   }
 }

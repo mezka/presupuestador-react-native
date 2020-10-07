@@ -43,8 +43,8 @@ const ViewEditEstimateScreen = (props) => {
 
   return  <View style={ styles.parentView }>
             <DataTable style= {styles.dataTable}>
-              <DataTable.Header style={{...styles.tableCell, backgroundColor: 'blue', paddingHorizontal: 0}}>
-                <DataTable.Title style={{flexBasis: 35, backgroundColor: 'red'}}>N°</DataTable.Title>
+              <DataTable.Header style={{backgroundColor: 'blue', paddingHorizontal: 0}}>
+                <DataTable.Title style={{...styles.cellSmall, backgroundColor: 'red'}}>N°</DataTable.Title>
                 <DataTable.Title style={styles.cellLarge}>Fecha</DataTable.Title>
                 <DataTable.Title style={styles.cellLarge}>Cliente</DataTable.Title>
                 <DataTable.Title style={styles.cellLarge}>Total</DataTable.Title>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
   },
   cellLarge: {
-    flexGrow: 1,
+    flexGrow: 8,
     flexBasis: 50,
   },
   cellSmall: {

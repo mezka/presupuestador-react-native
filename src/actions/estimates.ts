@@ -53,9 +53,10 @@ export const getEstimatesFailed = (error) => ({
     error
 });
 
-export const exportEstimate = (estimateId, mode) => ({
+export const exportEstimate = (estimateId, filename, mode) => ({
     type: EXPORT_ESTIMATE_REQUESTED,
     estimateId,
+    filename,
     mode
 });
 

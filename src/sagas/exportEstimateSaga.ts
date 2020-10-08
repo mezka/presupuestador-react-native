@@ -17,7 +17,7 @@ function* attemptExportEstimate(action) {
   }
 
   try{
-    var downloadResponse = yield call(downloadEstimate, action.estimateId, 'pdf', token);
+    var downloadResponse = yield call(downloadEstimate, action.estimateId, action.filename, action.mode, token);
   } catch (error){
     return put(exportEstimateFailed(error));
   }

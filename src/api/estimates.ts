@@ -13,6 +13,6 @@ export const getEstimates = (token) => {
   return ky.get(`${ api_url }/estimates`, { headers: { Authorization: token }}).json();
 }
 
-export const downloadEstimate = function (estimateId, mode, token) {
-  return FileSystem.downloadAsync(`${ api_url }/estimates/${estimateId}?export=${ mode }`, FileSystem.documentDirectory + 'new.pdf', { headers: { Authorization: token }});
+export const downloadEstimate = function (estimateId, filename, mode, token) {
+  return FileSystem.downloadAsync(`${ api_url }/estimates/${estimateId}?export=${mode}`, `${FileSystem.documentDirectory}${filename}`, { headers: { Authorization: token }});
 }

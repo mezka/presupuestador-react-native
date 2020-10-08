@@ -14,6 +14,11 @@ const ViewEditEstimateScreen = (props) => {
   useEffect(() => {
     dispatch(getEstimates());
   }, []);
+
+  useEffect(() => {
+    console.log(estimates);
+  }, [estimates]);
+
   
   const handleEditEstimatePress = (selectedEstimateId, estimateItems, clientid) => {
     estimateItems.forEach((item, index, array) => {
@@ -21,8 +26,9 @@ const ViewEditEstimateScreen = (props) => {
     });
     RootNavigation.navigate('NewEstimate', {selectedEstimateId: selectedEstimateId, clientid: clientid});
   };
-  const handleDownloadAsPDFPress = (estimateId) => {
-    dispatch(exportEstimate(estimateId, 'pdf'));
+  const handleDownloadAsPDFPress = (estimateId, filename) => {
+
+    dispatch(exportEstimate(estimateId, filename, 'pdf'));
   };
 
   const estimateDataTableCells = estimates.map((estimate) => {
@@ -35,7 +41,7 @@ const ViewEditEstimateScreen = (props) => {
           <DataTable.Cell style={styles.cellLarge}>{estimate.client.name}</DataTable.Cell>
           <DataTable.Cell style={styles.cellLarge}>{total_label}</DataTable.Cell>
           <DataTable.Cell style={styles.cellSmall} onPress={() => handleEditEstimatePress(estimate.id, estimate.estimateitems, estimate.client.id)}>X</DataTable.Cell>
-          <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} onPress={() => handleDownloadAsPDFPress(estimate.id)}>X</DataTable.Cell>
+          <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} onPress={() => handleDownloadAsPDFPress(estimate.id, `PRE ${estimate.id} - ${estimate.client.name}.pdf`)}>X</DataTable.Cell>
         </DataTable.Row>
       );
   });

@@ -2,15 +2,14 @@ import { LOAD_ESTIMATE_ITEMS, loadEstimateItemWithPrice } from '../actions/estim
 import { put, takeLatest, select } from 'redux-saga/effects';
 
 function* resolveProductPricesAndLoadEstimateItems(action) {
-
-  for(let i = 0; i < action.estimateItems.length; i++){
-    const unitprice = yield select(state => state.products.products.find(product => product.id === action.estimateItems[i].product.id).price);
-    yield put(loadEstimateItemWithPrice(action.estimateItems[i].productId, action.estimateItems[i].quantity, unitprice));
+  for(let i = 0; i < action.estimateitems.length; i++){
+    const unitprice = yield select(state => state.products.products.find(product => product.id === action.estimateitems[i].productid).price);
+    yield put(loadEstimateItemWithPrice(action.estimateitems[i].productid, action.estimateitems[i].quantity, unitprice));
   }
 }
 
-function* addEstimateItemsSaga() {
+function* loadEstimateItemsSaga() {
   yield takeLatest(LOAD_ESTIMATE_ITEMS, resolveProductPricesAndLoadEstimateItems);
 }
 
-export default addEstimateItemsSaga;
+export default loadEstimateItemsSaga;

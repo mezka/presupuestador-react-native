@@ -9,13 +9,14 @@ import EstimateItemPicker from './EstimateItemPicker';
 import ProductAddView from './ProductAddView';
 
 const NewEstimateScreen = (props) => {
-  const estimateItems = useSelector(state => state.estimate);
+  const estimateitems = useSelector(state => state.estimate);
   const products = useSelector(state => state.products.products);
   const filteredProducts = useSelector(state => state.products.filteredProducts);
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
+  const estimates = useSelector(state => state.estimates.estimates);
 
   const toggleDialog = () => {
     setVisible(!visible);
@@ -26,9 +27,12 @@ const NewEstimateScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    const {estimateitems, ...estimateData} = props.route.params.selectedEstimate;
-    dispatch(loadEstimateItems(estimateitems));
-  }, [props.route.params.selectedEstimate]);
+    if(props.route.params.estimateid){
+
+      const estimateitems = estimates.find((estimate) => estimate.id === props.route.params.estimateid).estimateitems;
+      dispatch(loadEstimateItems(estimateitems));
+    }
+  }, [props.route.params.estimateid]);
 
   const createProductChangeHandler = (estimateItemId) => {
     return (optionValue) => {
@@ -42,8 +46,8 @@ const NewEstimateScreen = (props) => {
     }
   };
 
-  const addEstimateItem = (productId: number) => {
-    dispatch(createAddEstimateItemAction(productId, 1));
+  const addEstimateItem = (productid: number) => {
+    dispatch(createAddEstimateItemAction(productid, 1));
   };
 
   const resetProductsFilter = () => {
@@ -66,25 +70,23 @@ const NewEstimateScreen = (props) => {
     }
   };
 
-  const saveNewEstimate = () => {
-    const estimateItemsList = Object.keys(estimateItems).map((item) => {
-      return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
+  const saveEstimate = () => {
+    const estimateitemsList = Object.keys(estimateitems).map((item) => {
+      return {unitprice: estimateitems[item].price, quantity: estimateitems[item].quantity, productid: estimateitems[item].productid};
     });
-    dispatch(addEstimate({clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateItemsList, }));
+    
+    if(props.route.params.estimateid){
+      dispatch(updateEstimate(props.route.params.estimateid, {clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateitemsList }));
+    } else {
+      dispatch(addEstimate({clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateitemsList, }));
+    }
   };
 
-  const saveEditedEstimate = () => {
-    const estimateItemsList = Object.keys(estimateItems).map((item) => {
-      return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
-    });
-    dispatch(updateEstimate(props.route.params.selectedEstimate.id, {clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateItemsList }));
-  };
-
-  const productPickers = Object.keys(estimateItems).map((estimateItemId) => {
+  const productPickers = Object.keys(estimateitems).map((estimateItemId) => {
     return (
       <View key={estimateItemId} style={styles.itemView}>
         <EstimateItemPicker
-          estimateItem={estimateItems[estimateItemId]}
+          estimateItem={estimateitems[estimateItemId]}
           qtyChangeHandler={createQtyChangeHandler(estimateItemId)}
           productChangeHandler={createProductChangeHandler(estimateItemId)}
           removeEstimateItem={createRemoveEstimateItem(estimateItemId)}
@@ -107,11 +109,7 @@ const NewEstimateScreen = (props) => {
         <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       </Portal>
       <Appbar style={styles.appbar}>
-        {props.route.params.selectedEstimate ?
-        <Appbar.Action icon="content-save-outline" onPress={saveEditedEstimate}/>
-        :
-        <Appbar.Action icon="content-save-outline" onPress={saveNewEstimate}/>
-        }
+        <Appbar.Action icon="content-save-outline" onPress={saveEstimate}/>
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
         <Appbar.Content style={styles.appbarHeadingBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
         <Appbar.Content style={styles.appbarTotalsBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>

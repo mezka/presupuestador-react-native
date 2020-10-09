@@ -3,9 +3,9 @@ import { put, select, takeEvery } from 'redux-saga/effects';
 
 function* resolveProductPriceAndAddEstimateItem(action) {
 
-  const price = yield select(state => state.products.products.find(product => product.id === action.productId).price);
+  const price = yield select(state => state.products.products.find(product => product.id === action.productid).price);
 
-  yield put(addEstimateItemWithPrice(action.productId, action.quantity, price));
+  yield put(addEstimateItemWithPrice(action.productid, action.quantity, price));
 }
 
 function* addEstimateItemSaga() {

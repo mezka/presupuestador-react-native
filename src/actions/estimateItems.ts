@@ -9,9 +9,9 @@ export const CLEAR_ESTIMATE_ITEMS = 'CLEAR_ESTIMATE_ITEMS';
 export const LOAD_ESTIMATE_ITEM_WITH_PRICE = 'LOAD_ESTIMATE_ITEM_WITH_PRICE';
 export const LOAD_ESTIMATE_ITEMS = 'LOAD_ESTIMATE_ITEMS';
 
-export const addEstimateItemWithPrice = (productId: number, quantity: number, price: number) => ({
+export const addEstimateItemWithPrice = (productid: number, quantity: number, price: number) => ({
   type: ADD_ESTIMATE_ITEM_WITH_PRICE,
-  productId,
+  productid,
   quantity,
   price
 });
@@ -21,10 +21,10 @@ export const removeEstimateItem = (itemId: number) => ({
   itemId
 });
 
-export const changeEstimateItemProductWithPrice = (itemId: number, productId: number, price: number) => ({
+export const changeEstimateItemProductWithPrice = (itemId: number, productid: number, price: number) => ({
   type: CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE,
   itemId,
-  productId,
+  productid,
   price
 });
 
@@ -34,31 +34,31 @@ export const changeEstimateItemQty = (itemId: number, quantity:number) => ({
   quantity
 })
 
-export const addEstimateItem = (productId:number, quantity:number) => ({
+export const addEstimateItem = (productid:number, quantity:number) => ({
   type: ADD_ESTIMATE_ITEM,
-  productId,
+  productid,
   quantity
 });
 
 
-export const changeEstimateItemProduct = (itemId: number, productId: number) => ({
+export const changeEstimateItemProduct = (itemId: number, productid: number) => ({
   type: CHANGE_ESTIMATE_ITEM_PRODUCT,
   itemId,
-  productId
+  productid
 });
 
 export const clearEstimateItems = () => ({
   type: CLEAR_ESTIMATE_ITEMS
 });
 
-export const loadEstimateItemWithPrice = (productId: number, quantity: number, unitprice: number) => ({
+export const loadEstimateItemWithPrice = (productid: number, quantity: number, unitprice: number) => ({
   type: LOAD_ESTIMATE_ITEM_WITH_PRICE,
-  productId,
+  productid,
   quantity,
   unitprice
 });
 
-export const loadEstimateItems = (estimateItems) => ({
+export const loadEstimateItems = (estimateitems) => ({
   type: LOAD_ESTIMATE_ITEMS,
-  estimateItems
+  estimateitems
 });

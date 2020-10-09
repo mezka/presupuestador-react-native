@@ -13,11 +13,6 @@ const ViewEditEstimateScreen = (props) => {
   useEffect(() => {
     dispatch(getEstimates());
   }, []);
-
-  useEffect(() => {
-    console.log(estimates);
-  }, [estimates]);
-
   
   const handleEditEstimatePress = (selectedEstimate, clientid) => {
     RootNavigation.navigate('NewEstimate', {selectedEstimate: selectedEstimate, clientid: clientid});

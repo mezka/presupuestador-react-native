@@ -5,10 +5,6 @@ function* resolveProductPricesAndLoadEstimateItems(action) {
 
   for(let i = 0; i < action.estimateItems.length; i++){
     const unitprice = yield select(state => state.products.products.find(product => product.id === action.estimateItems[i].product.id).price);
-
-    console.log('unitprice')
-    console.log(unitprice)
-
     yield put(loadEstimateItemWithPrice(action.estimateItems[i].productId, action.estimateItems[i].quantity, unitprice));
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
-import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItem } from '../actions/estimateItems';
+import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItems } from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
@@ -15,7 +15,6 @@ const NewEstimateScreen = (props) => {
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 
   const toggleDialog = () => {
@@ -27,13 +26,9 @@ const NewEstimateScreen = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!loaded && props.route.params.selectedEstimate) {
-      props.route.params.selectedEstimate.estimateitems.forEach((item, index, array) => {
-        dispatch(loadEstimateItem(item.product.id, item.quantity, item.unitprice));
-      });
-      setLoaded(true);
-    }
-  });
+    const {estimateitems, ...estimateData} = props.route.params.selectedEstimate;
+    dispatch(loadEstimateItems(estimateitems));
+  }, [props.route.params.selectedEstimate]);
 
   const createProductChangeHandler = (estimateItemId) => {
     return (optionValue) => {

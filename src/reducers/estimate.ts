@@ -4,7 +4,8 @@ import {
   CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE,
   GET_ESTIMATE_ITEMS,
   CHANGE_ESTIMATE_ITEM_QTY,
-  CLEAR_ESTIMATE_ITEMS
+  CLEAR_ESTIMATE_ITEMS,
+  SHOW_ESTIMATE_ITEM
 } from '../actions/estimateItems';
 
 let itemId = 0;
@@ -35,6 +36,11 @@ const estimate = (state = {}, action) => {
       };
     case CLEAR_ESTIMATE_ITEMS:
       return {};
+    case SHOW_ESTIMATE_ITEM:
+      return {
+        ...state,
+        [itemId++]: { productId: action.productId, quantity: action.quantity, price: action.unitprice}
+      };
     default:
       return state;
   }

@@ -16,3 +16,7 @@ export const getEstimates = (token) => {
 export const downloadEstimate = function (estimateId, filename, mode, token) {
   return FileSystem.downloadAsync(`${ api_url }/estimates/${estimateId}?export=${mode}`, `${FileSystem.documentDirectory}${filename}`, { headers: { Authorization: token }});
 }
+
+export const updateEstimate = (estimateId, estimate: Estimate, token) => {
+  return ky.put(`${ api_url }/estimates/${estimateId}`, { json: {...estimate}, headers: { Authorization: token } }).json();
+}

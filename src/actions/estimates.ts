@@ -13,6 +13,11 @@ export const EXPORT_ESTIMATE_PENDING = 'EXPORT_ESTIMATE_PENDING';
 export const EXPORT_ESTIMATE_SUCCEDED = 'EXPORT_ESTIMATE_SUCCEDED';
 export const EXPORT_ESTIMATE_FAILED = 'EXPORT_ESTIMATE_FAILED';
 
+export const UPDATE_ESTIMATE_REQUESTED = 'UPDATE_ESTIMATE_REQUESTED';
+export const UPDATE_ESTIMATE_PENDING = 'UPDATE_ESTIMATE_PENDING';
+export const UPDATE_ESTIMATE_SUCCEDED = 'UPDATE_ESTIMATE_SUCCEDED';
+export const UPDATE_ESTIMATE_FAILED = 'UPDATE_ESTIMATE_FAILED';
+
 export const addEstimate = (estimate) => ({
     type: ADD_ESTIMATE_REQUESTED,
     estimate: estimate
@@ -72,5 +77,26 @@ export const exportEstimateSucceded = () => ({
   
 export const exportEstimateFailed = (error) => ({
     type: EXPORT_ESTIMATE_FAILED,
+    error
+});
+
+export const updateEstimate = (estimateId, estimate) => ({
+    type: UPDATE_ESTIMATE_REQUESTED,
+    estimateId,
+    estimate
+});
+
+export const updateEstimatePending = () => ({
+    type: UPDATE_ESTIMATE_PENDING,
+    pending: true
+});
+  
+export const updateEstimateSucceded = () => ({
+    type: UPDATE_ESTIMATE_SUCCEDED,
+    pending: false
+});
+  
+export const updateEstimateFailed = (error) => ({
+    type: UPDATE_ESTIMATE_FAILED,
     error
 });

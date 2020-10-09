@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getEstimates, exportEstimate } from '../actions/estimates';
 import { View, StyleSheet } from 'react-native';
 import { DataTable, Text, Button } from 'react-native-paper';
-import { loadEstimateItem } from '../actions/estimateItems';
 import * as RootNavigation from './RootNavigation';
 
 const ViewEditEstimateScreen = (props) => {
@@ -20,11 +19,8 @@ const ViewEditEstimateScreen = (props) => {
   }, [estimates]);
 
   
-  const handleEditEstimatePress = (selectedEstimateId, estimateItems, clientid) => {
-    estimateItems.forEach((item, index, array) => {
-      dispatch(loadEstimateItem(item.id, item.quantity, item.unitprice));
-    });
-    RootNavigation.navigate('NewEstimate', {selectedEstimateId: selectedEstimateId, clientid: clientid});
+  const handleEditEstimatePress = (selectedEstimate, clientid) => {
+    RootNavigation.navigate('NewEstimate', {selectedEstimate: selectedEstimate, clientid: clientid});
   };
   const handleDownloadAsPDFPress = (estimateId, filename) => {
 
@@ -40,7 +36,7 @@ const ViewEditEstimateScreen = (props) => {
           <DataTable.Cell style={styles.cellLarge}>{estimate.createdAt.substring(0, 10)}</DataTable.Cell>
           <DataTable.Cell style={styles.cellLarge}>{estimate.client.name}</DataTable.Cell>
           <DataTable.Cell style={styles.cellLarge}>{total_label}</DataTable.Cell>
-          <DataTable.Cell style={styles.cellSmall} onPress={() => handleEditEstimatePress(estimate.id, estimate.estimateitems, estimate.client.id)}>X</DataTable.Cell>
+          <DataTable.Cell style={styles.cellSmall} onPress={() => handleEditEstimatePress(estimate, estimate.client.id)}>X</DataTable.Cell>
           <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} onPress={() => handleDownloadAsPDFPress(estimate.id, `PRE ${estimate.id} - ${estimate.client.name}.pdf`)}>X</DataTable.Cell>
         </DataTable.Row>
       );

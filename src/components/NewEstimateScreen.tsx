@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
-import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem } from '../actions/estimateItems';
-import { addEstimate } from '../actions/estimates';
+import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItem } from '../actions/estimateItems';
+import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
@@ -15,6 +15,7 @@ const NewEstimateScreen = (props) => {
   const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
   const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
   const [visible, setVisible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 
   const toggleDialog = () => {
@@ -24,6 +25,15 @@ const NewEstimateScreen = (props) => {
   useEffect(() => {
     dispatch(getProducts());
   }, []);
+
+  useEffect(() => {
+    if (!loaded && props.route.params.selectedEstimate) {
+      props.route.params.selectedEstimate.estimateitems.forEach((item, index, array) => {
+        dispatch(loadEstimateItem(item.product.id, item.quantity, item.unitprice));
+      });
+      setLoaded(true);
+    }
+  });
 
   const createProductChangeHandler = (estimateItemId) => {
     return (optionValue) => {
@@ -61,11 +71,18 @@ const NewEstimateScreen = (props) => {
     }
   };
 
-  const saveEstimate = () => {
+  const saveNewEstimate = () => {
     const estimateItemsList = Object.keys(estimateItems).map((item) => {
       return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
     });
-    dispatch(addEstimate({clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateItemsList}));
+    dispatch(addEstimate({clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateItemsList, }));
+  };
+
+  const saveEditedEstimate = () => {
+    const estimateItemsList = Object.keys(estimateItems).map((item) => {
+      return {unitprice: estimateItems[item].price, quantity: estimateItems[item].quantity, productid: estimateItems[item].productId};
+    });
+    dispatch(updateEstimate(props.route.params.selectedEstimate.id, {clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateItemsList }));
   };
 
   const productPickers = Object.keys(estimateItems).map((estimateItemId) => {
@@ -95,7 +112,11 @@ const NewEstimateScreen = (props) => {
         <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       </Portal>
       <Appbar style={styles.appbar}>
-        <Appbar.Action icon="content-save-outline" onPress={saveEstimate}/>
+        {props.route.params.selectedEstimate ?
+        <Appbar.Action icon="content-save-outline" onPress={saveEditedEstimate}/>
+        :
+        <Appbar.Action icon="content-save-outline" onPress={saveNewEstimate}/>
+        }
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
         <Appbar.Content style={styles.appbarHeadingBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
         <Appbar.Content style={styles.appbarTotalsBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
-import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItems } from '../actions/estimateItems';
+import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItems, clearEstimateItems } from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
@@ -33,6 +33,14 @@ const NewEstimateScreen = (props) => {
       dispatch(loadEstimateItems(estimateitems));
     }
   }, [props.route.params.estimateid]);
+
+  useEffect(() => {
+    const clearEstimateItemsWhenComponentLosesFocus = props.navigation.addListener('blur', () => {
+      dispatch(clearEstimateItems());
+    });
+
+    return clearEstimateItemsWhenComponentLosesFocus;
+  }, [props.navigation]);
 
   const createProductChangeHandler = (estimateItemId) => {
     return (optionValue) => {

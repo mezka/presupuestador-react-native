@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
-import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItems, clearEstimateItems } from '../actions/estimateItems';
+import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItemsByEstimateId, clearEstimateItems } from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
@@ -28,9 +28,7 @@ const NewEstimateScreen = (props) => {
 
   useEffect(() => {
     if(props.route.params.estimateid){
-
-      const estimateitems = estimates.find((estimate) => estimate.id === props.route.params.estimateid).estimateitems;
-      dispatch(loadEstimateItems(estimateitems));
+      dispatch(loadEstimateItemsByEstimateId(props.route.params.estimateid));
     }
   }, [props.route.params.estimateid]);
 

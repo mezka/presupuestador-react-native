@@ -16,7 +16,7 @@ import addUserSaga from './sagas/addUserSaga';
 import addEstimateSaga from './sagas/addEstimateSaga';
 import getEstimatesSaga from './sagas/getEstimatesSaga';
 import exportEstimateSaga from './sagas/exportEstimateSaga';
-import loadEstimateItemsSaga from './sagas/loadEstimateItemsSaga';
+import loadEstimateItemsByEstimateIdSaga from './sagas/loadEstimateItemsByEstimateIdSaga';
 import updateEstimateSaga from './sagas/updateEstimateSaga';
 
 import rootReducer from './reducers';
@@ -39,7 +39,7 @@ sagaMiddleware.run(addUserSaga);
 sagaMiddleware.run(addEstimateSaga);
 sagaMiddleware.run(getEstimatesSaga);
 sagaMiddleware.run(exportEstimateSaga);
-sagaMiddleware.run(loadEstimateItemsSaga);
+sagaMiddleware.run(loadEstimateItemsByEstimateIdSaga);
 sagaMiddleware.run(updateEstimateSaga);
 
 export default function App() {

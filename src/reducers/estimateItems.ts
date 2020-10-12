@@ -10,12 +10,12 @@ import {
 
 let itemId = 0;
 
-const estimate = (state = {}, action) => {
+const estimateItems = (state = {}, action) => {
   switch (action.type) {
     case ADD_ESTIMATE_ITEM_WITH_PRICE:
       return {
         ...state,
-        [itemId++]: { productid: action.productid, quantity: action.quantity, price: action.price}
+        [itemId++]: { productid: action.productid, quantity: action.quantity, unitprice: action.unitprice}
       };
     case REMOVE_ESTIMATE_ITEM:
       const {[action.itemId]: value, ...stateWithoutId} = state;
@@ -23,7 +23,7 @@ const estimate = (state = {}, action) => {
     case CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE:
       return {
         ...state,
-        [action.itemId]: { ...state[action.itemId], productid: action.productid, price: action.price}
+        [action.itemId]: { ...state[action.itemId], productid: action.productid, unitprice: action.unitprice}
       };
     case CHANGE_ESTIMATE_ITEM_QTY:
       return {
@@ -39,11 +39,11 @@ const estimate = (state = {}, action) => {
     case LOAD_ESTIMATE_ITEM_WITH_PRICE:
       return {
         ...state,
-        [itemId++]: { productid: action.productid, quantity: action.quantity, price: action.unitprice}
+        [itemId++]: { productid: action.productid, quantity: action.quantity, unitprice: action.unitprice}
       };
     default:
       return state;
   }
 }
 
-export default estimate;
+export default estimateItems;

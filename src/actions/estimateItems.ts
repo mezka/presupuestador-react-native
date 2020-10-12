@@ -9,11 +9,11 @@ export const CLEAR_ESTIMATE_ITEMS = 'CLEAR_ESTIMATE_ITEMS';
 export const LOAD_ESTIMATE_ITEM_WITH_PRICE = 'LOAD_ESTIMATE_ITEM_WITH_PRICE';
 export const LOAD_ESTIMATE_ITEMS = 'LOAD_ESTIMATE_ITEMS';
 
-export const addEstimateItemWithPrice = (productid: number, quantity: number, price: number) => ({
+export const addEstimateItemWithPrice = (productid: number, quantity: number, unitprice: number) => ({
   type: ADD_ESTIMATE_ITEM_WITH_PRICE,
   productid,
   quantity,
-  price
+  unitprice
 });
 
 export const removeEstimateItem = (itemId: number) => ({
@@ -21,11 +21,11 @@ export const removeEstimateItem = (itemId: number) => ({
   itemId
 });
 
-export const changeEstimateItemProductWithPrice = (itemId: number, productid: number, price: number) => ({
+export const changeEstimateItemProductWithPrice = (itemId: number, productid: number, unitprice: number) => ({
   type: CHANGE_ESTIMATE_ITEM_PRODUCT_WITH_PRICE,
   itemId,
   productid,
-  price
+  unitprice
 });
 
 export const changeEstimateItemQty = (itemId: number, quantity:number) => ({

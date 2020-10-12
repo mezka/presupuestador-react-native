@@ -9,11 +9,11 @@ import EstimateItemPicker from './EstimateItemPicker';
 import ProductAddView from './ProductAddView';
 
 const NewEstimateScreen = (props) => {
-  const estimateitems = useSelector(state => state.estimate);
+  const estimateitems = useSelector(state => state.estimateItems);
   const products = useSelector(state => state.products.products);
   const filteredProducts = useSelector(state => state.products.filteredProducts);
-  const totalWithoutTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price, 0));
-  const totalWithTaxes = useSelector(state => Object.values(state.estimate).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.price * 1.21, 0));
+  const totalWithoutTaxes = useSelector(state => Object.values(state.estimateItems).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice, 0));
+  const totalWithTaxes = useSelector(state => Object.values(state.estimateItems).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice * 1.21, 0));
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const estimates = useSelector(state => state.estimates.estimates);
@@ -80,7 +80,7 @@ const NewEstimateScreen = (props) => {
 
   const saveEstimate = () => {
     const estimateitemsList = Object.keys(estimateitems).map((item) => {
-      return {unitprice: estimateitems[item].price, quantity: estimateitems[item].quantity, productid: estimateitems[item].productid};
+      return {unitprice: estimateitems[item].unitprice, quantity: estimateitems[item].quantity, productid: estimateitems[item].productid};
     });
     
     if(props.route.params.estimateid){

@@ -29,25 +29,25 @@ const ViewEditEstimateScreen = (props) => {
       let total_label = `$${estimateitems_total}`;
       return (
         <DataTable.Row style={{paddingHorizontal: 0}} key={estimate.id}>
-          <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} >{estimate.id}</DataTable.Cell>
+          <DataTable.Cell style={styles.cellSmall} >{estimate.id}</DataTable.Cell>
           <DataTable.Cell style={styles.cellLarge}>{estimate.createdAt.substring(0, 10)}</DataTable.Cell>
           <DataTable.Cell style={styles.cellLarge}>{estimate.client.name}</DataTable.Cell>
           <DataTable.Cell style={styles.cellLarge}>{total_label}</DataTable.Cell>
           <DataTable.Cell style={styles.cellSmall} onPress={() => handleEditEstimatePress(estimate.id, estimate.client.id)}>X</DataTable.Cell>
-          <DataTable.Cell style={{...styles.cellSmall, backgroundColor: 'red'}} onPress={() => handleDownloadAsPDFPress(estimate.id, `PRE ${estimate.id} - ${estimate.client.name}.pdf`)}>X</DataTable.Cell>
+          <DataTable.Cell style={styles.cellSmall} onPress={() => handleDownloadAsPDFPress(estimate.id, `PRE ${estimate.id} - ${estimate.client.name}.pdf`)}>X</DataTable.Cell>
         </DataTable.Row>
       );
   });
 
   return  <View style={ styles.parentView }>
             <DataTable style= {styles.dataTable}>
-              <DataTable.Header style={{backgroundColor: 'blue', paddingHorizontal: 0}}>
-                <DataTable.Title style={{...styles.cellSmall, backgroundColor: 'red'}}>N°</DataTable.Title>
+              <DataTable.Header style={{paddingHorizontal: 0}}>
+                <DataTable.Title style={styles.cellSmall}>N°</DataTable.Title>
                 <DataTable.Title style={styles.cellLarge}>Fecha</DataTable.Title>
                 <DataTable.Title style={styles.cellLarge}>Cliente</DataTable.Title>
                 <DataTable.Title style={styles.cellLarge}>Total</DataTable.Title>
                 <DataTable.Title style={styles.cellSmall}>Editar</DataTable.Title>
-                <DataTable.Title style={{...styles.cellSmall, backgroundColor: 'red'}}>PDF</DataTable.Title>
+                <DataTable.Title style={styles.cellSmall}>PDF</DataTable.Title>
               </DataTable.Header>
               { 
                 estimateDataTableCells
@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
   },
   dataTable: {
     display: 'flex',
-    backgroundColor: 'green',
   },
   cellLarge: {
     flexGrow: 8,

@@ -7,6 +7,8 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
 import ProductAddView from './ProductAddView';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const NewEstimateScreen = (props) => {
   const estimateitems = useSelector(state => state.estimateItems);
@@ -22,6 +24,14 @@ const NewEstimateScreen = (props) => {
     setVisible(!visible);
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        dispatch(clearEstimateItems());
+      };
+    }, [])
+  );
+
   useEffect(() => {
     dispatch(getProducts());
   }, []);
@@ -31,14 +41,6 @@ const NewEstimateScreen = (props) => {
       dispatch(loadEstimateItemsByEstimateId(props.route.params.estimateid));
     }
   }, [props.route.params.estimateid]);
-
-  useEffect(() => {
-    const clearEstimateItemsWhenComponentLosesFocus = props.navigation.addListener('blur', () => {
-      dispatch(clearEstimateItems());
-    });
-
-    return clearEstimateItemsWhenComponentLosesFocus;
-  }, [props.navigation]);
 
   const createProductChangeHandler = (estimateItemId) => {
     return (optionValue) => {

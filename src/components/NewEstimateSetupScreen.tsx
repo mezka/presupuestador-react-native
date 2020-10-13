@@ -57,10 +57,6 @@ const NewEstimateSetupScreen = (props) => {
         selectedClient.cuil = '';
       }
     }
-  }
-
-  const handleNewPress = () => {
-    props.navigation.navigate('NewClient');
   };
 
   const handleChoicePress = () => {
@@ -121,7 +117,6 @@ return  <ScrollView>
         </View>
 
         <View style={styles.buttonView}>
-          <Button style={styles.button} mode="contained" onPress={handleNewPress}>Nuevo Cliente</Button>
           <Button style={styles.button} mode="contained" onPress={handleImportPress}>Importar</Button>
           <Button style={styles.button} mode="contained" onPress={handleChoicePress}>Elegir</Button>
         </View>

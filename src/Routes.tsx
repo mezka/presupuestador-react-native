@@ -7,7 +7,6 @@ import HomeScreen from './components/HomeScreen';
 import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
 import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
 import NewEstimateScreen from './components/NewEstimateScreen';
-import NewClientScreen from './components/NewClientScreen';
 import ContactImporter from './components/ContactImporter';
 import { navigationRef } from './components/RootNavigation';
 
@@ -44,10 +43,6 @@ export default function Routes() {
         <Stack.Screen
           name="NewEstimate"
           component={NewEstimateScreen}
-        />
-        <Stack.Screen
-          name="NewClient"
-          component={NewClientScreen}
         />
         <Stack.Screen
           name="ContactImporter"

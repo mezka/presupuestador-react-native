@@ -1,4 +1,4 @@
-import ky from 'ky';
+import ky from '../extendedKy';
 import { Estimate } from '../types.ts';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';

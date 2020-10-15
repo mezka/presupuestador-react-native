@@ -1,4 +1,4 @@
-import ky from 'ky';
+import ky from '../extendedKy';
 import Constants from 'expo-constants';
 
 const api_url = Constants.manifest.extra.api_url;

@@ -1,4 +1,4 @@
-import ky from 'ky';
+import ky from '../extendedKy';
 import User from '../types.ts';
 import Constants from 'expo-constants';
 

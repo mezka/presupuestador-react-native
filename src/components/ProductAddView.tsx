@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Searchbar, Text, Checkbox, Button } from 'react-native-paper';
 
-const ProductAddView = ({products, filteredProducts, addEstimateItem, resetProductsFilter, setCategoryAndQuery}) => {
+const ProductAddView = ({products, filteredProducts, addEstimateItem, setProductsFilter, setProductsSearchAndFilter}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxes, setCheckboxes] = useState({});
 
@@ -42,12 +42,11 @@ const ProductAddView = ({products, filteredProducts, addEstimateItem, resetProdu
 
   const onChangeSearch = (queryString) => {
     if(queryString.length < searchQuery.length){
-      setSearchQuery(queryString);
-      resetProductsFilter();
-      return;
+      setProductsFilter((product) => true);
+    } else {
+      setProductsSearchAndFilter(queryString, (product) => true);
     }
     setSearchQuery(queryString);
-    setCategoryAndQuery('ALL', queryString);
   };
 
   return (

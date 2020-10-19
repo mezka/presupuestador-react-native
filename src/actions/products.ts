@@ -35,8 +35,9 @@ export const setProductsSearch = (query) => ({
   type: SET_PRODUCTS_SEARCH,
   query
 });
+
 export const setProductsSearchAndFilter = (query, filter) => ({
-  type: SET_PRODUCTS_SEARCH,
+  type: SET_PRODUCTS_SEARCH_AND_FILTER,
   query,
   filter
 });

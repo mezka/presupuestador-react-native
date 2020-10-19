@@ -6,7 +6,7 @@ import { Button, HelperText, TextInput } from 'react-native-paper';
 
 const SignupScreen = props => {
 
-  const [user, setUser] = useState({name: '', email: '', password: '', repeatedEmail: '', repeatedPassword: ''});
+  const [user, setUser] = useState({name: '', email: '', password: '', repeatedPassword: ''});
   const dispatch = useDispatch();
 
   const nameTextChange = (nameText) => {
@@ -15,10 +15,6 @@ const SignupScreen = props => {
 
   const emailTextChange = (emailText) => {
     setUser({...user, email: emailText});
-  };
-  
-  const repeatedEmailTextChange = (repeatedEmailText) => {
-    setUser({...user, repeatedEmail: repeatedEmailText});
   };
 
   const passwordTextChange = (passwordText) => {
@@ -30,7 +26,7 @@ const SignupScreen = props => {
   };
 
   const handleSignupPress = () => {
-    if (!(user.email==='' || user.password==='' || user.name==='' || inputNameHasErrors() || inputEmailHasErrors() || inputPasswordHasErrors() || inputRepeatedEmailHasErrors() || inputRepeatedPasswordHasErrors())) {
+    if (!(user.email==='' || user.password==='' || user.name==='' || inputNameHasErrors() || inputEmailHasErrors() || inputPasswordHasErrors() || inputRepeatedPasswordHasErrors())) {
       dispatch(addUser(user));
     }
   };
@@ -41,10 +37,6 @@ const SignupScreen = props => {
 
   const inputEmailHasErrors = () => {
     return !(/^$|^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(user.email));
-  };
-
-  const inputRepeatedEmailHasErrors = () => {
-    return user.email!==user.repeatedEmail;
   };
 
   const inputPasswordHasErrors = () => {
@@ -66,10 +58,6 @@ const SignupScreen = props => {
         <TextInput onChangeText={emailTextChange} label="E-mail" mode="flat" placeholder="nombre@dominio.com" value={user.email} />
         <HelperText type="error" visible={inputEmailHasErrors()}>
             Email inválido
-        </HelperText>
-        <TextInput onChangeText={repeatedEmailTextChange} label="Repetir E-mail" mode="flat" placeholder="nombre@dominio.com" value={user.repeatedEmail}/>
-        <HelperText type="error" visible={inputRepeatedEmailHasErrors()}>
-            Los correos no coinciden
         </HelperText>
         <TextInput onChangeText={passwordTextChange} mode="flat" label="Contraseña" value={user.password} secureTextEntry={true} />
         <HelperText type="error" visible={inputPasswordHasErrors()}>

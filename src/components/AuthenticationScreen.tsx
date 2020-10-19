@@ -24,7 +24,7 @@ const AuthenticationScreen = props => {
   const inputPasswordHasErrors = () => {
     return !(/^$|^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,}$/g.test(user.password));
   };
-  
+
   const handleLoginPress = () => {
     if (!(user.email==='' || user.password==='' || inputEmailHasErrors() || inputPasswordHasErrors())) {
       dispatch(loginUser(user));
@@ -39,13 +39,13 @@ const AuthenticationScreen = props => {
     <View style={styles.parentView}>
       <View style={styles.loginView}>
         <View style={styles.inputView}>
-          <TextInput label="E-mail" placeholder="email@example.com" value={user.email} onChangeText={emailTextChange} />
+          <TextInput label="E-mail" placeholder="nombre@dominio.com" value={user.email} onChangeText={emailTextChange} />
           <HelperText type="error" visible={inputEmailHasErrors()}>
             Email inválido
           </HelperText>
-          <TextInput label="Contraseña" value={user.password} onChangeText={passwordTextChange} />
+          <TextInput label="Contraseña" value={user.password} onChangeText={passwordTextChange} secureTextEntry={true} />
           <HelperText type="error" visible={inputPasswordHasErrors()}>
-            Contraseña inválida (8 caracteres, mínimo un número)
+            Contraseña inválida
           </HelperText>
         </View>
         <View style={styles.buttonView}>

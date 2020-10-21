@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getClients } from '../actions/clients';
+import { getClients, updateClient } from '../actions/clients';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 import { Surface, TextInput, Headline, Button, Divider, Title, Subheading, RadioButton, Checkbox } from 'react-native-paper';
@@ -39,10 +39,13 @@ const NewEstimateSetupScreen = (props) => {
   };
 
   const handleSavePress = () => {
-    setTextInputDisabled(true);
-    setRadioButtonDisabled(true);
-    setCheckboxDisabled(true);
-    setCuilInputDisabled(true);
+    if (!(selectedClient.email0==='' || selectedClient.cuil==='' || inputEmailHasErrors() || inputCuilHasErrors())) {
+      setTextInputDisabled(true);
+      setRadioButtonDisabled(true);
+      setCheckboxDisabled(true);
+      setCuilInputDisabled(true);
+      dispatch(updateClient(selectedClient));
+    }
   };
 
   const handleCategorySelect = (value) => {
@@ -65,6 +68,14 @@ const NewEstimateSetupScreen = (props) => {
 
   const handleImportPress = () => {
     props.navigation.navigate('ContactImporter');
+  };
+
+  const inputEmailHasErrors = () => {
+    return !(/^$|^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(selectedClient.email0));
+  };
+
+  const inputCuilHasErrors = () => {
+    return !(/b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9]/.test(selectedClient.cuil));
   };
 
 return  <ScrollView>
@@ -91,9 +102,15 @@ return  <ScrollView>
           <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Dirección" value={selectedClient.address0}/>
           <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Telefono" value={selectedClient.phonenumber0}/>
           <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Email" value={selectedClient.email0}/>
+          <HelperText type="error" visible={inputEmailHasErrors()}>
+            Email inválido
+          </HelperText>
           <Title>Datos Fiscales</Title>
           <View style={styles.cuilView}>
             <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={cuilInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil}/>
+            <HelperText type="error" visible={!cuilInputDisabled && inputCuilHasErrors()}>
+              CUIL/CUIT inválido
+            </HelperText> 
             <Checkbox.Item style={ styles.cuilCheckboxColumn } disabled={checkboxDisabled} label="N/A" status={cuilCheckbox ? 'checked' : 'unchecked'} onPress={handleCuilCheckboxPress}/>
           </View>
           <Subheading>Categoría</Subheading>

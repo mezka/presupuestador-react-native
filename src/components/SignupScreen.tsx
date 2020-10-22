@@ -105,15 +105,17 @@ const styles = StyleSheet.create({
   },
   inputView: {
     justifyContent: 'center',
-    marginTop: 50,
     width: 200,
-    height: 100
+    height: 100,
+    marginTop: 60
   },
   passwordView: {
     flex: 1,
     flexDirection: "row",
     alignItems: 'center',
-    width: 235
+    width: 235,
+    marginTop: 35,
+    marginBottom: 35
   }
 });
 

@@ -6,7 +6,8 @@ import { Button, IconButton, HelperText, TextInput } from 'react-native-paper';
 
 const SignupScreen = props => {
 
-  const [user, setUser] = useState({name: '', email: '', password: '', repeatedPassword: ''});
+  const [user, setUser] = useState({name: '', email: '', password: ''});
+  const [repeatedPassword, setRepeatedPassword] = useState('');
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [repeatedPasswordHidden, setRepeatedPasswordHidden] = useState(true);
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const SignupScreen = props => {
   };
 
   const repeatedPasswordTextChange = (repeatedPasswordText) => {
-    setUser({...user, repeatedPassword: repeatedPasswordText});
+    setRepeatedPassword(repeatedPasswordText);
   };
 
   const handleHidePasswordPress = () => {
@@ -54,7 +55,7 @@ const SignupScreen = props => {
   };
 
   const inputRepeatedPasswordHasErrors = () => {
-    return user.password!==user.repeatedPassword;
+    return user.password!==repeatedPassword;
   };
 
   return (
@@ -77,7 +78,7 @@ const SignupScreen = props => {
             Contraseña inválida
           </HelperText>
           <View style={styles.passwordView}>
-            <TextInput onChangeText={repeatedPasswordTextChange} style={{flex: 0.9}} mode="flat" label="Repetir Contraseña" value={user.repeatedPassword} secureTextEntry={repeatedPasswordHidden} />
+            <TextInput onChangeText={repeatedPasswordTextChange} style={{flex: 0.9}} mode="flat" label="Repetir Contraseña" value={repeatedPassword} secureTextEntry={repeatedPasswordHidden} />
             <IconButton icon={repeatedPasswordHidden?"eye":"eye-off"} style={{flex: 0.1}} size={20} onPress={handleHideRepeatedPasswordPress} />
           </View>
           <HelperText type="error" visible={inputRepeatedPasswordHasErrors()}>

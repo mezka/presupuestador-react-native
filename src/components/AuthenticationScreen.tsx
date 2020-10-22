@@ -18,10 +18,11 @@ const AuthenticationScreen = props => {
     setUser({...user, password: passwordText});
   };
 
+
   const handleHidePasswordPress = () => {
     setPasswordHidden(!passwordHidden);
   };
-
+  
   const inputEmailHasErrors = () => {
     return !(/^$|^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(user.email));
   };

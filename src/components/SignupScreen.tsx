@@ -10,6 +10,7 @@ const SignupScreen = props => {
   const [repeatedPassword, setRepeatedPassword] = useState('');
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [repeatedPasswordHidden, setRepeatedPasswordHidden] = useState(true);
+
   const dispatch = useDispatch();
 
   const nameTextChange = (nameText) => {
@@ -55,13 +56,13 @@ const SignupScreen = props => {
   };
 
   const inputRepeatedPasswordHasErrors = () => {
+
     return user.password!==repeatedPassword;
   };
 
   return (
     <View style={styles.parentView}>
       <View style={styles.inputView}>
-        <View>
           <TextInput onChangeText={nameTextChange} label="Nombre" mode="flat" placeholder="Nombre y Apellido" value={user.name} />
           <HelperText type="error" visible={inputNameHasErrors()}>
             Nombre inválido
@@ -88,7 +89,6 @@ const SignupScreen = props => {
         <View style={styles.buttonView}>
           <Button mode="contained" onPress={handleSignupPress}>Registrar Usuario</Button>
         </View>
-      </View>
     </View>
   );
 };
@@ -105,9 +105,10 @@ const styles = StyleSheet.create({
   },
   inputView: {
     justifyContent: 'center',
+    marginTop: 250,
+    marginBottom: 100,
     width: 200,
     height: 100,
-    marginTop: 60
   },
   passwordView: {
     flex: 1,

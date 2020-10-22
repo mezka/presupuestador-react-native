@@ -88,7 +88,6 @@ const SignupScreen = props => {
           <Button mode="contained" onPress={handleSignupPress}>Registrar Usuario</Button>
         </View>
       </View>
-
     </View>
   );
 };

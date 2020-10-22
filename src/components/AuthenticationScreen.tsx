@@ -60,7 +60,6 @@ const AuthenticationScreen = props => {
           <Button mode="contained" onPress={handleLoginPress}>Ingresá</Button>
         </View>
       </View>
-      
       <View style={styles.signupView}>
         <Text style={styles.text}>...o si no tenés cuenta</Text>
         <Button mode="contained" onPress={navigateToSignup}>Registrate</Button>

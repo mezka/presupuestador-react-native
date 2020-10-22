@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../actions/auth';
 import { View, StyleSheet, Text } from 'react-native';
-import { Button, HelperText, TextInput } from 'react-native-paper';
+import { Button, IconButton, HelperText, TextInput } from 'react-native-paper';
 import * as RootNavigation from './RootNavigation';
 
 const AuthenticationScreen = props => {
 
   const [user, setUser] = useState({name: '', email: '', password: ''});
+  const [passwordHidden, setPasswordHidden] = useState(true);
   const dispatch = useDispatch();
 
   const emailTextChange = (emailText) => {
@@ -17,6 +18,11 @@ const AuthenticationScreen = props => {
     setUser({...user, password: passwordText});
   };
 
+
+  const handleHidePasswordPress = () => {
+    setPasswordHidden(!passwordHidden);
+  };
+  
   const inputEmailHasErrors = () => {
     return !(/^$|^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(user.email));
   };
@@ -38,12 +44,15 @@ const AuthenticationScreen = props => {
   return (
     <View style={styles.parentView}>
       <View style={styles.loginView}>
-        <View style={styles.inputView}>
-          <TextInput label="E-mail" placeholder="nombre@dominio.com" value={user.email} onChangeText={emailTextChange} />
+        <View>
+          <TextInput mode="flat" label="E-mail" placeholder="nombre@dominio.com" value={user.email} onChangeText={emailTextChange} />
           <HelperText type="error" visible={inputEmailHasErrors()}>
             Email inválido
           </HelperText>
-          <TextInput label="Contraseña" value={user.password} onChangeText={passwordTextChange} secureTextEntry={true} />
+          <View style={styles.passwordView}>
+            <TextInput mode="flat" label="Contraseña" style={{flex: 0.9}} value={user.password} onChangeText={passwordTextChange} secureTextEntry={passwordHidden} />
+            <IconButton icon={passwordHidden?"eye":"eye-off"} style={{flex: 0.1}} size={20} onPress={handleHidePasswordPress} />
+          </View>
           <HelperText type="error" visible={inputPasswordHasErrors()}>
             Contraseña inválida
           </HelperText>
@@ -52,7 +61,6 @@ const AuthenticationScreen = props => {
           <Button mode="contained" onPress={handleLoginPress}>Ingresá</Button>
         </View>
       </View>
-      
       <View style={styles.signupView}>
         <Text style={styles.text}>...o si no tenés cuenta</Text>
         <Button mode="contained" onPress={navigateToSignup}>Registrate</Button>
@@ -69,7 +77,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     justifyContent: 'space-around',
-    height: 120
+    height: 50
   },
   inputView: {
     justifyContent: 'center',
@@ -82,6 +90,12 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: 200,
     height: 100
+  },
+  passwordView: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: 'center',
+    width: 235
   },
   signupView: {
     justifyContent: 'center',

@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../actions/auth';
 import { View, StyleSheet } from 'react-native';
-import { Button, HelperText, TextInput } from 'react-native-paper';
+import { Button, IconButton, HelperText, TextInput } from 'react-native-paper';
 
 const SignupScreen = props => {
 
-  const [user, setUser] = useState({name: '', email: '', password: '', repeatedPassword: ''});
+  const [user, setUser] = useState({name: '', email: '', password: ''});
+  const [repeatedPassword, setRepeatedPassword] = useState('');
+  const [passwordHidden, setPasswordHidden] = useState(true);
+  const [repeatedPasswordHidden, setRepeatedPasswordHidden] = useState(true);
+
   const dispatch = useDispatch();
 
   const nameTextChange = (nameText) => {
@@ -22,7 +26,15 @@ const SignupScreen = props => {
   };
 
   const repeatedPasswordTextChange = (repeatedPasswordText) => {
-    setUser({...user, repeatedPassword: repeatedPasswordText});
+    setRepeatedPassword(repeatedPasswordText);
+  };
+
+  const handleHidePasswordPress = () => {
+    setPasswordHidden(!passwordHidden);
+  };
+
+  const handleHideRepeatedPasswordPress = () => {
+    setRepeatedPasswordHidden(!repeatedPasswordHidden);
   };
 
   const handleSignupPress = () => {
@@ -44,35 +56,39 @@ const SignupScreen = props => {
   };
 
   const inputRepeatedPasswordHasErrors = () => {
-    return user.password!==user.repeatedPassword;
+
+    return user.password!==repeatedPassword;
   };
 
   return (
     <View style={styles.parentView}>
-
       <View style={styles.inputView}>
-        <TextInput onChangeText={nameTextChange} label="Nombre" mode="flat" placeholder="Nombre y Apellido" value={user.name} />
-        <HelperText type="error" visible={inputNameHasErrors()}>
+          <TextInput onChangeText={nameTextChange} label="Nombre" mode="flat" placeholder="Nombre y Apellido" value={user.name} />
+          <HelperText type="error" visible={inputNameHasErrors()}>
             Nombre inválido
-        </HelperText>
-        <TextInput onChangeText={emailTextChange} label="E-mail" mode="flat" placeholder="nombre@dominio.com" value={user.email} />
-        <HelperText type="error" visible={inputEmailHasErrors()}>
+          </HelperText>
+          <TextInput onChangeText={emailTextChange} label="E-mail" mode="flat" placeholder="nombre@dominio.com" value={user.email} />
+          <HelperText type="error" visible={inputEmailHasErrors()}>
             Email inválido
-        </HelperText>
-        <TextInput onChangeText={passwordTextChange} mode="flat" label="Contraseña" value={user.password} secureTextEntry={true} />
-        <HelperText type="error" visible={inputPasswordHasErrors()}>
+          </HelperText>
+          <View style={styles.passwordView}>
+            <TextInput onChangeText={passwordTextChange} style={{flex: 0.9}} mode="flat" label="Contraseña" value={user.password} secureTextEntry={passwordHidden} />
+            <IconButton icon={passwordHidden?"eye":"eye-off"} style={{flex: 0.1}} size={20} onPress={handleHidePasswordPress} />
+          </View>
+          <HelperText type="error" visible={inputPasswordHasErrors()}>
             Contraseña inválida
-        </HelperText>
-        <TextInput onChangeText={repeatedPasswordTextChange} mode="flat" label="Repetir Contraseña" value={user.repeatedPassword} secureTextEntry={true} />
-        <HelperText type="error" visible={inputRepeatedPasswordHasErrors()}>
+          </HelperText>
+          <View style={styles.passwordView}>
+            <TextInput onChangeText={repeatedPasswordTextChange} style={{flex: 0.9}} mode="flat" label="Repetir Contraseña" value={repeatedPassword} secureTextEntry={repeatedPasswordHidden} />
+            <IconButton icon={repeatedPasswordHidden?"eye":"eye-off"} style={{flex: 0.1}} size={20} onPress={handleHideRepeatedPasswordPress} />
+          </View>
+          <HelperText type="error" visible={inputRepeatedPasswordHasErrors()}>
             Las contraseñas no coinciden
-        </HelperText>
-      </View>
-
-      <View style={styles.buttonView}>
-        <Button mode="contained" onPress={handleSignupPress}>Registrar Usuario</Button>
-      </View>
-
+          </HelperText>
+        </View>
+        <View style={styles.buttonView}>
+          <Button mode="contained" onPress={handleSignupPress}>Registrar Usuario</Button>
+        </View>
     </View>
   );
 };
@@ -85,14 +101,22 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     justifyContent: 'space-around',
-    height: 200
+    height: 50
   },
   inputView: {
     justifyContent: 'center',
     marginTop: 250,
     marginBottom: 100,
     width: 200,
-    height: 100
+    height: 100,
+  },
+  passwordView: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: 'center',
+    width: 235,
+    marginTop: 35,
+    marginBottom: 35
   }
 });
 

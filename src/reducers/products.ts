@@ -11,7 +11,7 @@ import FlexSearch from 'flexsearch/dist/module/flexsearch';
 const productIndex = new FlexSearch({
   doc: {
     id: "id",
-    field: ["model", "modelstub", "category", "price"]
+    field: ["modelname", "price"]
   },
   tokenize: 'forward'
 });

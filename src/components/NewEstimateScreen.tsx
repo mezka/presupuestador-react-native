@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProducts, setProductsFilter, setProductsSearchAndFilter } from '../actions/products';
+import { getProducts, setProductsFilter as createSetProductsFilter, setProductsSearchAndFilter as createSetProductsSearchAndFilter} from '../actions/products';
 import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItemsByEstimateId, clearEstimateItems } from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
@@ -58,18 +58,12 @@ const NewEstimateScreen = (props) => {
     dispatch(createAddEstimateItemAction(productid, 1));
   };
 
-  const resetProductsFilter = () => {
-    dispatch(setProductsFilter((product)=> true));
+  const setProductsFilter = (filterFn: Function) => {
+    dispatch(createSetProductsFilter(filterFn));
   };
 
-  const setCategoryAndQuery = (category: string, query: string) => {
-
-    let filterFn = (product) => true;
-
-    if(category !== 'ALL')
-      filterFn = (product) => product.category === category;
-    
-    dispatch(setProductsSearchAndFilter(query, filterFn));
+  const setProductsSearchAndFilter = (query: string, filterFn: Function) => {
+    dispatch(createSetProductsSearchAndFilter(query, filterFn));
   };
 
   const createRemoveEstimateItem = (estimateItemId: number) => {
@@ -110,7 +104,7 @@ const NewEstimateScreen = (props) => {
         <Dialog visible={visible} onDismiss={toggleDialog}>
           <Dialog.ScrollArea>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-              <ProductAddView products={products} filteredProducts={filteredProducts} addEstimateItem={addEstimateItem} resetProductsFilter={resetProductsFilter} setCategoryAndQuery={setCategoryAndQuery} />
+              <ProductAddView products={products} filteredProducts={filteredProducts} addEstimateItem={addEstimateItem} setProductsFilter={setProductsFilter} setProductsSearchAndFilter={setProductsSearchAndFilter} />
             </ScrollView>
           </Dialog.ScrollArea>
         </Dialog>

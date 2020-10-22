@@ -5,7 +5,12 @@ const afterResponse = async (request, options, response) => {
   const body = await response.json();
 
   if(!response.ok && !response.statusText){
-    response.statusText = JSON.stringify(body.errors);
+
+    if(body.errors && body.errors.length || body.errors && body.errors instanceof Object && Object.values(body.errors).length){
+      response.statusText = JSON.stringify(body.errors);
+    } else {
+      response.statusText = body.message;
+    }
   }
  
   return response;

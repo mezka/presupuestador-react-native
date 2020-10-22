@@ -1,6 +1,7 @@
 import { GET_CLIENTS_REQUESTED, getClientsPending, getClientsSucceded, getClientsFailed } from '../actions/clients';
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { getClients as fetchClients } from '../api/clients';
+import { Alert } from "react-native";
 
 function* attemptGetClients() {
   yield put(getClientsPending());
@@ -9,6 +10,7 @@ function* attemptGetClients() {
     const clients = yield call(fetchClients, token);
     yield put(getClientsSucceded(clients));
   } catch (error) {
+    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
     yield put(getClientsFailed(error));
   }
 }

@@ -3,6 +3,7 @@ import { clearEstimateItems } from '../actions/estimateItems';
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { addEstimate as newEstimate } from '../api/estimates';
 import * as RootNavigation from '../components/RootNavigation';
+import { Alert } from "react-native";
 
 const getToken = (state) => state.auth.token;
 
@@ -16,7 +17,8 @@ function* addEstimate(action){
     yield put(clearEstimateItems());
     RootNavigation.goBack();
   } catch (error) {
-    yield put (addEstimateFailed(error));
+    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+    yield put (addEstimateFailed(error.response.statusText));
   }
 }
 

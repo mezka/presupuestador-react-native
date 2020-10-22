@@ -1,6 +1,7 @@
 import { GET_PRODUCTS_REQUESTED, getProductsPending, getProductsSucceded, getProductsFailed } from '../actions/products';
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { getProducts as fetchProducts } from '../api/products';
+import { Alert } from "react-native";
 
 const getToken = (state) => state.auth.token;
 
@@ -11,6 +12,7 @@ function* attemptGetProducts() {
     const products = yield call(fetchProducts, token);
     yield put(getProductsSucceded(products));
   } catch (error) {
+    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
     yield put(getProductsFailed(error));
   }
 }

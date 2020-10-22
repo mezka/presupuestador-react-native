@@ -2,15 +2,17 @@ import { LOGIN_USER_REQUESTED, loginUserPending, loginUserFailed, loginUserSucce
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { loginUser as fetchClient} from '../api/auth';
 import * as RootNavigation from '../components/RootNavigation';
+import { Alert } from "react-native";
 
 function* authenticateUser(action){
   yield put(loginUserPending());
   try {
     let response = yield call(fetchClient, {email: action.user.email, password: action.user.password});
-    yield put(loginUserSucceded(response.user, response.accessToken));
     RootNavigation.navigate('Home', {});
+    yield put(loginUserSucceded(response.user, response.accessToken));
   } catch (error){
-    yield put (loginUserFailed(error));
+    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+    yield put (loginUserFailed(error.response.statusText));
   }
 }
 

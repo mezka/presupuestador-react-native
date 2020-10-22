@@ -3,18 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getClients, updateClient } from '../actions/clients';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Picker } from '@react-native-community/picker';
-import { Surface, TextInput, Headline, Button, Divider, Title, Subheading, RadioButton, Checkbox } from 'react-native-paper';
+import { Surface, TextInput, Headline, HelperText, Button, Divider, Title, Subheading, RadioButton, Checkbox } from 'react-native-paper';
 import { State } from 'react-native-gesture-handler';
 
 const NewEstimateSetupScreen = (props) => {
   const dispatch = useDispatch();
   const clients = useSelector(state => state.clients.clients);
-  const [selectedClient, setSelectedClient] = useState({id: '', name: '', address0: '', email0: '', phonenumber0: '', cuil: ''});
+  const [selectedClient, setSelectedClient] = useState({id: '', name: '', address0: '', email0: '', phonenumber0: '', cuil: '', taxcategory: '', taxpercent: '21'});
   const [textInputDisabled, setTextInputDisabled] = useState(true);
   const [cuilInputDisabled, setCuilInputDisabled] = useState(true);
   const [radioButtonDisabled, setRadioButtonDisabled] = useState(true);
   const [checkboxDisabled, setCheckboxDisabled] = useState(true);
-  const [category, setCategory] = useState('CONSUMIDOR FINAL');
   const [cuilCheckbox, setCuilCheckbox] = useState(false);
 
   useEffect(() => {
@@ -39,17 +38,13 @@ const NewEstimateSetupScreen = (props) => {
   };
 
   const handleSavePress = () => {
-    if (!(selectedClient.email0==='' || selectedClient.cuil==='' || inputEmailHasErrors() || inputCuilHasErrors())) {
+    if (!textInputDisabled && !(selectedClient.email0==='' || selectedClient.cuil==='' || inputEmailHasErrors() || (inputCuilHasErrors() && !cuilInputDisabled))) {
       setTextInputDisabled(true);
       setRadioButtonDisabled(true);
       setCheckboxDisabled(true);
       setCuilInputDisabled(true);
       dispatch(updateClient(selectedClient));
     }
-  };
-
-  const handleCategorySelect = (value) => {
-    setCategory(value);
   };
 
   const handleCuilCheckboxPress = () => {
@@ -70,12 +65,36 @@ const NewEstimateSetupScreen = (props) => {
     props.navigation.navigate('ContactImporter');
   };
 
+  const nameTextChange = (nameText) => {
+    setSelectedClient({...selectedClient, name: nameText});
+  };
+
+  const addressTextChange = (addressText) => {
+    setSelectedClient({...selectedClient, address0: addressText});
+  };
+
+  const phoneNumberTextChange = (phoneNumberText) => {
+    setSelectedClient({...selectedClient, phonenumber0: phoneNumberText});
+  };
+
+  const emailTextChange = (emailText) => {
+    setSelectedClient({...selectedClient, email0: emailText});
+  };
+
+  const cuilTextChange = (cuilText) => {
+    setSelectedClient({...selectedClient, cuil: cuilText});
+  };
+
+  const handleCategorySelect = (taxCategory) => {
+    setSelectedClient({...selectedClient, taxcategory: taxCategory});
+  };
+
   const inputEmailHasErrors = () => {
     return !(/^$|^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(selectedClient.email0));
   };
 
   const inputCuilHasErrors = () => {
-    return !(/b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9]/.test(selectedClient.cuil));
+    return !(/^(20|23|27|30|33)([0-9]{9}|-[0-9]{8}-[0-9]{1})$/.test(selectedClient.cuil));
   };
 
 return  <ScrollView>
@@ -98,24 +117,28 @@ return  <ScrollView>
           }
         </Surface>
         <View>
-          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Nombre" value={selectedClient.name}/>
-          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Dirección" value={selectedClient.address0}/>
-          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Telefono" value={selectedClient.phonenumber0}/>
-          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Email" value={selectedClient.email0}/>
+          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Nombre" value={selectedClient.name} onChangeText={nameTextChange}/>
+          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Dirección" value={selectedClient.address0} onChangeText={addressTextChange}/>
+          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Telefono" value={selectedClient.phonenumber0} onChangeText={phoneNumberTextChange}/>
+          <TextInput style={ styles.textInputView } mode="flat" disabled={textInputDisabled} label="Email" value={selectedClient.email0} onChangeText={emailTextChange}/>
           <HelperText type="error" visible={inputEmailHasErrors()}>
             Email inválido
           </HelperText>
           <Title>Datos Fiscales</Title>
           <View style={styles.cuilView}>
+            <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={cuilInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil} onChangeText={cuilTextChange}/>
             <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={cuilInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil}/>
             <HelperText type="error" visible={!cuilInputDisabled && inputCuilHasErrors()}>
               CUIL/CUIT inválido
             </HelperText> 
             <Checkbox.Item style={ styles.cuilCheckboxColumn } disabled={checkboxDisabled} label="N/A" status={cuilCheckbox ? 'checked' : 'unchecked'} onPress={handleCuilCheckboxPress}/>
           </View>
+          <HelperText type="error" visible={!cuilInputDisabled && inputCuilHasErrors()}>
+            CUIL/CUIT inválido
+          </HelperText>
           <Subheading>Categoría</Subheading>
           <View style={styles.categoriesView}>
-            <RadioButton.Group onValueChange={handleCategorySelect} value={category}>
+            <RadioButton.Group onValueChange={handleCategorySelect} value={selectedClient.taxcategory}>
               <View style={styles.categoriesColumn}>
                 <RadioButton.Item disabled={radioButtonDisabled} label="Consumidor Final" value="CONSUMIDOR FINAL"/>
                 <RadioButton.Item disabled={radioButtonDisabled} label="Responsable Inscripto" value="RESPONSABLE INSCRIPTO"/>

@@ -4,7 +4,10 @@ import {
   GET_CLIENTS_PENDING,
   ADD_CLIENT_PENDING,
   ADD_CLIENT_FAILED,
-  ADD_CLIENT_SUCCEDED
+  ADD_CLIENT_SUCCEDED,
+  UPDATE_CLIENT_PENDING,
+  UPDATE_CLIENT_FAILED,
+  UPDATE_CLIENT_SUCCEDED
 } from '../actions/clients';
 
 const clients = (state = {pending: false, clients: []}, action) => {
@@ -44,6 +47,22 @@ const clients = (state = {pending: false, clients: []}, action) => {
         ...state,
         clients: [...state.clients, action.client],
         pending: false
+      }
+    case UPDATE_CLIENT_SUCCEDED:
+      return {
+        ...state,
+        pending: false
+      }
+    case UPDATE_CLIENT_PENDING:
+      return {
+        ...state,
+        pending: true
+      }
+    case UPDATE_CLIENT_FAILED:
+      return {
+        ...state,
+        pending: false,
+        error: action.error
       }
     default:
       return state;

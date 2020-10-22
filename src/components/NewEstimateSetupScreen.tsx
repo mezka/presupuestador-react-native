@@ -127,6 +127,10 @@ return  <ScrollView>
           <Title>Datos Fiscales</Title>
           <View style={styles.cuilView}>
             <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={cuilInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil} onChangeText={cuilTextChange}/>
+            <TextInput style={ styles.cuilInputColumn } mode="flat" disabled={cuilInputDisabled} label="CUIL/CUIT" value={selectedClient.cuil}/>
+            <HelperText type="error" visible={!cuilInputDisabled && inputCuilHasErrors()}>
+              CUIL/CUIT inválido
+            </HelperText> 
             <Checkbox.Item style={ styles.cuilCheckboxColumn } disabled={checkboxDisabled} label="N/A" status={cuilCheckbox ? 'checked' : 'unchecked'} onPress={handleCuilCheckboxPress}/>
           </View>
           <HelperText type="error" visible={!cuilInputDisabled && inputCuilHasErrors()}>

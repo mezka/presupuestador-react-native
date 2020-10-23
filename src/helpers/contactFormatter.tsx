@@ -45,7 +45,12 @@ const contactFormatter = (contactArray) => {
     return {...contact, ...addresses, ...emails, ...phoneNumbers};
   };
 
-  return contactArray.map(contactMapper);
+  return contactArray.map(contactMapper).reduce((acc, current) => {
+      if (current.address0 && current.email0 && current.phonenumber0) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
 }
 
 export default contactFormatter;

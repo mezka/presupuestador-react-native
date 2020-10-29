@@ -35,8 +35,9 @@ export const setContactsSearch = (query) => ({
   type: SET_CONTACTS_SEARCH,
   query
 });
+
 export const setContactsSearchAndFilter = (query, filter) => ({
-  type: SET_CONTACTS_SEARCH,
+  type: SET_CONTACTS_SEARCH_AND_FILTER,
   query,
   filter
 });

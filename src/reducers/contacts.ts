@@ -11,12 +11,12 @@ import FlexSearch from 'flexsearch/dist/module/flexsearch';
 const contactsIndex = new FlexSearch({
   doc: {
     id: "id",
-    field: ["adddress0", "address1", "address2", "email0", "email1", "email2", "name", "phonenumber0", "phonenumber1", "phonenumber2"]
+    field: ["name", "address0", "email0", "phonenumber0", "address1", "address2", "email1", "email2", "phonenumber1", "phonenumber2"]
   },
   tokenize: 'forward'
 });
 
-const contacts = (state = { pending: false, contacts: [] }, action) => {
+const contacts = (state = { pending: false, contacts: contactsIndex.where(() => true) }, action) => {
   switch (action.type) {
     case GET_CONTACTS_SUCCEDED:
       contactsIndex.add(action.contacts);

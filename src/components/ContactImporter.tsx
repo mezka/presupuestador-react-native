@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, StyleSheet, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { Searchbar, Text } from 'react-native-paper';
 import ContactCard from './ContactCard';
-import { getContacts } from '../actions/contacts';
+import { getContacts, setContactsFilter, setContactsSearchAndFilter } from '../actions/contacts';
 import { addClient } from '../actions/clients';
 
 function formatContact(contact){
@@ -10,7 +11,6 @@ function formatContact(contact){
   const phonenumbers = [contact.phonenumber0, contact.phonenumber1, contact.phonenumber2].filter((phonenumber) => phonenumber);
   const emails = [contact.email0, contact.email1, contact.email2].filter((email) => email);
   const addresses = [contact.address0, contact.address1, contact.address2].filter((address) => address);
-
 
   const phonenumberObj = Object.values(phonenumbers).reduce((obj, currentPhonenumber, index) => {
     obj[`phonenumber${index}`] = currentPhonenumber;
@@ -39,7 +39,8 @@ function formatContact(contact){
 const ContactImporter = () => {
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
+  const filteredContacts = useSelector(state => state.contacts.filteredContacts);
+  const [searchContactQuery, setSearchContactQuery] = useState('');
 
   useEffect(() => {
     dispatch(getContacts());
@@ -49,11 +50,27 @@ const ContactImporter = () => {
     dispatch(addClient(formatContact(contact)));
   }
 
-  const contactList = contacts.filter((contact) => contact.email0 && contact.phonenumber0 && contact.address0).map(contact => (<ContactCard key={contact.id} importContact={importContact} contact={contact}/>));
+  const onChangeContactSearch = (queryString) => {
+    if(queryString.length < searchContactQuery.length){
+      dispatch(setContactsFilter((contact) => true));
+    } else {
+      dispatch(setContactsSearchAndFilter(queryString, (contact) => true));
+    }
+    setSearchContactQuery(queryString);
+  };
+
+  const listContacts = () => {
+    if (filteredContacts) {
+      return filteredContacts.map(contact => (<ContactCard key={contact.id} importContact={importContact} contact={contact}/>));
+    } else {
+      return <Text>Vacío</Text>;
+    }
+  };
 
   return(
     <ScrollView>
-      {contactList}
+      <Searchbar placeholder="Buscar" onChangeText={onChangeContactSearch} value={searchContactQuery}/>
+      {listContacts()}
     </ScrollView>
   );
 };

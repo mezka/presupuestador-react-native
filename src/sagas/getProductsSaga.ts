@@ -2,6 +2,7 @@ import { GET_PRODUCTS_REQUESTED, getProductsPending, getProductsSucceded, getPro
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { getProducts as fetchProducts } from '../api/products';
 import { Alert } from "react-native";
+import { productMapper } from '../helpers/productMapper';
 
 const getToken = (state) => state.auth.token;
 
@@ -10,7 +11,7 @@ function* attemptGetProducts() {
   try {
     const token = yield select(getToken);
     const products = yield call(fetchProducts, token);
-    yield put(getProductsSucceded(products));
+    yield put(getProductsSucceded(products.map(productMapper)));
   } catch (error) {
     Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
     yield put(getProductsFailed(error));

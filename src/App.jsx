@@ -1,5 +1,4 @@
 import React from 'react';
-import log from 'loglevel';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider as ReduxProvider} from 'react-redux';
@@ -19,11 +18,10 @@ import exportEstimateSaga from './sagas/exportEstimateSaga';
 import loadEstimateItemsByEstimateIdSaga from './sagas/loadEstimateItemsByEstimateIdSaga';
 import updateEstimateSaga from './sagas/updateEstimateSaga';
 import updateClientSaga from './sagas/updateClientSaga';
+import getCategoriesSaga from './sagas/getCategoriesSaga';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
-
-log.setLevel("info");
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
@@ -43,6 +41,7 @@ sagaMiddleware.run(exportEstimateSaga);
 sagaMiddleware.run(loadEstimateItemsByEstimateIdSaga);
 sagaMiddleware.run(updateEstimateSaga);
 sagaMiddleware.run(updateClientSaga);
+sagaMiddleware.run(getCategoriesSaga);
 
 export default function App() {
   return (

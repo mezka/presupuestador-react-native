@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getCategories } from '../actions/categories';
 import { getProducts, setProductsFilter as createSetProductsFilter, setProductsSearchAndFilter as createSetProductsSearchAndFilter} from '../actions/products';
 import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItemsByEstimateId, clearEstimateItems } from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
@@ -18,7 +19,7 @@ const NewEstimateScreen = (props) => {
   const totalWithTaxes = useSelector(state => Object.values(state.estimateItems).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice * 1.21, 0));
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
-  const estimates = useSelector(state => state.estimates.estimates);
+  const categories = useSelector(state => state.categories.categories);
 
   const toggleDialog = () => {
     setVisible(!visible);
@@ -34,6 +35,7 @@ const NewEstimateScreen = (props) => {
 
   useEffect(() => {
     dispatch(getProducts());
+    dispatch(getCategories());
   }, []);
 
   useEffect(() => {
@@ -104,7 +106,7 @@ const NewEstimateScreen = (props) => {
         <Dialog visible={visible} onDismiss={toggleDialog}>
           <Dialog.ScrollArea>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-              <ProductAddView products={products} filteredProducts={filteredProducts} addEstimateItem={addEstimateItem} setProductsFilter={setProductsFilter} setProductsSearchAndFilter={setProductsSearchAndFilter} />
+              <ProductAddView products={products} categories={categories} filteredProducts={filteredProducts} addEstimateItem={addEstimateItem} setProductsFilter={setProductsFilter} setProductsSearchAndFilter={setProductsSearchAndFilter} />
             </ScrollView>
           </Dialog.ScrollArea>
         </Dialog>

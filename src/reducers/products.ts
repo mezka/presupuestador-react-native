@@ -11,7 +11,7 @@ import FlexSearch from 'flexsearch/dist/module/flexsearch';
 const productIndex = new FlexSearch({
   doc: {
     id: "id",
-    field: ["modelname", "price"]
+    field: ["modelname", "price", "updatedAt", "categories0", "categories1", "categories2"]
   },
   tokenize: 'forward'
 });
@@ -19,7 +19,9 @@ const productIndex = new FlexSearch({
 const products = (state = { pending: false, products: productIndex.where(() => true) }, action) => {
   switch (action.type) {
     case GET_PRODUCTS_SUCCEDED:
+      
       productIndex.add(action.products);
+
       return {
         ...state,
         pending: false,
@@ -49,6 +51,15 @@ const products = (state = { pending: false, products: productIndex.where(() => t
         filteredProducts: productIndex.search(action.query)
       };
     case SET_PRODUCTS_SEARCH_AND_FILTER:
+
+      console.log(SET_PRODUCTS_SEARCH_AND_FILTER);
+      console.log(action.query);
+      console.log(action.filter);
+
+      console.log(productIndex.search(action.query, {
+        where: action.filter
+      }));
+
       return {
         ...state,
         filteredProducts: productIndex.search(action.query, {

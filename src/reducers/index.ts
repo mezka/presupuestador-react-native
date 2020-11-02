@@ -5,6 +5,7 @@ import clients from './clients';
 import contacts from './contacts';
 import auth from './auth';
 import estimates from './estimates';
+import categories from './categories';
 
 export default combineReducers({
   estimateItems,
@@ -12,5 +13,6 @@ export default combineReducers({
   clients,
   contacts,
   estimates,
-  auth
+  auth,
+  categories
 });

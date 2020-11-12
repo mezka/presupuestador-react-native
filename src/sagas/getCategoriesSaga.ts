@@ -8,12 +8,16 @@ function* getCategories(action){
   yield put(getCategoriesPending());
   try{
     var categories = yield call(fetchCategories);
+    yield put(getCategoriesSucceded(categories));
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    return yield put(getCategoriesFailed(error));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put(getCategoriesFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put(getCategoriesFailed(error));
+    }
   }
-
-  yield put(getCategoriesSucceded(categories));
 }
 
 function* getCategoriesSaga(){

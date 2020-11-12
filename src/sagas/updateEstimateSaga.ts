@@ -15,8 +15,13 @@ function* updateEstimate(action) {
     yield put(clearEstimateItems());
     RootNavigation.goBack();
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put(updateEstimateFailed(error));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put(updateEstimateFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put(updateEstimateFailed(error));
+    }
   }
 }
 

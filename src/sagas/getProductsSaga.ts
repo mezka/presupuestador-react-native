@@ -13,8 +13,13 @@ function* attemptGetProducts() {
     const products = yield call(fetchProducts, token);
     yield put(getProductsSucceded(products.map(productMapper)));
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put(getProductsFailed(error));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put(getProductsFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put(getProductsFailed(error));
+    }
   }
 }
 

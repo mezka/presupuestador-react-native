@@ -12,8 +12,13 @@ function* addUser(action){
     Alert.alert(action.user.name, "¡Usuario creado con éxito!", [{ text: "OK" }], {});
     RootNavigation.navigate('Authentication', {});
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put (addUserFailed(error));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put (addUserFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put (addUserFailed(error));
+    }
   }
 }
 

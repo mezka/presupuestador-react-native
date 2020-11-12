@@ -10,8 +10,13 @@ function* attemptGetClients() {
     const clients = yield call(fetchClients, token);
     yield put(getClientsSucceded(clients));
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put(getClientsFailed(error));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put(getClientsFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put(getClientsFailed(error));
+    }
   }
 }
 

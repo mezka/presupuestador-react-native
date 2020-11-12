@@ -11,8 +11,13 @@ function* authenticateUser(action){
     RootNavigation.navigate('Home', {});
     yield put(loginUserSucceded(response.user, response.accessToken));
   } catch (error){
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put (loginUserFailed(error.response.statusText));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put (loginUserFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put (loginUserFailed(error.response.statusText));
+    }
   }
 }
 

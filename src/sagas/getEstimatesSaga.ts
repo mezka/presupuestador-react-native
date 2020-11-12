@@ -13,8 +13,13 @@ function* attemptGetEstimates() {
     
     yield put(getEstimatesSucceded(estimates));
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put(getEstimatesFailed(error));
+    if(!error.response){
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put(getEstimatesFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put(getEstimatesFailed(error));
+    }
   }
 }
 

@@ -11,8 +11,13 @@ function* updateClient(action) {
     yield put(updateClientSucceded());
     yield put(getClients());
   } catch (error) {
-    Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
-    yield put(updateClientFailed(error));
+    if (!error.response) {
+      Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
+      yield put(updateClientFailed("Request timeout"));
+    } else {
+      Alert.alert("Error", error.response.statusText, [{ text: "OK" }], {});
+      yield put(updateClientFailed(error));
+    }
   }
 }
 

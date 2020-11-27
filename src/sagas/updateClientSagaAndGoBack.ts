@@ -1,15 +1,17 @@
 import { UPDATE_CLIENT_REQUESTED, updateClientPending, updateClientSucceded, updateClientFailed, getClients } from '../actions/clients';
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { updateClient as requestPutClient } from '../api/clients';
+import * as RootNavigation from '../components/RootNavigation';
 import { Alert } from "react-native";
 
-function* updateClient(action) {
+function* updateClientAndGoBack(action) {
   yield put(updateClientPending());
   try {
     const token = yield select((state) => state.auth.token);
     const putClientResponse = yield call(requestPutClient, action.client, token);
     yield put(updateClientSucceded());
     yield put(getClients());
+    yield call(RootNavigation.goBack);
   } catch (error) {
     if (!error.response) {
       Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});
@@ -21,8 +23,8 @@ function* updateClient(action) {
   }
 }
 
-function* updateClientSaga() {
-  yield takeLatest(UPDATE_CLIENT_REQUESTED, updateClient);
+function* updateClientSagaAndGoBack() {
+  yield takeLatest(UPDATE_CLIENT_REQUESTED, updateClientAndGoBack);
 }
 
-export default updateClientSaga;
+export default updateClientSagaAndGoBack;

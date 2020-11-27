@@ -8,6 +8,7 @@ import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
 import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
 import NewEstimateScreen from './components/NewEstimateScreen';
 import ContactImporter from './components/ContactImporter';
+import EditClient from './components/EditClient';
 import { navigationRef } from './components/RootNavigation';
 
 const Stack = createStackNavigator();
@@ -18,7 +19,7 @@ export default function Routes() {
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         initialRouteName="Authentication"
-        screenOptions={{ title: "Mesquita Hnos - Presupuestador", gestureEnabled: false }}
+        screenOptions={{ headerShown: false, gestureEnabled: false }}
       >
         <Stack.Screen
           name="Authentication"
@@ -47,6 +48,10 @@ export default function Routes() {
         <Stack.Screen
           name="ContactImporter"
           component={ContactImporter}
+        />
+        <Stack.Screen
+          name="EditClient"
+          component={EditClient}
         />
       </Stack.Navigator>
     </NavigationContainer>

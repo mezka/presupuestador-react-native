@@ -66,7 +66,7 @@ const EditClient = (props) => {
     <View style={ styles.parentView }>
       <Appbar.Header style={styles.appbar}>
         <Appbar.BackAction onPress={handleBackActionPress} />
-        <Appbar.Content title="Editar Cliente" titleStyle={{alignSelf: 'center'}}></Appbar.Content>
+        <Appbar.Content title="Cliente" titleStyle={{alignSelf: 'center'}}></Appbar.Content>
         <Appbar.Action icon="content-save" onPress={handleSavePress} />
       </Appbar.Header>
       <View style={ styles.containerView }>

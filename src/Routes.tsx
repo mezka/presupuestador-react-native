@@ -5,7 +5,7 @@ import AuthenticationScreen from './components/AuthenticationScreen';
 import SignupScreen from './components/SignupScreen';
 import HomeScreen from './components/HomeScreen';
 import NewEstimateSetupScreen from './components/NewEstimateSetupScreen';
-import ViewEditEstimateScreen from './components/ViewEditEstimateScreen';
+import ViewEditEstimate from './components/ViewEditEstimate';
 import NewEstimateScreen from './components/NewEstimateScreen';
 import ContactImporter from './components/ContactImporter';
 import EditClient from './components/EditClient';
@@ -38,10 +38,6 @@ export default function Routes() {
           component={NewEstimateSetupScreen}
         />
         <Stack.Screen
-          name="ViewEditEstimate"
-          component={ViewEditEstimateScreen}
-        />
-        <Stack.Screen
           name="NewEstimate"
           component={NewEstimateScreen}
         />
@@ -52,6 +48,10 @@ export default function Routes() {
         <Stack.Screen
           name="EditClient"
           component={EditClient}
+        />
+        <Stack.Screen
+          name="ViewEditEstimate"
+          component={ViewEditEstimate}
         />
       </Stack.Navigator>
     </NavigationContainer>

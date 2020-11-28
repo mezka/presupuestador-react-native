@@ -62,7 +62,7 @@ const NewEstimateSetupScreen = (props) => {
           <List.Subheader>Categoría fiscal</List.Subheader>
           {
             selectedClient.taxcategory?
-            <List.Item title={selectedClient.taxcategory} left={() => <List.Icon color="#000" icon="layoers-outline" />} />:
+            <List.Item title={selectedClient.taxcategory} left={() => <List.Icon color="#000" icon="layers-outline" />} />:
             <List.Item title="No ingresado" left={() => <List.Icon icon="layers-off-outline" />} />
           }
         </List.Section>

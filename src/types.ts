@@ -5,7 +5,8 @@ export interface Client {
   email0: string,
   phonenumber0: string,
   cuil: string,
-  taxcategory: string
+  taxcategory?: string,
+  tacpercent?: number
 }
 
 export interface Product {
@@ -20,8 +21,21 @@ export interface User {
   password: string
 }
 
+export interface EstimateItem {
+  id: 1,
+  discount: 0,
+  product: Product,
+  productid: 1,
+  quantity: 1,
+  unitprice: 21700,
+}
+
 export interface Estimate {
-  clientid: number,
-  validFor: number,
-  estimateitems: []
+  id: number,
+  client: Client,
+  estimateitems: EstimateItem[],
+  user: User,
+  validFor?: number,
+  updatedAt?: string,
+  createdAt?: string,
 }

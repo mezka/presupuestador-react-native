@@ -1,4 +1,4 @@
-import { ADD_ESTIMATE_ITEM, addEstimateItemWithPrice } from '../actions/estimateItems';
+import { ADD_ESTIMATE_ITEM_AFTER_RESOLVING_PRODUCT, addEstimateItemWithPrice } from '../actions/estimateItems';
 import { put, select, takeEvery } from 'redux-saga/effects';
 
 function* resolveProductPriceAndAddEstimateItem(action) {
@@ -9,7 +9,7 @@ function* resolveProductPriceAndAddEstimateItem(action) {
 }
 
 function* addEstimateItemSaga() {
-  yield takeEvery(ADD_ESTIMATE_ITEM, resolveProductPriceAndAddEstimateItem);
+  yield takeEvery(ADD_ESTIMATE_ITEM_AFTER_RESOLVING_PRODUCT, resolveProductPriceAndAddEstimateItem);
 }
 
 export default addEstimateItemSaga;

@@ -22,12 +22,13 @@ export interface User {
 }
 
 export interface EstimateItem {
-  id: 1,
-  discount: 0,
-  product: Product,
-  productid: 1,
-  quantity: 1,
-  unitprice: 21700,
+  id?: number,
+  checkboxId?: number,
+  discount: number,
+  product?: Product,
+  productid: number,
+  quantity: number,
+  unitprice: number,
 }
 
 export interface Estimate {

@@ -19,10 +19,6 @@ const ViewEditEstimate = (props: any) => {
   }, []);
 
   const editEstimate = useCallback((estimate: Estimate) => {
-
-    console.log('estimate');
-    console.log(estimate);
-
     props.navigation.navigate('NewEstimate', {estimateid: estimate.id, clientid: estimate.client.id});
   }, []);
 

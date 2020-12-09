@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCategories } from '../actions/categories';
-import { getProducts, setProductsFilter as createSetProductsFilter, setProductsSearchAndFilter as createSetProductsSearchAndFilter} from '../actions/products';
-import { changeEstimateItemProduct, changeEstimateItemQty, addEstimateItem as createAddEstimateItemAction, removeEstimateItem, loadEstimateItemsByEstimateId, clearEstimateItems } from '../actions/estimateItems';
+import {
+  getProducts,
+  setProductsCategoriesFilter as createSetProductsCategoriesFilter,
+  setProductsSearchAndCategoriesFilter as createSetProductsSearchAndCategoriesFilter
+} from '../actions/products';
+import {
+  changeEstimateItemAfterResolvingProduct,
+  changeEstimateItemQty as createChangeEstimateItemQtyAction,
+  addEstimateItemAfterResolvingProduct,
+  removeEstimateItem as createRemoveEstimateItemAction,
+  loadEstimateItemsByEstimateId,
+  clearEstimateItems
+} from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
@@ -10,23 +21,24 @@ import EstimateItemPicker from './EstimateItemPicker';
 import ProductAddView from './ProductAddView';
 import { useFocusEffect } from '@react-navigation/native';
 
-
 const NewEstimateScreen = (props) => {
-  const estimateitems = useSelector(state => state.estimateItems);
+  const estimateitems = useSelector(state => state.estimateItems.estimateItemsList);
   const products = useSelector(state => state.products.products);
   const filteredProducts = useSelector(state => state.products.filteredProducts);
-  const totalWithoutTaxes = useSelector(state => Object.values(state.estimateItems).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice, 0));
-  const totalWithTaxes = useSelector(state => Object.values(state.estimateItems).reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice * 1.21, 0));
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
+
+  const totalWithoutTaxes = useMemo(() => estimateitems.reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice, 0), [estimateitems]);
+  const totalWithTaxes = useMemo(() => estimateitems.reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice * 1.21, 0), [estimateitems]);
+
 
   const toggleDialog = () => {
     setVisible(!visible);
   };
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       return () => {
         dispatch(clearEstimateItems());
       };
@@ -38,62 +50,55 @@ const NewEstimateScreen = (props) => {
     dispatch(getCategories());
   }, []);
 
+
   useEffect(() => {
-    if(props.route.params.estimateid){
+    if (props.route.params.estimateid) {
       dispatch(loadEstimateItemsByEstimateId(props.route.params.estimateid));
     }
   }, [props.route.params.estimateid]);
 
-  const createProductChangeHandler = (estimateItemId) => {
-    return (optionValue) => {
-      dispatch(changeEstimateItemProduct(estimateItemId, Number(optionValue)));
-    };
-  };
 
-  const createQtyChangeHandler = (estimateItemId) => {
-    return (optionValue) => {
-      dispatch(changeEstimateItemQty(estimateItemId, Number(optionValue)))
-    }
-  };
+  const changeEstimateItemProduct = useCallback((checkboxId: number, productId: number) => {
+    dispatch(changeEstimateItemAfterResolvingProduct(checkboxId, productId));
+  }, []);
 
-  const addEstimateItem = (productid: number) => {
-    dispatch(createAddEstimateItemAction(productid, 1));
-  };
+  const changeEstimateItemQty = useCallback((checkboxId: number, quantity: number) => {
+    dispatch(createChangeEstimateItemQtyAction(checkboxId, quantity));
+  }, []);
 
-  const setProductsFilter = (filterFn: Function) => {
-    dispatch(createSetProductsFilter(filterFn));
-  };
 
-  const setProductsSearchAndFilter = (query: string, filterFn: Function) => {
-    dispatch(createSetProductsSearchAndFilter(query, filterFn));
-  };
+  const removeEstimateItem = useCallback((checkboxId: number) => {
+    dispatch(createRemoveEstimateItemAction(checkboxId));
+  }, [])
 
-  const createRemoveEstimateItem = (estimateItemId: number) => {
-    return () => {
-      dispatch(removeEstimateItem(estimateItemId));
-    }
-  };
+  const addEstimateItem = useCallback((productid: number) => {
+    dispatch(addEstimateItemAfterResolvingProduct(productid, 1));
+  }, []);
+
+  const setProductsSearchAndCategoriesFilter = useCallback((query, categories) => {
+    dispatch(createSetProductsSearchAndCategoriesFilter(query, categories));
+  }, []);
+
+  const setProductsCategoriesFilter = useCallback((categories) => {
+    dispatch(createSetProductsCategoriesFilter(categories));
+  }, []);
 
   const saveEstimate = () => {
-    const estimateitemsList = Object.keys(estimateitems).map((item) => {
-      return {unitprice: estimateitems[item].unitprice, quantity: estimateitems[item].quantity, productid: estimateitems[item].productid};
-    });
-    
-    if(props.route.params.estimateid){
-      dispatch(updateEstimate(props.route.params.estimateid, {clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateitemsList }));
+    if (props.route.params.estimateid) {
+      dispatch(updateEstimate(props.route.params.estimateid, { clientid: props.route.params.clientid, validFor: 10, estimateitems }));
     } else {
-      dispatch(addEstimate({clientid: props.route.params.clientid, validFor: 10, estimateitems: estimateitemsList, }));
+      dispatch(addEstimate({ clientid: props.route.params.clientid, validFor: 10, estimateitems }));
     }
   };
 
-  const productPickers = Object.keys(estimateitems).map((estimateItemId) => {
+  const productPickers = estimateitems.map((estimateitem) => {
     return (
-      <View key={estimateItemId} style={styles.itemView}>
+      <View key={estimateitem.checkboxId} style={styles.itemView}>
         <EstimateItemPicker
-          estimateItem={estimateitems[estimateItemId]}
-          qtyChangeHandler={createQtyChangeHandler(estimateItemId)}
-          productChangeHandler={createProductChangeHandler(estimateItemId)}
-          removeEstimateItem={createRemoveEstimateItem(estimateItemId)}
+          estimateItem={estimateitem}
+          changeEstimateItemQty={changeEstimateItemQty}
+          changeEstimateItemProduct={changeEstimateItemProduct}
+          removeEstimateItem={removeEstimateItem}
           products={products} />
       </View>
     );
@@ -101,22 +106,22 @@ const NewEstimateScreen = (props) => {
 
   return (
     <ScrollView contentContainerStyle={styles.mainView}>
-      {productPickers.length? <ScrollView>{productPickers}</ScrollView> : <View style={styles.textCenter}><Text>NO HAY ITEMS</Text></View>}
+      {productPickers.length ? <ScrollView>{productPickers}</ScrollView> : <View style={styles.textCenter}><Text>NO HAY ITEMS</Text></View>}
       <Portal>
         <Dialog visible={visible} onDismiss={toggleDialog}>
           <Dialog.ScrollArea>
             <ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-              <ProductAddView products={products} categories={categories} filteredProducts={filteredProducts} addEstimateItem={addEstimateItem} setProductsFilter={setProductsFilter} setProductsSearchAndFilter={setProductsSearchAndFilter} />
+              <ProductAddView products={products} categories={categories} filteredProducts={filteredProducts} setProductsCategoriesFilter={setProductsCategoriesFilter} setProductsSearchAndCategoriesFilter={setProductsSearchAndCategoriesFilter} addEstimateItem={addEstimateItem} />
             </ScrollView>
           </Dialog.ScrollArea>
         </Dialog>
         <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       </Portal>
       <Appbar style={styles.appbar}>
-        <Appbar.Action icon="content-save-outline" onPress={saveEstimate}/>
+        <Appbar.Action icon="content-save-outline" onPress={saveEstimate} />
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
-        <Appbar.Content style={styles.appbarHeadingBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} subtitle="Subtotal: " title="Total + IVA: "/>
-        <Appbar.Content style={styles.appbarTotalsBox} titleStyle={{textAlign:'right'}} subtitleStyle={{textAlign:'right'}} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`}/>
+        <Appbar.Content style={styles.appbarHeadingBox} titleStyle={{ textAlign: 'right' }} subtitleStyle={{ textAlign: 'right' }} subtitle="Subtotal: " title="Total + IVA: " />
+        <Appbar.Content style={styles.appbarTotalsBox} titleStyle={{ textAlign: 'right' }} subtitleStyle={{ textAlign: 'right' }} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`} />
       </Appbar>
     </ScrollView>
   );

@@ -1,92 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Searchbar, Text, Checkbox, Button, RadioButton, Chip } from 'react-native-paper';
 
-const createKeepProductsThatHaveOneOfTheseCategoriesFilter = function(categoryList){
+const productCheckboxReducer = (state, action) => {
+  switch(action.type){
+    case 'toggle':
+      const newCheckboxState = {...state.checkboxes, [action.productid]: !state.checkboxes[action.productid]};
+      return {...state, checkboxes: {...newCheckboxState}, products: Object.entries(newCheckboxState).filter(entries => entries[1]).map(entries => Number(entries[0]))};
+    default:
+      return {...state};
+  }
+};
 
-  return function(product){
+const categoriesReducer = (state, action) => {
 
-    const {id, modelname, price, updatedAt, ...productCategories} = product;
-
-    let includesOneOfCategoryList = false;
-
-    for(let i = 0; i < categoryList.length && !includesOneOfCategoryList; i++){
-      includesOneOfCategoryList = Object.values(productCategories).includes(categoryList[i]);
-    }
-
-    return includesOneOfCategoryList;
-  };
+  switch(action.type){
+    case 'toggle':
+      const newChipState = {...state.chips, [action.categoryid]: !state.chips[action.categoryid]};
+      return {...state, chips: {...newChipState}, categories: Object.entries(newChipState).filter(entries => entries[1]).map(entries => Number(entries[0]))};
+    default:
+      return {...state};
+  }
 }
 
-const ProductAddView = ({categories, products, filteredProducts, addEstimateItem, setProductsFilter, setProductsSearchAndFilter}) => {
+const createChipsReducer = (chips, currentCategory) => {
+  chips[currentCategory.id] = true;
+  return chips;
+}
+
+const ProductAddView = ({categories, filteredProducts, addEstimateItem, setProductsCategoriesFilter, setProductsSearchAndCategoriesFilter}) => {
+
   const [searchQuery, setSearchQuery] = useState('');
-  const [checkboxes, setCheckboxes] = useState({});
-  const [chips, setChips] = useState({})
+  const [checkboxes, dispatchCheckbox] = useReducer(productCheckboxReducer, {checkboxes: {}, products: []});
+  const [chips, dispatchChip] = useReducer(categoriesReducer, {chips: categories.reduce(createChipsReducer, {}), categories: categories.map(category => category.id)});
+
 
   useEffect(() => {
-    const checkboxStateSetToFalse = products.reduce((obj, product) => {
-      obj[product.id] = false;
-      return obj;
-    }, {});
-    
-    setCheckboxes(checkboxStateSetToFalse);
-
-  }, []);
-
-  useEffect(() => {
-    setChips(categories.reduce((obj, current) => {
-      obj[current.id] = true;
-      return obj;
-    }, {}))
-  }, [categories])
-
-  const createChipHandler = (categoryid) => {
-
-    return () => {
-      const newChips = {...chips, [categoryid]: !chips[categoryid]};
-      const categoryList = Object.entries(newChips).filter(chipEntries => chipEntries[1] === true).map(chipEntries => Number(chipEntries[0]));
-
-      setChips(newChips);
-
-      if(searchQuery){
-        setProductsSearchAndFilter(searchQuery, createKeepProductsThatHaveOneOfTheseCategoriesFilter(categoryList));
-      } else {
-        setProductsFilter(createKeepProductsThatHaveOneOfTheseCategoriesFilter(categoryList))
-      }
-    }
-  }
-
-  const onChangeSearch = (queryString) => {
-
-    const categoryList = Object.entries(chips).filter(chipEntries => chipEntries[1] === true).map(chipEntries => Number(chipEntries[0]));
-
-    if(queryString.length < searchQuery.length){
-      setProductsFilter(createKeepProductsThatHaveOneOfTheseCategoriesFilter(categoryList));
+    if(searchQuery){
+      setProductsSearchAndCategoriesFilter(searchQuery, chips.categories);
     } else {
-      setProductsSearchAndFilter(queryString, createKeepProductsThatHaveOneOfTheseCategoriesFilter(categoryList));
+      setProductsCategoriesFilter(chips.categories);
     }
+  }, [searchQuery, chips.categories]);
 
+  const onChangeSearch = (queryString: string) => {
     setSearchQuery(queryString);
   };
 
   const addEstimateItems = () => {
-    for(const id in checkboxes){
-      if(checkboxes[id]){
-        addEstimateItem(Number(id));
-      }
-    }
+    checkboxes.products.forEach((product: number) => {
+      addEstimateItem(product);
+    });
   };
 
-  const createCheckboxHandler = (product) => {
-    return () => {
-      setCheckboxes({...checkboxes, [product.id]: !checkboxes[product.id]});
-    }
-  };
-  
   const productList = filteredProducts.map(product => {
+
     return(
       <View key={product.id} style={styles.productList}>
-        <Checkbox status={checkboxes[product.id]? 'checked' : 'unchecked'} onPress={createCheckboxHandler(product)}/>
+        <Checkbox status={checkboxes.checkboxes[product.id]? 'checked' : 'unchecked'} onPress={() => dispatchCheckbox({type: 'toggle', productid: product.id})}/>
         <Text>{product.modelname}</Text>
       </View>
     );
@@ -95,7 +66,7 @@ const ProductAddView = ({categories, products, filteredProducts, addEstimateItem
   const categoriesList = categories.map(category => {
     return(
       <View key={category.id} style={styles.category}>
-        <Chip selected={chips[category.id]} onPress={createChipHandler(category.id)}>{category.name}</Chip>
+        <Chip selected={chips.chips[category.id]} onPress={() => dispatchChip({type: 'toggle', categoryid: category.id})}>{category.name}</Chip>
       </View>
     );
   });

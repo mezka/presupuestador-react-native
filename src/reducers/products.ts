@@ -4,8 +4,11 @@ import {
   GET_PRODUCTS_PENDING,
   SET_PRODUCTS_FILTER,
   SET_PRODUCTS_SEARCH,
-  SET_PRODUCTS_SEARCH_AND_FILTER
+  SET_PRODUCTS_SEARCH_AND_FILTER,
+  SET_PRODUCTS_CATEGORIES_FILTER,
+  SET_PRODUCTS_SEARCH_AND_CATEGORIES_FILTER
 } from '../actions/products';
+
 import FlexSearch from 'flexsearch/dist/module/flexsearch';
 
 const productIndex = new FlexSearch({
@@ -16,10 +19,26 @@ const productIndex = new FlexSearch({
   tokenize: 'forward'
 });
 
+const createKeepProductsThatHaveOneOfTheseCategoriesFilter = function (categoryList) {
+
+  return function (product) {
+
+    const { id, modelname, price, updatedAt, ...productCategories } = product;
+
+    let includesOneOfCategoryList = false;
+
+    for (let i = 0; i < categoryList.length && !includesOneOfCategoryList; i++) {
+      includesOneOfCategoryList = Object.values(productCategories).includes(categoryList[i]);
+    }
+
+    return includesOneOfCategoryList;
+  };
+}
+
 const products = (state = { pending: false, products: productIndex.where(() => true) }, action) => {
   switch (action.type) {
     case GET_PRODUCTS_SUCCEDED:
-      
+
       productIndex.add(action.products);
 
       return {
@@ -51,19 +70,22 @@ const products = (state = { pending: false, products: productIndex.where(() => t
         filteredProducts: productIndex.search(action.query)
       };
     case SET_PRODUCTS_SEARCH_AND_FILTER:
-
-      console.log(SET_PRODUCTS_SEARCH_AND_FILTER);
-      console.log(action.query);
-      console.log(action.filter);
-
-      console.log(productIndex.search(action.query, {
-        where: action.filter
-      }));
-
       return {
         ...state,
         filteredProducts: productIndex.search(action.query, {
           where: action.filter
+        })
+      };
+    case SET_PRODUCTS_CATEGORIES_FILTER:
+      return {
+        ...state,
+        filteredProducts: productIndex.where(createKeepProductsThatHaveOneOfTheseCategoriesFilter(action.categories))
+      };
+    case SET_PRODUCTS_SEARCH_AND_CATEGORIES_FILTER:
+      return {
+        ...state,
+        filteredProducts: productIndex.search(action.query, {
+          where: createKeepProductsThatHaveOneOfTheseCategoriesFilter(action.categories)
         })
       };
     default:

@@ -19,6 +19,7 @@ import loadEstimateItemsByEstimateIdSaga from './sagas/loadEstimateItemsByEstima
 import updateEstimateSaga from './sagas/updateEstimateSaga';
 import updateClientSagaAndGoBack from './sagas/updateClientSagaAndGoBack';
 import getCategoriesSaga from './sagas/getCategoriesSaga';
+import { setNotificationHandler } from 'expo-notifications';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -42,6 +43,17 @@ sagaMiddleware.run(loadEstimateItemsByEstimateIdSaga);
 sagaMiddleware.run(updateEstimateSaga);
 sagaMiddleware.run(updateClientSagaAndGoBack);
 sagaMiddleware.run(getCategoriesSaga);
+
+
+setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    };
+  },
+});
 
 export default function App() {
   return (

@@ -57,6 +57,7 @@ import {
         return {
           ...state,
           pending: false,
+          estimates: state.estimates.map((estimate) => estimate.id === action.estimateId? {...estimate, localUri: action.localUri} : estimate)
         };
       case EXPORT_ESTIMATE_FAILED:
         return {

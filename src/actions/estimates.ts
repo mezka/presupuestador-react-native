@@ -70,9 +70,11 @@ export const exportEstimatePending = () => ({
     pending: true
 });
   
-export const exportEstimateSucceded = () => ({
+export const exportEstimateSucceded = (estimateId, localUri) => ({
     type: EXPORT_ESTIMATE_SUCCEDED,
     pending: false,
+    estimateId,
+    localUri
 });
   
 export const exportEstimateFailed = (error) => ({

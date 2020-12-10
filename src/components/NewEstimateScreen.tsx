@@ -16,10 +16,10 @@ import {
 } from '../actions/estimateItems';
 import { addEstimate, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { Text, Dialog, Portal, FAB, Appbar } from 'react-native-paper';
+import { Text, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
-import ProductAddView from './ProductAddView';
 import { useFocusEffect } from '@react-navigation/native';
+import ProductAddDialog from './ProductAddDialog';
 
 const NewEstimateScreen = (props) => {
   const estimateitems = useSelector(state => state.estimateItems.estimateItemsList);
@@ -28,9 +28,8 @@ const NewEstimateScreen = (props) => {
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const categories = useSelector(state => state.categories.categories);
-
-  const totalWithoutTaxes = useMemo(() => estimateitems.reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice, 0), [estimateitems]);
-  const totalWithTaxes = useMemo(() => estimateitems.reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice * 1.21, 0), [estimateitems]);
+  const totalWithoutTaxes = useMemo(() => estimateitems.reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice, 0).toFixed(2), [estimateitems]);
+  const totalWithTaxes = useMemo(() => estimateitems.reduce((acum, estimateItem) => acum + estimateItem.quantity * estimateItem.unitprice * 1.21, 0).toFixed(2), [estimateitems]);
 
 
   const toggleDialog = () => {
@@ -93,7 +92,7 @@ const NewEstimateScreen = (props) => {
 
   const productPickers = estimateitems.map((estimateitem) => {
     return (
-      <View key={estimateitem.checkboxId} style={styles.itemView}>
+      <View key={estimateitem.checkboxId}>
         <EstimateItemPicker
           estimateItem={estimateitem}
           changeEstimateItemQty={changeEstimateItemQty}
@@ -108,15 +107,17 @@ const NewEstimateScreen = (props) => {
     <ScrollView contentContainerStyle={styles.mainView}>
       {productPickers.length ? <ScrollView>{productPickers}</ScrollView> : <View style={styles.textCenter}><Text>NO HAY ITEMS</Text></View>}
       <Portal>
-        <Dialog visible={visible} onDismiss={toggleDialog}>
-          <Dialog.ScrollArea>
-            <ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-              <ProductAddView products={products} categories={categories} filteredProducts={filteredProducts} setProductsCategoriesFilter={setProductsCategoriesFilter} setProductsSearchAndCategoriesFilter={setProductsSearchAndCategoriesFilter} addEstimateItem={addEstimateItem} />
-            </ScrollView>
-          </Dialog.ScrollArea>
-        </Dialog>
-        <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
+        <ProductAddDialog
+          categories={categories}
+          filteredProducts={filteredProducts}
+          setProductsCategoriesFilter={setProductsCategoriesFilter}
+          setProductsSearchAndCategoriesFilter={setProductsSearchAndCategoriesFilter}
+          addEstimateItem={addEstimateItem}
+          visible={visible}
+          toggleDialog={toggleDialog}
+        />
       </Portal>
+        <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       <Appbar style={styles.appbar}>
         <Appbar.Action icon="content-save-outline" onPress={saveEstimate} />
         <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
@@ -130,6 +131,8 @@ const NewEstimateScreen = (props) => {
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
+    paddingTop: '5%',
+    paddingBottom: '20%'
   },
   textCenter: {
     flex: 1,
@@ -150,7 +153,7 @@ const styles = StyleSheet.create({
   },
   appbarHeadingBox: {
     flexDirection: 'column-reverse',
-    flex: 4,
+    flex: 3,
   },
   appbarTotalsBox: {
     flexDirection: 'column-reverse',
@@ -159,9 +162,6 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 5
   },
-  priceText: {
-    color: 'white'
-  }
 });
 
 export default NewEstimateScreen;

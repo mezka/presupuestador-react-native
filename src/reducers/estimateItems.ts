@@ -23,7 +23,6 @@ const estimateItems = (state = { estimateItemsList: [], estimateItems: {} }, act
       return { estimateItemsList: Object.values(estimateItemsAfterProductAndPriceChange), estimateItems: { ...estimateItemsAfterProductAndPriceChange } };
     case CHANGE_ESTIMATE_ITEM_QTY:
       const estimateItemsAfterQtyChange = { ...state.estimateItems, [action.checkboxId]: { ...state.estimateItems[action.checkboxId], quantity: action.quantity } };
-      console.log(estimateItemsAfterQtyChange);
       return { estimateItemsList: Object.values(estimateItemsAfterQtyChange), estimateItems: { ...estimateItemsAfterQtyChange } };
     case GET_ESTIMATE_ITEMS:
       return { ...state };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Searchbar, Text, Checkbox, Button, RadioButton, Chip } from 'react-native-paper';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Searchbar, Checkbox, Button, Dialog, Chip, withTheme} from 'react-native-paper';
 
 const productCheckboxReducer = (state, action) => {
   switch (action.type) {
@@ -28,7 +28,7 @@ const createChipsReducer = (chips, currentCategory) => {
   return chips;
 }
 
-const ProductAddView = ({ categories, filteredProducts, addEstimateItem, setProductsCategoriesFilter, setProductsSearchAndCategoriesFilter }) => {
+const ProductAddDialog = ({ categories, filteredProducts, addEstimateItem, setProductsCategoriesFilter, setProductsSearchAndCategoriesFilter, visible, toggleDialog }) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [checkboxes, dispatchCheckbox] = useReducer(productCheckboxReducer, { checkboxes: {}, products: [] });
@@ -51,12 +51,11 @@ const ProductAddView = ({ categories, filteredProducts, addEstimateItem, setProd
     checkboxes.products.forEach((product: number) => {
       addEstimateItem(product);
     });
+    toggleDialog();
   };
-
   const productList = useMemo(() => (filteredProducts.map(product => (
     <View key={product.id} style={styles.productList}>
-      <Checkbox status={checkboxes.checkboxes[product.id] ? 'checked' : 'unchecked'} onPress={() => dispatchCheckbox({ type: 'toggle', productid: product.id })} />
-      <Text>{product.modelname}</Text>
+      <Checkbox.Item style={styles.checkbox} labelStyle={{}} status={checkboxes.checkboxes[product.id] ? 'checked' : 'unchecked'} onPress={() => dispatchCheckbox({ type: 'toggle', productid: product.id })} label={product.modelname}/>
     </View>
   ))), [filteredProducts, checkboxes])
 
@@ -67,16 +66,20 @@ const ProductAddView = ({ categories, filteredProducts, addEstimateItem, setProd
   ))), [categories, chips])
 
   return (
-    <View>
+    <Dialog visible={visible} onDismiss={toggleDialog} style={styles.dialog}>
       <Searchbar placeholder="Buscar" onChangeText={onChangeSearch} value={searchQuery} />
-      <RadioButton.Group>
-        <View style={styles.categoriesList}>
-          {categoriesList}
-        </View>
-      </RadioButton.Group>
-      {productList}
-      <Button mode="contained" onPress={addEstimateItems}>Agregar</Button>
-    </View>
+      <View style={styles.categoriesList}>
+        {categoriesList}
+      </View>
+      <Dialog.ScrollArea style={styles.scrollArea}>
+        <ScrollView>
+          {productList}
+        </ScrollView>
+      </Dialog.ScrollArea>
+      <Dialog.Actions>
+        <Button onPress={addEstimateItems}>Agregar</Button>
+      </Dialog.Actions>
+    </Dialog>
   );
 };
 
@@ -91,7 +94,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignContent: 'space-between'
+  },
+  dialog: {
+    flex: 1,
+    marginVertical: '10%',
+    marginHorizontal: 10,
+    paddingHorizontal: 5,
+    paddingTop: 5
+  },
+  scrollArea: {
+    paddingHorizontal: 0,
+  },
+  checkbox: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 0
   }
 });
 
-export default ProductAddView;
+
+
+export default ProductAddDialog;

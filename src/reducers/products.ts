@@ -35,7 +35,7 @@ const createKeepProductsThatHaveOneOfTheseCategoriesFilter = function (categoryL
   };
 }
 
-const products = (state = { pending: false, products: productIndex.where(() => true) }, action) => {
+const products = (state = { pending: false, products: productIndex.where(() => true), filteredProducts: productIndex.where(() => true)}, action) => {
   switch (action.type) {
     case GET_PRODUCTS_SUCCEDED:
 

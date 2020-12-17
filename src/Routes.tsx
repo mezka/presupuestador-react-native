@@ -30,10 +30,6 @@ export default function Routes() {
           component={SignupScreen}
         />
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
-        <Stack.Screen
           name="NewEstimateSetup"
           component={NewEstimateSetupScreen}
         />

@@ -4,6 +4,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { getEstimates, exportEstimate as exportEstimateAction} from '../actions/estimates';
 import EstimateCard from './EstimateCard';
 import { Estimate } from '../types';
+import { FAB } from 'react-native-paper';
 
 const ViewEditEstimate = (props: any) => {
   
@@ -22,11 +23,16 @@ const ViewEditEstimate = (props: any) => {
     props.navigation.navigate('NewEstimate', {estimateid: estimate.id, clientid: estimate.client.id});
   }, []);
 
+  const newEstimatePress = () => {
+    props.navigation.navigate('NewEstimate', {});
+  }
+
   return (
     <View style={styles.parentView}>
       <ScrollView style={styles.containerView}>
         {estimates.map((estimate: Estimate) => <EstimateCard key={estimate.id} estimate={estimate} editEstimate={editEstimate} exportEstimate={exportEstimate}/>)}
       </ScrollView>
+      <FAB style={styles.fab} icon="plus" onPress={newEstimatePress}/>
     </View>
   )
 }
@@ -36,9 +42,15 @@ const styles = StyleSheet.create({
     flex: 1
   },
   containerView: {
-    marginTop: 100,
+    marginTop: '10%',
     marginHorizontal: 10
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  }
 })
 
 

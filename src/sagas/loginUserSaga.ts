@@ -8,7 +8,7 @@ function* authenticateUser(action){
   yield put(loginUserPending());
   try {
     let response = yield call(fetchClient, {email: action.user.email, password: action.user.password});
-    RootNavigation.navigate('Home', {});
+    RootNavigation.navigate('ViewEditEstimate', {});
     yield put(loginUserSucceded(response.user, response.accessToken));
   } catch (error){
     if(!error.response){

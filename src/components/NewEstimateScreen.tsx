@@ -12,9 +12,9 @@ import {
   addEstimateItemAfterResolvingProduct,
   removeEstimateItem as createRemoveEstimateItemAction,
   loadEstimateItemsByEstimateId,
-  clearEstimateItems
+  clearEstimateItems,
 } from '../actions/estimateItems';
-import { addEstimate, updateEstimate } from '../actions/estimates';
+import { addEstimate, addEstimateAndExport, updateEstimate } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
@@ -90,6 +90,14 @@ const NewEstimateScreen = (props) => {
     }
   };
 
+  const shareEstimate = () => {
+    if(estimateitems.length && !props.route.params.estimateid){
+      dispatch(addEstimateAndExport({clientid: props.route.params.clientid, validFor: 10, estimateitems}))
+    } else {
+      console.log('todo update estimate and export');
+    }
+  }
+
   const productPickers = estimateitems.map((estimateitem) => {
     return (
       <View key={estimateitem.checkboxId}>
@@ -120,7 +128,7 @@ const NewEstimateScreen = (props) => {
         <FAB style={styles.fab} small={true} icon="plus" onPress={toggleDialog} />
       <Appbar style={styles.appbar}>
         <Appbar.Action icon="content-save-outline" onPress={saveEstimate} />
-        <Appbar.Action icon="share-variant" onPress={() => console.log('Pessed label')} />
+        <Appbar.Action icon="share-variant" onPress={shareEstimate} />
         <Appbar.Content style={styles.appbarHeadingBox} titleStyle={{ textAlign: 'right' }} subtitleStyle={{ textAlign: 'right' }} subtitle="Subtotal: " title="Total + IVA: " />
         <Appbar.Content style={styles.appbarTotalsBox} titleStyle={{ textAlign: 'right' }} subtitleStyle={{ textAlign: 'right' }} title={`$${totalWithTaxes}`} subtitle={`$${totalWithoutTaxes}`} />
       </Appbar>

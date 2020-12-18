@@ -11,11 +11,10 @@ function* addEstimate(action){
   yield put(addEstimatePending());
   try {
     const token = yield select(getToken);
-    yield call(newEstimate, action.estimate, token);
-    yield put(addEstimateSucceded());
+    const estimate = yield call(newEstimate, action.estimate, token);
+    yield put(addEstimateSucceded(estimate));
     yield put(getEstimates());
     yield put(clearEstimateItems());
-    RootNavigation.goBack();
   } catch (error) {
     if(!error.response){
       Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});

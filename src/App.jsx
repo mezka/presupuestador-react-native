@@ -19,6 +19,7 @@ import loadEstimateItemsByEstimateIdSaga from './sagas/loadEstimateItemsByEstima
 import updateEstimateSaga from './sagas/updateEstimateSaga';
 import updateClientSagaAndGoBack from './sagas/updateClientSagaAndGoBack';
 import getCategoriesSaga from './sagas/getCategoriesSaga';
+import addEstimateAndExportSaga from './sagas/addEstimateAndExportSaga';
 import { setNotificationHandler } from 'expo-notifications';
 
 import rootReducer from './reducers';
@@ -43,6 +44,7 @@ sagaMiddleware.run(loadEstimateItemsByEstimateIdSaga);
 sagaMiddleware.run(updateEstimateSaga);
 sagaMiddleware.run(updateClientSagaAndGoBack);
 sagaMiddleware.run(getCategoriesSaga);
+sagaMiddleware.run(addEstimateAndExportSaga);
 
 
 setNotificationHandler({

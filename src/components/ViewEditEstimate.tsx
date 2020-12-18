@@ -24,7 +24,7 @@ const ViewEditEstimate = (props: any) => {
   }, []);
 
   const newEstimatePress = () => {
-    props.navigation.navigate('NewEstimate', {});
+    props.navigation.navigate('NewEstimateSetup');
   }
 
   return (

@@ -19,6 +19,7 @@ export const UPDATE_ESTIMATE_SUCCEDED = 'UPDATE_ESTIMATE_SUCCEDED';
 export const UPDATE_ESTIMATE_FAILED = 'UPDATE_ESTIMATE_FAILED';
 
 export const ADD_ESTIMATE_AND_EXPORT_REQUESTED = 'ADD_ESTIMATE_AND_EXPORT_REQUESTED';
+export const UPDATE_ESTIMATE_AND_EXPORT_REQUESTED = 'UPDATE_ESTIMATE_AND_EXPORT_REQUESTED';
 
 export const addEstimate = (estimate) => ({
     type: ADD_ESTIMATE_REQUESTED,
@@ -106,7 +107,13 @@ export const updateEstimateFailed = (error) => ({
     error
 });
 
-export const addEstimateAndExport = (estimate) = (estimate) => ({
+export const addEstimateAndExport = (estimate) => ({
     type: ADD_ESTIMATE_AND_EXPORT_REQUESTED,
+    estimate
+});
+
+export const updateEstimateAndExport = (estimateId, estimate) => ({
+    type: UPDATE_ESTIMATE_AND_EXPORT_REQUESTED,
+    estimateId,
     estimate
 });

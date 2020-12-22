@@ -12,8 +12,6 @@ function* updateEstimate(action) {
     const putEstimateResponse = yield call(requestPutEstimate, action.estimateId, action.estimate, token);
     yield put(updateEstimateSucceded());
     yield put(getEstimates());
-    yield put(clearEstimateItems());
-    RootNavigation.goBack();
   } catch (error) {
     if(!error.response){
       Alert.alert("Error", "Request timeout", [{ text: "OK" }], {});

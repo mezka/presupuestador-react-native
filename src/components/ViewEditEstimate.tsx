@@ -2,6 +2,7 @@ import React, { useEffect, useCallback} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { getEstimates, exportEstimate as exportEstimateAction} from '../actions/estimates';
+import { getClients } from '../actions/clients';
 import EstimateCard from './EstimateCard';
 import { Estimate } from '../types';
 import { FAB } from 'react-native-paper';
@@ -13,6 +14,7 @@ const ViewEditEstimate = (props: any) => {
 
   useEffect(() => {
     dispatch(getEstimates());
+    dispatch(getClients());
   }, [])
 
   const exportEstimate = useCallback((estimate: Estimate) => {

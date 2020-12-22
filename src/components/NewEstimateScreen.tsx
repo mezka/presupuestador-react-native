@@ -14,7 +14,7 @@ import {
   loadEstimateItemsByEstimateId,
   clearEstimateItems,
 } from '../actions/estimateItems';
-import { addEstimate, addEstimateAndExport, updateEstimate } from '../actions/estimates';
+import { addEstimate, addEstimateAndExport, updateEstimate, updateEstimateAndExport } from '../actions/estimates';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text, Portal, FAB, Appbar } from 'react-native-paper';
 import EstimateItemPicker from './EstimateItemPicker';
@@ -91,10 +91,13 @@ const NewEstimateScreen = (props) => {
   };
 
   const shareEstimate = () => {
-    if(estimateitems.length && !props.route.params.estimateid){
-      dispatch(addEstimateAndExport({clientid: props.route.params.clientid, validFor: 10, estimateitems}))
-    } else {
-      console.log('todo update estimate and export');
+
+    if(estimateitems.length){
+      if(props.route.params.estimateid){
+        dispatch(updateEstimateAndExport(props.route.params.estimateid, {clientid: props.route.params.clientid, validFor: 10, estimateitems}));
+      } else {
+        dispatch(addEstimateAndExport({clientid: props.route.params.clientid, validFor: 10, estimateitems}));
+      }
     }
   }
 
@@ -139,7 +142,7 @@ const NewEstimateScreen = (props) => {
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
-    paddingTop: '5%',
+    paddingTop: '10%',
     paddingBottom: '20%'
   },
   textCenter: {

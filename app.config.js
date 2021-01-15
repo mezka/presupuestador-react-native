@@ -1,5 +1,5 @@
 const ip = require('ip');
-const env_vars = require('dotenv').config();
+const dotenv = require('dotenv').config();
 
 export default {
   name: "Mesquita Hnos - Presupuestador",
@@ -22,10 +22,10 @@ export default {
     supportsTablet: true
   },
   android: {
-    "package": "com.mesquita.presupuestador"
+    package: "com.mesquita.presupuestador"
   },
   extra: {
-    api_url: env_vars.API_URL || `http://${ip.address()}:3030` //used to set up client api urls
+    api_url: process.env.API_URL || `http://${ip.address()}:3030` //used to set up client api urls
   }
 };
 

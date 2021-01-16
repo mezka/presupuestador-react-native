@@ -49,6 +49,8 @@ const NewEstimateScreen = (props) => {
     dispatch(getCategories());
   }, []);
 
+  useEffect(() => {
+  }, [categories])
 
   useEffect(() => {
     if (props.route.params.estimateid) {
